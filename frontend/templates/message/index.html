@@ -1,0 +1,685 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Tin nhắn - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .chat-container {
+        height: calc(100vh - 80px); /* 80px is approx header height */
+        margin-top: -24px; /* offset default padding if needed, or keep it */
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: row;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    /* Sidebar */
+    .chat-sidebar {
+        width: 320px;
+        border-right: 1px solid #e2e8f0;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chat-sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #fff;
+    }
+    
+    .search-box {
+        position: relative;
+    }
+    .search-box i {
+        position: absolute;
+        left: 12px;
+        top: 10px;
+        color: #94a3b8;
+    }
+    .search-box input {
+        width: 100%;
+        padding: 8px 12px 8px 36px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 13px;
+        background: #f1f5f9;
+    }
+    
+    .chat-list {
+        flex: 1;
+        overflow-y: auto;
+    }
+    
+    .chat-item {
+        display: flex;
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: background 0.2s;
+        text-decoration: none;
+        color: inherit;
+        background: #fff;
+    }
+    
+    .chat-item:hover {
+        background: #f1f5f9;
+    }
+    
+    .chat-item.active {
+        background: #f1f5f9;
+        border-left: 4px solid var(--rovva-primary-blue);
+    }
+    
+    .chat-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #64748b;
+        margin-right: 12px;
+        flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+    }
+    .chat-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .chat-avatar.initials {
+        background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        color: white;
+    }
+    .chat-avatar.initials-2 {
+        background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+        color: white;
+    }
+    
+    .chat-item-info {
+        flex: 1;
+        min-width: 0; /* for text truncation */
+    }
+    
+    .chat-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+    
+    .chat-item-name {
+        font-weight: 700;
+        font-size: 14px;
+        color: #1e293b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .chat-item-time {
+        font-size: 11px;
+        color: #94a3b8;
+    }
+    
+    .chat-item-msg {
+        font-size: 13px;
+        color: #64748b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .chat-item.unread .chat-item-name {
+        color: #0f172a;
+    }
+    
+    .chat-item.unread .chat-item-msg {
+        font-weight: 600;
+        color: #334155;
+    }
+    
+    .unread-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--rovva-primary-blue);
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 8px;
+    }
+
+    /* Main Chat Area */
+    .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #f8fafc;
+    }
+    
+    .chat-main-header {
+        padding: 16px 24px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .chat-guest-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .chat-guest-details {
+        margin-left: 12px;
+    }
+    
+    .chat-guest-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: #1e293b;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .badge-new {
+        background: #e0e7ff;
+        color: #4338ca;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+    
+    .chat-guest-status {
+        font-size: 12px;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #10b981;
+    }
+    
+    .chat-actions {
+        display: flex;
+        gap: 12px;
+    }
+    
+    .btn-outline-danger-soft {
+        border: 1px solid #fecaca;
+        background: #fef2f2;
+        color: #ef4444;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 12px;
+    }
+    .btn-outline-danger-soft:hover {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .btn-primary-dark {
+        background: #1e293b;
+        color: white;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 12px;
+    }
+    .btn-primary-dark:hover {
+        background: #0f172a;
+        color: white;
+    }
+    
+    /* Messages Area */
+    .chat-messages {
+        flex: 1;
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .date-divider {
+        text-align: center;
+        margin: 24px 0;
+        position: relative;
+    }
+    .date-divider::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background: #e2e8f0;
+        z-index: 1;
+    }
+    .date-divider span {
+        background: #e2e8f0;
+        color: #64748b;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .message {
+        max-width: 70%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .message.received {
+        align-self: flex-start;
+    }
+    
+    .message.sent {
+        align-self: flex-end;
+    }
+    
+    .message-bubble {
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        position: relative;
+    }
+    
+    .message.received .message-bubble {
+        background: #f1f5f9;
+        color: #334155;
+        border-bottom-left-radius: 4px;
+    }
+    
+    .message.sent .message-bubble {
+        background: var(--rovva-primary-blue);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+    
+    .message-time {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 4px;
+    }
+    .message.sent .message-time {
+        text-align: right;
+    }
+    
+    /* Input Area */
+    .chat-input-area {
+        padding: 20px 24px;
+        background: #fff;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .chat-input-wrapper {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #f8fafc;
+        overflow: hidden;
+    }
+    
+    .chat-input-wrapper textarea {
+        width: 100%;
+        border: none;
+        background: transparent;
+        padding: 16px;
+        min-height: 80px;
+        resize: none;
+        font-size: 14px;
+    }
+    .chat-input-wrapper textarea:focus {
+        outline: none;
+    }
+    
+    .chat-input-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 16px;
+        background: #fff;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .input-tools {
+        display: flex;
+        gap: 12px;
+        color: #64748b;
+    }
+    .input-tools i {
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.2s;
+    }
+    .input-tools i:hover {
+        color: var(--rovva-primary-blue);
+    }
+    
+    /* Modal styles */
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+    }
+    .modal-header {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 20px 24px;
+    }
+    .modal-title {
+        font-weight: 700;
+        color: var(--rovva-black-blue);
+    }
+    .modal-body {
+        padding: 24px;
+    }
+    
+    .guest-modal-info {
+        font-size: 13px;
+        color: #475569;
+        margin-bottom: 20px;
+    }
+    .guest-modal-info b {
+        color: #1e293b;
+    }
+    
+    .table-bookings th {
+        background: #f8fafc;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 700;
+    }
+    .table-bookings td {
+        font-size: 13px;
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4" style="max-width: 1400px;">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <div class="chat-sidebar">
+            <div class="chat-sidebar-header">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Tìm kiếm khách hàng...">
+                </div>
+            </div>
+            
+            <div class="chat-list">
+                {% for conv in conversations %}
+                <a href="{{ url_for('message.index', conversation_id=conv.id) }}" class="chat-item {% if active_conversation and active_conversation.id == conv.id %}active{% endif %} {% if conv.unread_count() > 0 %}unread{% endif %}">
+                    <div class="chat-avatar initials{% if loop.index % 2 == 0 %}-2{% endif %}">
+                        {{ conv.guest_name[0] | upper }}
+                    </div>
+                    <div class="chat-item-info">
+                        <div class="chat-item-header">
+                            <div class="chat-item-name">{{ conv.guest_name }}</div>
+                            <div class="chat-item-time">{{ conv.updated_at.strftime('%H:%M') }}</div>
+                        </div>
+                        <div class="chat-item-msg d-flex justify-content-between align-items-center">
+                            <span class="text-truncate">
+                                {% set last_msg = conv.last_message() %}
+                                {% if last_msg %}
+                                    {{ 'Bạn: ' if last_msg.sender_type == 'host' else '' }}{{ last_msg.content }}
+                                {% else %}
+                                    Chưa có tin nhắn
+                                {% endif %}
+                            </span>
+                            {% if conv.unread_count() > 0 %}
+                            <span class="unread-dot"></span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% else %}
+                <div class="p-4 text-center text-muted">Không có tin nhắn nào.</div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Main Chat -->
+        <div class="chat-main">
+            {% if active_conversation %}
+            <div class="chat-main-header">
+                <div class="chat-guest-info">
+                    <div class="chat-avatar initials{% if active_conversation.id % 2 == 0 %}-2{% endif %}">
+                        {{ active_conversation.guest_name[0] | upper }}
+                    </div>
+                    <div class="chat-guest-details">
+                        <div class="chat-guest-name">
+                            {{ active_conversation.guest_name }} 
+                            <span class="badge-new">KHÁCH MỚI</span>
+                        </div>
+                        <div class="chat-guest-status">
+                            <span class="status-dot"></span> Hoạt động 9 phút trước
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-actions">
+                    <button class="btn btn-outline-danger-soft rounded" data-bs-toggle="modal" data-bs-target="#reportModal">Báo cáo cuộc trò chuyện</button>
+                    <button class="btn btn-primary-dark rounded" data-bs-toggle="modal" data-bs-target="#supportModal">Liên hệ hỗ trợ</button>
+                    <button class="btn btn-primary rounded" data-bs-toggle="modal" data-bs-target="#bookingListModal">Xem chi tiết booking</button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="date-divider">
+                    <span>HÔM NAY</span>
+                </div>
+                
+                {% for msg in active_conversation.messages %}
+                <div class="message {{ 'sent' if msg.sender_type == 'host' else 'received' }}">
+                    <div class="message-bubble">
+                        {{ msg.content }}
+                    </div>
+                    <div class="message-time">{{ msg.created_at.strftime('%H:%M') }}</div>
+                </div>
+                {% endfor %}
+                
+            </div>
+            
+            <div class="chat-input-area">
+                <form action="{{ url_for('message.send_message', conversation_id=active_conversation.id) }}" method="POST">
+                    <div class="chat-input-wrapper">
+                        <textarea name="content" placeholder="Nhập tin nhắn để trả lời khách hàng..." required></textarea>
+                        <div class="chat-input-actions">
+                            <div class="input-tools">
+                                <i class="bi bi-image"></i>
+                                <i class="bi bi-paperclip"></i>
+                                <i class="bi bi-emoji-smile"></i>
+                                <i class="bi bi-lightning-charge"></i>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm rounded px-3 fw-bold">Gửi tin nhắn <i class="bi bi-send ms-1"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            {% else %}
+            <div class="d-flex h-100 align-items-center justify-content-center text-muted">
+                Vui lòng chọn một cuộc hội thoại.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal Danh sách Booking -->
+{% if active_conversation %}
+<div class="modal fade" id="bookingListModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title text-uppercase">Danh sách Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <div class="guest-modal-info mb-3">
+                    Tên khách: <b>{{ active_conversation.guest_name }}</b> &nbsp;&nbsp;&nbsp; 
+                    Email: <b>{{ active_conversation.guest_email }}</b> &nbsp;&nbsp;&nbsp; 
+                    SĐT: <b>{{ active_conversation.guest_phone or 'N/A' }}</b>
+                </div>
+                
+                <div class="d-flex gap-2 mb-3">
+                    <input type="text" class="form-control form-control-sm w-auto" placeholder="Tìm theo tên phòng">
+                    <select class="form-select form-select-sm w-auto"><option>Trạng thái</option></select>
+                    <select class="form-select form-select-sm w-auto"><option>Ngày</option></select>
+                </div>
+                
+                <div class="border rounded">
+                    <table class="table table-bookings mb-0">
+                        <thead>
+                            <tr>
+                                <th>Mã Booking</th>
+                                <th>Homestay & Phòng</th>
+                                <th>Thời gian lưu trú</th>
+                                <th>Khách</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td><a href="#" class="fw-bold text-decoration-none">{{ booking.booking_code }}</a></td>
+                                <td>
+                                    <div>{{ booking.room.accommodation.name }}</div>
+                                    <div class="text-muted small">{{ booking.room.name }}</div>
+                                </td>
+                                <td>
+                                    {{ booking.check_in.strftime('%d/%m') }} - {{ booking.check_out.strftime('%d/%m') }}<br>
+                                    <span class="text-muted small">{{ booking.nights }} đêm</span>
+                                </td>
+                                <td>{{ booking.guest_count }}</td>
+                                <td class="text-primary fw-bold">{{ "{:,.0f}".format(booking.total_amount).replace(',', '.') }}đ</td>
+                                <td>
+                                    {% if booking.status == 'confirmed' %}
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">● Đã đặt phòng</span>
+                                    {% elif booking.status == 'Đang lưu trú' %}
+                                    <span class="badge bg-success text-white rounded-pill px-2">● Đang lưu trú</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary rounded-pill px-2">{{ booking.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="6" class="text-center text-muted">Không có booking nào.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Báo cáo -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Báo cáo cuộc trò chuyện</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('message.report') }}" method="POST">
+                <input type="hidden" name="conversation_id" value="{{ active_conversation.id }}">
+                <input type="hidden" name="type" value="Báo cáo">
+                <div class="modal-body">
+                    <p class="text-muted small mb-4 text-center">Liên hệ với Admin khi cuộc trò chuyện có dấu hiệu bất thường để được hỗ trợ kịp thời</p>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="font-size: 13px;">Tiêu đề báo cáo</label>
+                        <input type="text" name="title" class="form-control bg-light" placeholder="VD: Có dấu hiệu lừa đảo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="font-size: 13px;">Trình bày nội dung</label>
+                        <textarea name="content" class="form-control bg-light" rows="4" placeholder="Chi tiết nội dung bạn muốn báo cáo." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary px-4">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Liên hệ Admin -->
+<div class="modal fade" id="supportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Liên hệ Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('message.report') }}" method="POST">
+                <input type="hidden" name="conversation_id" value="{{ active_conversation.id }}">
+                <input type="hidden" name="type" value="Liên hệ hỗ trợ">
+                <div class="modal-body">
+                    <p class="text-muted small mb-4 text-center">Liên hệ với Admin để nhận sự trợ giúp</p>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="font-size: 13px;">Tiêu đề</label>
+                        <input type="text" name="title" class="form-control bg-light" placeholder="VD: Hỗ trợ đổi phòng cho khách" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold" style="font-size: 13px;">Trình bày nội dung</label>
+                        <textarea name="content" class="form-control bg-light" rows="4" placeholder="Chi tiết nội dung bạn muốn báo cáo." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary px-4">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+    // Auto-scroll chat to bottom
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatMessages = document.getElementById("chatMessages");
+        if (chatMessages) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}

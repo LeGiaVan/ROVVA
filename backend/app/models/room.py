@@ -1,0 +1,46 @@
+from backend.app.extensions import db
+
+
+class Room(db.Model):
+    __tablename__ = "rooms"
+
+    STATUS_ACTIVE = "active"
+    STATUS_PENDING = "pending"
+    STATUS_PAUSED = "paused"
+    STATUS_DRAFT = "draft"
+
+    STATUS_LABELS = {
+        STATUS_ACTIVE: "Đang hoạt động",
+        STATUS_PENDING: "Chờ duyệt",
+        STATUS_PAUSED: "Tạm ngừng",
+        STATUS_DRAFT: "Bản nháp",
+    }
+
+    id = db.Column(db.Integer, primary_key=True)
+    accommodation_id = db.Column(
+        db.Integer, db.ForeignKey("accommodations.id"), nullable=False
+    )
+    name = db.Column(db.String(200), nullable=False)
+    bed_info = db.Column(db.String(100))
+    capacity = db.Column(db.Integer, default=2)
+    area = db.Column(db.String(50))
+    base_price = db.Column(db.Integer, default=0)
+    description = db.Column(db.Text)
+    image = db.Column(db.String(255))
+    
+    features = db.Column(db.JSON)
+    services = db.Column(db.JSON)
+    check_in_time = db.Column(db.String(10), default="14:00")
+    check_out_time = db.Column(db.String(10), default="12:00")
+    cancellation_policy = db.Column(db.String(255), default="Linh hoạt: Hoàn tiền 100% trước 24h")
+    status = db.Column(db.String(20), default=STATUS_ACTIVE, nullable=False)
+
+    accommodation = db.relationship("Accommodation", back_populates="rooms")
+    bookings = db.relationship("Booking", back_populates="room", lazy="dynamic")
+
+    @property
+    def status_label(self):
+        return self.STATUS_LABELS.get(self.status, self.status)
+
+    def __repr__(self):
+        return f"<Room {self.name}>"

@@ -1,0 +1,337 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}{{ 'Chỉnh sửa' if acc else 'Thêm mới' }} CSLT - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .page-title {
+        color: var(--rovva-black-blue);
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+    .section-card {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background: #fff;
+        margin-bottom: 24px;
+        padding: 24px;
+    }
+    .section-title {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--rovva-black-blue);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-title i {
+        color: var(--rovva-primary-blue);
+    }
+    .form-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--rovva-black-blue);
+    }
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: var(--rovva-primary-blue);
+        box-shadow: 0 0 0 0.25rem rgba(39, 132, 240, 0.25);
+    }
+    .feature-check {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+    }
+    .feature-check:hover {
+        background: #f8f9fa;
+    }
+    .feature-check input:checked + span {
+        font-weight: 600;
+        color: var(--rovva-primary-blue);
+    }
+    .map-placeholder {
+        background: #e9ecef;
+        height: 200px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        position: relative;
+        overflow: hidden;
+    }
+    .map-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+    }
+    .map-marker {
+        position: absolute;
+        color: var(--rovva-primary-blue);
+        font-size: 32px;
+    }
+    .upload-box {
+        border: 2px dashed #dee2e6;
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .upload-box:hover {
+        border-color: var(--rovva-primary-blue);
+        background: #f0f7ff;
+    }
+    .progress-sidebar {
+        position: sticky;
+        top: 100px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <div class="mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('accommodation.index') }}" class="text-decoration-none text-muted">Quản lý CSLT</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ acc.name if acc else 'Thêm mới' }}</li>
+            </ol>
+        </nav>
+        <h1 class="page-title h3 mb-2">{{ 'Chỉnh sửa Cơ sở lưu trú: ' + acc.name if acc else 'Thêm cơ sở lưu trú mới' }}</h1>
+        {% if not acc %}
+        <p class="text-muted">Bắt đầu hành trình kinh doanh của bạn bằng cách cung cấp thông tin chi tiết về cơ sở lưu trú.</p>
+        {% endif %}
+    </div>
+
+    <form method="POST" action="{{ url_for('accommodation.edit', id=acc.id) if acc else url_for('accommodation.create') }}">
+        <div class="row">
+            <!-- Left Column: Form Fields -->
+            <div class="col-lg-8">
+                
+                <!-- Thông tin cơ bản -->
+                <div class="section-card">
+                    <h3 class="section-title"><i class="bi bi-info-circle"></i> Thông tin cơ bản</h3>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Tên cơ sở lưu trú <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" value="{{ acc.name if acc else '' }}" required placeholder="Ví dụ: Luxury Waterfront Villa">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Loại hình <span class="text-danger">*</span></label>
+                            <select name="type" class="form-select" required>
+                                <option value="" disabled {{ 'selected' if not acc else '' }}>Chọn loại hình</option>
+                                {% for t in ['Homestay', 'Khách sạn', 'Căn hộ', 'Villa', 'Resort'] %}
+                                <option value="{{ t }}" {{ 'selected' if acc and acc.type == t else '' }}>{{ t }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <h4 class="form-label">Địa chỉ & Vị trí</h4>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small">Tỉnh/Thành phố <span class="text-danger">*</span></label>
+                            <input type="text" name="city" class="form-control" value="{{ acc.city if acc else '' }}" required placeholder="Nhập tỉnh/thành phố">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small">Quận/Huyện <span class="text-danger">*</span></label>
+                            <input type="text" name="district" class="form-control" value="{{ acc.district if acc else '' }}" required placeholder="Nhập quận/huyện">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-muted small">Địa chỉ chi tiết <span class="text-danger">*</span></label>
+                            <input type="text" name="address" class="form-control" value="{{ acc.address if acc else '' }}" required placeholder="Số nhà, tên đường, phường/xã">
+                        </div>
+                    </div>
+                    
+                    <div class="map-placeholder mb-4">
+                        <img src="{{ url_for('static', filename='images/demo-acc.png') }}" alt="Map">
+                        <i class="bi bi-geo-alt-fill map-marker"></i>
+                        <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background: rgba(255,255,255,0.8); font-size:12px;">Kéo thả để điều chỉnh vị trí chính xác trên bản đồ</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Mô tả tổng quan</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="Giới thiệu điểm nổi bật, không gian và tiện ích xung quanh cơ sở lưu trú này...">{{ acc.description if acc else '' }}</textarea>
+                    </div>
+                    
+                    <label class="form-label">Đặc điểm nổi bật</label>
+                    <div class="row g-2">
+                        {% set current_features = acc.features if acc and acc.features else [] %}
+                        {% for feature in ['Hủy phòng linh hoạt', 'Không hút thuốc', 'Cho phép thú cưng', 'Tivi 4K'] %}
+                        <div class="col-auto">
+                            <label class="feature-check">
+                                <input type="checkbox" name="features" value="{{ feature }}" class="form-check-input mt-0" {{ 'checked' if feature in current_features else '' }}>
+                                <span>{{ feature }}</span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-light border d-flex align-items-center gap-2" style="padding: 10px 14px; border-radius: 8px;">
+                                <i class="bi bi-plus"></i> Bổ sung tiện ích
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hình ảnh CSLT -->
+                <div class="section-card">
+                    <h3 class="section-title"><i class="bi bi-image"></i> Hình ảnh cơ sở lưu trú</h3>
+                    <p class="text-muted small">Đăng ít nhất 5 ảnh (ngoại thất, phòng khách, khu vực chung) để tăng 20% tỷ lệ đặt phòng thành công.</p>
+                    
+                    <div class="upload-box mb-3">
+                        <i class="bi bi-cloud-arrow-up display-4 text-muted mb-2"></i>
+                        <p class="fw-bold mb-1">Tải ảnh lên hoặc kéo thả vào đây</p>
+                        <p class="text-muted small mb-3">Định dạng JPG, PNG. Tối đa 10MB mỗi tập.</p>
+                        <button type="button" class="btn btn-primary px-4">Chọn ảnh</button>
+                    </div>
+                    
+                    <div class="row g-2">
+                        {% if acc and acc.image %}
+                        <div class="col-4 col-md-3 position-relative">
+                            <img src="{{ url_for('static', filename=acc.image) }}" class="img-fluid rounded" alt="Ảnh 1" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/demo-acc.png') }}';">
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2">Ảnh bìa</span>
+                        </div>
+                        {% endif %}
+                        <div class="col-4 col-md-3">
+                            <div class="border rounded d-flex align-items-center justify-content-center flex-column text-muted" style="height: 100%; min-height: 100px; cursor: pointer; border-style: dashed !important;">
+                                <i class="bi bi-plus-lg"></i>
+                                <small>Thêm ảnh</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chính sách chung -->
+                <div class="section-card">
+                    <h3 class="section-title"><i class="bi bi-shield-check"></i> Chính sách chung</h3>
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Giờ nhận phòng (Check-in)</label>
+                            <select name="check_in_time" class="form-select">
+                                {% for time in ['12:00', '13:00', '14:00', '15:00'] %}
+                                <option value="{{ time }}" {{ 'selected' if acc and acc.check_in_time == time else ('selected' if time == '14:00' else '') }}>{{ time }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Giờ trả phòng (Check-out)</label>
+                            <select name="check_out_time" class="form-select">
+                                {% for time in ['10:00', '11:00', '12:00', '13:00'] %}
+                                <option value="{{ time }}" {{ 'selected' if acc and acc.check_out_time == time else ('selected' if time == '12:00' else '') }}>{{ time }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Chính sách hủy mặc định</label>
+                        <select name="cancellation_policy" class="form-select">
+                            <option value="Linh hoạt: Hoàn tiền 100% trước 24h" {{ 'selected' if not acc or acc.cancellation_policy == 'Linh hoạt: Hoàn tiền 100% trước 24h' else '' }}>Linh hoạt: Hoàn tiền 100% trước 24h</option>
+                            <option value="Nghiêm ngặt: Không hoàn tiền" {{ 'selected' if acc and acc.cancellation_policy == 'Nghiêm ngặt: Không hoàn tiền' else '' }}>Nghiêm ngặt: Không hoàn tiền</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Nội quy chung</label>
+                        <textarea name="house_rules" class="form-control" rows="3" placeholder="Ví dụ: Không hút thuốc, Không thú cưng, Giữ yên lặng sau 22h...">{{ acc.house_rules if acc else '' }}</textarea>
+                    </div>
+                </div>
+                
+                <!-- Giấy tờ pháp lý -->
+                <div class="section-card">
+                    <h3 class="section-title"><i class="bi bi-file-earmark-text"></i> Giấy tờ pháp lý</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 text-center">
+                                <p class="fw-bold mb-1">Giấy phép kinh doanh</p>
+                                <p class="text-muted small mb-2">Tải tệp PDF hoặc ảnh chụp</p>
+                                <a href="#" class="text-decoration-none">Tải tệp lên</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 text-center">
+                                <p class="fw-bold mb-1">Chứng nhận PCCC</p>
+                                <p class="text-muted small mb-2">Chứng nhận đủ điều kiện PCCC</p>
+                                <a href="#" class="text-decoration-none">Tải tệp lên</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Right Column: Sidebar -->
+            <div class="col-lg-4">
+                <div class="progress-sidebar">
+                    {% if not acc %}
+                    <div class="section-card">
+                        <h4 class="fw-bold mb-3 fs-5">Tiến trình thiết lập</h4>
+                        
+                        <div class="d-flex justify-content-between mb-2 small text-muted">
+                            <span>Thông tin cơ bản</span>
+                            <i class="bi bi-check-circle-fill text-primary"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 small text-primary fw-bold">
+                            <span>Hình ảnh</span>
+                            <span>Đang thực hiện</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 small text-muted">
+                            <span>Chính sách & Pháp lý</span>
+                            <span>-</span>
+                        </div>
+                        
+                        <div class="progress mb-2" style="height: 6px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <p class="small text-muted mb-4">Hoàn thành 45% hồ sơ</p>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mb-2">Lưu và tiếp tục thêm phòng</button>
+                        <button type="button" class="btn btn-outline-secondary w-100 py-2 fw-semibold mb-4">Lưu nháp</button>
+                        
+                        <div class="p-3 bg-light rounded text-primary small d-flex gap-2">
+                            <i class="bi bi-question-circle"></i>
+                            <div>
+                                <strong>Cần hỗ trợ?</strong><br>
+                                Liên hệ chuyên viên tư vấn của chúng tôi qua hotline 1900 2005 để được trợ giúp hoàn thiện hồ sơ.
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="d-flex flex-column gap-2">
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Lưu thay đổi</button>
+                        <a href="{{ url_for('accommodation.detail', id=acc.id) }}" class="btn btn-outline-secondary w-100 py-2 fw-semibold">Hủy</a>
+                    </div>
+                    
+                    <div class="section-card mt-4 border-danger">
+                        <h4 class="fw-bold text-danger mb-2 fs-5"><i class="bi bi-exclamation-triangle"></i> Chú ý</h4>
+                        <p class="small text-muted mb-3">Xóa cơ sở lưu trú sẽ gỡ bỏ tất cả các phòng và lịch đặt phòng hiện có. Hành động này không thể hoàn tác.</p>
+                        <button type="button" class="btn btn-danger w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2" onclick="document.getElementById('deleteForm').submit();">
+                            <i class="bi bi-trash"></i> XÓA CƠ SỞ LƯU TRÚ
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    {% if acc %}
+    <form id="deleteForm" method="POST" action="{{ url_for('accommodation.delete', id=acc.id) }}" style="display: none;"></form>
+    {% endif %}
+</div>
+{% endblock %}

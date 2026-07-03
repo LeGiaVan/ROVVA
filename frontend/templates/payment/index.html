@@ -1,0 +1,752 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}Quản lý Thanh toán - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .page-title {
+        color: var(--rovva-black-blue);
+        font-weight: 800;
+        font-size: 28px;
+        letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .stat-card.primary {
+        background: linear-gradient(135deg, var(--rovva-primary-blue) 0%, #1e66c7 100%);
+        color: white;
+        border: none;
+    }
+
+    .stat-card.warning {
+        background: #fef3c7;
+        border-color: #fde68a;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #64748b;
+    }
+
+    .stat-card.primary .stat-label {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .stat-card.warning .stat-label {
+        color: #b45309;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .stat-card.primary .stat-value {
+        color: white;
+    }
+
+    .stat-card.warning .stat-value {
+        color: #92400e;
+    }
+
+    .stat-desc {
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    .stat-card.warning .stat-desc {
+        color: #b45309;
+    }
+
+    /* Tabs */
+    .nav-tabs-premium {
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 24px;
+        gap: 24px;
+    }
+
+    .nav-tabs-premium .nav-link {
+        border: none;
+        color: #64748b;
+        font-weight: 600;
+        padding: 12px 0;
+        font-size: 14px;
+        background: transparent;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        transition: all 0.2s ease;
+    }
+
+    .nav-tabs-premium .nav-link:hover {
+        color: #0f172a;
+    }
+
+    .nav-tabs-premium .nav-link.active {
+        color: var(--rovva-primary-blue);
+        border-bottom-color: var(--rovva-primary-blue);
+    }
+
+    /* Filters */
+    .filter-section .form-label {
+        font-weight: 600;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .filter-section .form-control,
+    .filter-section .form-select {
+        border: 1px solid #e2e8f0;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 14px;
+        color: #334155;
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        height: 40px;
+    }
+
+    .btn-premium-primary {
+        background: linear-gradient(135deg, var(--rovva-primary-blue) 0%, #1e66c7 100%);
+        border: none;
+        color: white;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(39, 132, 240, 0.25);
+        transition: all 0.2s ease;
+        height: 40px;
+    }
+
+    .btn-premium-outline {
+        background: #f1f5f9;
+        border: none;
+        color: #475569;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        height: 40px;
+    }
+
+    /* Table */
+    .table-container {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .table th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 16px 24px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .table td {
+        padding: 16px 24px;
+        vertical-align: middle;
+        font-size: 14px;
+        color: #334155;
+        border-bottom: 1px solid #f1f5f9;
+        font-weight: 500;
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .text-code {
+        color: var(--rovva-primary-blue);
+        font-weight: 600;
+    }
+
+    .text-amount {
+        font-weight: 600;
+    }
+
+    .text-amount.receive {
+        color: var(--rovva-primary-blue);
+    }
+
+    .text-amount.deduct {
+        color: #dc2626;
+    }
+
+    .room-info {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 400;
+        display: block;
+    }
+
+    /* Badges */
+    .badge-status {
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .badge-status::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .status-disbursed,
+    .status-resolved {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .status-disbursed::before,
+    .status-resolved::before {
+        background: #16a34a;
+    }
+
+    .status-pending {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .status-pending::before {
+        background: #2563eb;
+    }
+
+    .status-in_dispute {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .status-in_dispute::before {
+        background: #dc2626;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 20px 24px;
+    }
+
+    .modal-title {
+        font-weight: 700;
+        color: var(--rovva-black-blue);
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    .modal-footer {
+        border-top: none;
+        padding: 0 24px 24px;
+        background: #f8fafc;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .summary-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+
+    /* Timeline */
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin-top: 16px;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 11px;
+        width: 2px;
+        background: #e2e8f0;
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -30px;
+        top: 2px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--rovva-primary-blue);
+        border: 4px solid #fff;
+        z-index: 1;
+    }
+
+    .timeline-item.danger::before {
+        background: #dc2626;
+    }
+
+    .timeline-date {
+        font-size: 11px;
+        color: #64748b;
+        margin-bottom: 2px;
+    }
+
+    .timeline-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #1e293b;
+    }
+
+    .timeline-desc {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 4px;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title mb-2">Quản lý Thanh toán</h1>
+            <p class="page-subtitle mb-0">Theo dõi doanh thu, lịch sử thanh toán, hoàn tiền và giải ngân từ Rovva.</p>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary"><i class="bi bi-download me-2"></i> Xuất báo cáo</button>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">Doanh thu chờ giải ngân</div>
+                    <div class="stat-value">{{ "{:,.0f}".format(pending_revenue).replace(',', '.') }} đ</div>
+                </div>
+                <div class="stat-desc">Đang lưu trú, Đã check-out</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card primary">
+                <div>
+                    <div class="stat-label">Có thể rút</div>
+                    <div class="stat-value">{{ "{:,.0f}".format(withdrawable_balance).replace(',', '.') }} đ</div>
+                </div>
+                <div>
+                    <button class="btn btn-light w-100 fw-bold" style="color: var(--rovva-primary-blue);"
+                        data-bs-toggle="modal" data-bs-target="#withdrawModal">Rút tiền</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card warning">
+                <div>
+                    <div class="stat-label">Đang tranh chấp</div>
+                    <div class="stat-value">{{ "{:,.0f}".format(in_dispute_amount).replace(',', '.') }} đ</div>
+                </div>
+                <div class="stat-desc d-flex justify-content-between align-items-center">
+                    <span>{{ pagination.total if active_tab == 'Đang tranh chấp' else '3' }} Booking</span>
+                    <a href="{{ url_for('payment.index', status='Đang tranh chấp') }}" class="text-decoration-none"
+                        style="color: #b45309;">Xem chi tiết <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">Đã rút</div>
+                    <div class="stat-value">{{ "{:,.0f}".format(total_withdrawn).replace(',', '.') }} đ</div>
+                </div>
+                <div class="stat-desc"><span class="text-primary">+12%</span> So với tháng trước</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="premium-card bg-white border rounded-3 p-4">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs nav-tabs-premium">
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'Tất cả' %}active{% endif %}"
+                    href="{{ url_for('payment.index', status='Tất cả') }}">Tất cả</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'Chờ giải ngân' %}active{% endif %}"
+                    href="{{ url_for('payment.index', status='Chờ giải ngân') }}">Chờ giải ngân</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'Đang tranh chấp' %}active{% endif %}"
+                    href="{{ url_for('payment.index', status='Đang tranh chấp') }}">Đang tranh chấp</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'Đã giải ngân' %}active{% endif %}"
+                    href="{{ url_for('payment.index', status='Đã giải ngân') }}">Đã giải ngân</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'Đã giải quyết' %}active{% endif %}"
+                    href="{{ url_for('payment.index', status='Đã giải quyết') }}">Đã giải quyết</a>
+            </li>
+        </ul>
+
+        <!-- Filters -->
+        <div class="filter-section mb-4">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Tìm kiếm</label>
+                    <div class="position-relative">
+                        <i class="bi bi-search position-absolute text-muted" style="left: 16px; top: 10px;"></i>
+                        <input type="text" class="form-control" placeholder="Mã Booking, Tên khách..."
+                            style="padding-left: 40px;">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Cơ sở lưu trú</label>
+                    <select class="form-select">
+                        <option>Tất cả CSLT</option>
+                        {% for acc in accommodations %}
+                        <option value="{{ acc.id }}">{{ acc.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Ngày thay đổi</label>
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="date" class="form-control">
+                        <span>-</span>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button class="btn-premium-primary w-100">Lọc</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Ngày cập nhật</th>
+                            <th>Mã Booking</th>
+                            <th>Khách & Phòng</th>
+                            <th>Check-in / Check-out</th>
+                            <th>Tổng tiền</th>
+                            <th>Hoa hồng (10%)</th>
+                            <th>Host nhận</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày giải ngân</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in pagination.items %}
+                        <tr>
+                            <td>{{ booking.created_at.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                <a href="#" class="text-code text-decoration-none" data-bs-toggle="modal"
+                                    data-bs-target="#detailModal{{ booking.id }}">
+                                    {{ booking.booking_code }}
+                                </a>
+                            </td>
+                            <td>
+                                <div>{{ booking.guest_name }}</div>
+                                <span class="room-info">{{ booking.room.name }} - {{ booking.room.accommodation.name
+                                    }}</span>
+                            </td>
+                            <td>
+                                {{ booking.check_in.strftime('%d/%m/%Y') }} - <br>
+                                {{ booking.check_out.strftime('%d/%m/%Y') }}
+                            </td>
+                            <td class="text-amount">{{ "{:,.0f}".format(booking.total_amount).replace(',', '.') }}đ</td>
+                            <td class="text-amount deduct">{{ "{:,.0f}".format(booking.total_amount * 0.1).replace(',',
+                                '.') }}đ</td>
+                            <td class="text-amount receive">{{ "{:,.0f}".format(booking.total_amount * 0.9).replace(',',
+                                '.') }}đ</td>
+                            <td>
+                                {% if booking.payment_status == 'disbursed' %}
+                                <span class="badge-status status-disbursed">Đã giải ngân</span>
+                                {% elif booking.payment_status == 'pending' %}
+                                <span class="badge-status status-pending">Chờ giải ngân</span>
+                                {% elif booking.payment_status == 'in_dispute' %}
+                                <span class="badge-status status-in_dispute">Đang tranh chấp</span>
+                                {% elif booking.payment_status == 'resolved' %}
+                                <span class="badge-status status-resolved">Đã giải quyết</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted font-italic">
+                                {% if booking.payment_status == 'disbursed' and booking.disbursed_at %}
+                                {{ booking.disbursed_at.strftime('%d/%m/%Y') }}
+                                {% elif booking.payment_status == 'pending' %}
+                                Dự kiến<br>
+                                {{ (booking.check_out + datetime.timedelta(days=7)).strftime('%d/%m/%Y') if datetime
+                                else '---' }}
+                                {% else %}
+                                Đang tạm giữ
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        <!-- Modal Detail Transaction -->
+                        <div class="modal fade" id="detailModal{{ booking.id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="d-flex flex-column">
+                                            <span class="text-muted"
+                                                style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Giao
+                                                dịch chi tiết</span>
+                                            <h5 class="modal-title text-primary">{{ booking.booking_code }}</h5>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-4">
+                                            <div class="col-6 mb-3">
+                                                <div class="text-muted" style="font-size: 12px;">Mã booking</div>
+                                                <div class="fw-bold">{{ booking.booking_code }}</div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="text-muted" style="font-size: 12px;">Khách hàng</div>
+                                                <div class="fw-bold">{{ booking.guest_name }}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-muted" style="font-size: 12px;">Cơ sở lưu trú</div>
+                                                <div class="fw-bold">{{ booking.room.accommodation.name }}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="text-muted" style="font-size: 12px;">Loại phòng</div>
+                                                <div class="fw-bold">{{ booking.room.name }}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="summary-box">
+                                            <div class="fw-bold mb-3"><i class="bi bi-wallet2 me-2"></i> Tóm tắt tài
+                                                chính</div>
+                                            <div class="d-flex justify-content-between mb-2" style="font-size: 14px;">
+                                                <span class="text-muted">Tổng tiền booking</span>
+                                                <span>{{ "{:,.0f}".format(booking.total_amount).replace(',', '.') }}
+                                                    đ</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom"
+                                                style="font-size: 14px;">
+                                                <span class="text-danger">Phí hoa hồng (10%)</span>
+                                                <span class="text-danger">-{{ "{:,.0f}".format(booking.total_amount *
+                                                    0.1).replace(',', '.') }} đ</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between fw-bold align-items-center">
+                                                <span>Host thực nhận</span>
+                                                <span class="text-primary fs-5">{{ "{:,.0f}".format(booking.total_amount
+                                                    * 0.9).replace(',', '.') }} đ</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center mb-4">
+                                            <span class="fw-bold me-3">Trạng thái hiện tại:</span>
+                                            {% if booking.payment_status == 'disbursed' %}
+                                            <span class="badge-status status-disbursed">Đã giải ngân</span>
+                                            {% elif booking.payment_status == 'pending' %}
+                                            <span class="badge-status status-pending">Chờ giải ngân</span>
+                                            {% elif booking.payment_status == 'in_dispute' %}
+                                            <span class="badge-status status-in_dispute">Đang tranh chấp</span>
+                                            {% elif booking.payment_status == 'resolved' %}
+                                            <span class="badge-status status-resolved">Đã giải quyết</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="fw-bold"><i class="bi bi-clock-history me-2"></i> Tiến độ giao dịch
+                                        </div>
+                                        <div class="timeline">
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">{{ booking.created_at.strftime('%d/%m/%Y') }}
+                                                </div>
+                                                <div class="timeline-title">Khách thanh toán thành công</div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">{{ booking.check_in.strftime('%d/%m/%Y') }}
+                                                </div>
+                                                <div class="timeline-title">Check-in</div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">{{ booking.check_out.strftime('%d/%m/%Y') }}
+                                                </div>
+                                                <div class="timeline-title">Check-out</div>
+                                            </div>
+
+                                            {% if booking.payment_status == 'in_dispute' or booking.payment_status ==
+                                            'resolved' %}
+                                            <div class="timeline-item danger">
+                                                <div class="timeline-date">{{ (booking.check_out +
+                                                    datetime.timedelta(days=1)).strftime('%d/%m/%Y') if datetime else
+                                                    '---' }}</div>
+                                                <div class="timeline-title text-danger">Khách mở tranh chấp</div>
+                                                <div class="timeline-desc">Lý do: Vấn đề dịch vụ hoặc phòng ở.</div>
+                                            </div>
+                                            {% endif %}
+
+                                            {% if booking.payment_status == 'resolved' %}
+                                            <div class="timeline-item">
+                                                <div class="timeline-date">{{ (booking.check_out +
+                                                    datetime.timedelta(days=3)).strftime('%d/%m/%Y') if datetime else
+                                                    '---' }}</div>
+                                                <div class="timeline-title text-primary">Admin giải quyết tranh chấp
+                                                </div>
+                                                <div class="timeline-desc bg-light p-2 rounded mt-2 text-dark"
+                                                    style="font-style: normal; font-size: 13px;">
+                                                    • Hoàn tiền cho khách: ...<br>
+                                                    • Giải ngân cho Host: ...
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer pt-3">
+                                        <button type="button" class="btn btn-primary px-4"
+                                            data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center py-5 text-muted">Không có giao dịch nào.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination Footer -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top bg-light">
+                <div class="small text-muted">
+                    Hiển thị {{ pagination.first_item if pagination.total > 0 else 0 }} - {{ pagination.last_item if
+                    pagination.total > 0 else 0 }} trong số {{ pagination.total }} giao dịch
+                </div>
+                {% if pagination.pages > 1 %}
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="{{ url_for('payment.index', page=pagination.prev_num, status=active_tab) if pagination.has_prev else '#' }}"><i
+                                class="bi bi-chevron-left"></i></a>
+                    </li>
+
+                    {% for p in pagination.iter_pages() %}
+                    {% if p %}
+                    {% if p == pagination.page %}
+                    <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link"
+                            href="{{ url_for('payment.index', page=p, status=active_tab) }}">{{ p }}</a></li>
+                    {% endif %}
+                    {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="{{ url_for('payment.index', page=pagination.next_num, status=active_tab) if pagination.has_next else '#' }}"><i
+                                class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Rút tiền -->
+<div class="modal fade" id="withdrawModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title">Rút tiền về tài khoản</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('payment.withdraw') }}" method="POST">
+                <div class="modal-body">
+                    <div class="bg-light p-3 rounded d-flex justify-content-between align-items-center mb-4">
+                        <span class="text-muted" style="font-size: 14px;">Số dư có thể rút</span>
+                        <span class="fw-bold text-primary fs-5">{{ "{:,.0f}".format(withdrawable_balance).replace(',',
+                            '.') }} đ</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted" style="font-size: 13px;">Tài khoản nhận
+                            tiền</label>
+                        <select class="form-select bg-light" disabled>
+                            <option selected>Vietcombank xxxx 1234</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted" style="font-size: 13px;">Số tiền muốn rút</label>
+                        <div class="input-group">
+                            <input type="text" name="amount" class="form-control" placeholder="Nhập số tiền" required>
+                            <span class="input-group-text bg-white">đ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex bg-white gap-2">
+                    <button type="button" class="btn btn-light flex-grow-1 border" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary flex-grow-1">Xác nhận rút tiền</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
