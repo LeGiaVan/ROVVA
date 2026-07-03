@@ -15,7 +15,7 @@
                 <ul class="navbar-nav align-items-lg-center gap-lg-1">
                     <li class="nav-item">
                         <a class="nav-link rovva-nav-link{% if active_nav == 'dashboard' %} active{% endif %}"
-                            href="#">Tổng quan</a>
+                            href="{{ url_for('main.index') }}">Tổng quan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link rovva-nav-link{% if active_nav == 'accommodations' %} active{% endif %}"

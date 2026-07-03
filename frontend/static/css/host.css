@@ -101,150 +101,58 @@ main {
 }
 
 /* Footer */
-.rovva-footer {
-    background: var(--rovva-footer-bg);
+.rovva-footer-new {
+    margin-top: 60px;
+    background: #fff;
 }
 
-.rovva-footer-banner {
+.rf-blue-section {
     position: relative;
-    height: 352px;
-    overflow: hidden;
-    background: var(--rovva-footer-banner);
+    padding: 35px 0;
+    /* Ensures the blue background forms thin stripes top and bottom */
+    background-color: #3b82f6;
+    background-image: url('../images/footer-bg.png');
+    background-size: cover;
+    background-position: center;
 }
 
-.rovva-footer-banner-bg {
+/* Overlay to match mockup's lighter blue */
+.rf-blue-section::before {
+    content: '';
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    background: rgba(59, 130, 246, 0.85);
 }
 
-.rovva-footer-banner-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--rovva-primary-blue);
-    opacity: 0.9;
-}
-
-.rovva-footer-card {
+.rf-white-stripe {
     position: relative;
     z-index: 2;
-    margin-top: 45px;
-    background: #fff;
-    min-height: 259px;
-    overflow: hidden;
-}
-
-.rovva-footer-resort-wrap {
-    position: absolute;
-    left: -122px;
-    top: 45px;
-    width: 644px;
-    height: 259px;
-    border-radius: 129px;
-    overflow: hidden;
-}
-
-.rovva-footer-resort-wrap img {
+    background: #ffffff;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
-.rovva-footer-logo img {
-    max-height: 112px;
-    width: auto;
-}
-
-.rovva-footer-contact-title {
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    color: var(--rovva-black-blue);
-}
-
-.rovva-footer-contact-item {
+.rf-resort-image {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 14px;
-    letter-spacing: -0.4px;
-    margin-bottom: 0.35rem;
+    /* Ensures child img stretches to fill container */
 }
 
-.rovva-footer-contact-item img {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.rovva-footer-contact-item.phone img {
-    width: 15px;
-    height: 15px;
-}
-
-.rovva-footer-contact-item a,
-.rovva-footer-contact-item span {
-    color: var(--rovva-black-blue);
-    text-decoration: none;
-}
-
-.rovva-footer-contact-item.address span {
-    color: var(--rovva-text-dark);
-    font-weight: 400;
-}
-
-.rovva-footer-links h6 {
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    color: var(--rovva-black-blue);
-    margin-bottom: 0.75rem;
-}
-
-.rovva-footer-links a,
-.rovva-footer-links p {
+.rf-resort-image img {
+    object-fit: cover;
+    border-radius: 0 400px 400px 0;
     display: block;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 28px;
-    color: var(--rovva-black-blue);
-    text-decoration: none;
-    margin-bottom: 0;
 }
 
-.rovva-footer-links a:hover {
-    text-decoration: underline;
+.rf-logo {
+    max-height: 90px;
+    /* Slightly larger logo to match mockup */
+    object-fit: contain;
 }
 
-.rovva-footer-divider {
-    width: 100%;
-    max-width: 1269px;
-    height: 1px;
-    background: #dee2e6;
+/* Remove hover underlines for links */
+.rovva-footer-new ul li a {
+    transition: color 0.2s;
 }
 
-.rovva-footer-copyright {
-    font-size: 14px;
-    letter-spacing: -0.4px;
-    color: var(--rovva-text-dark);
-    text-align: center;
-    line-height: 28px;
-}
-
-@media (max-width: 991.98px) {
-    .rovva-footer-resort-wrap {
-        display: none;
-    }
-
-    .rovva-footer-card {
-        margin-top: 24px;
-    }
-
-    .rovva-nav-link {
-        padding: 0.5rem 0 !important;
-    }
+.rovva-footer-new ul li a:hover {
+    color: #3b82f6 !important;
 }

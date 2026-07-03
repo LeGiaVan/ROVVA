@@ -1,52 +1,547 @@
 {% extends 'shared/base.html' %}
 
-{% block title %}Rovva Host{% endblock %}
+{% block title %}Trang tổng quan - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .dashboard-header {
+        margin-bottom: 24px;
+    }
+
+    .dashboard-title {
+        font-weight: 800;
+        font-size: 28px;
+        color: #1e293b;
+        margin-bottom: 4px;
+    }
+
+    /* Stat Cards */
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        position: relative;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        background: #eff6ff;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3b82f6;
+        margin-bottom: 16px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--rovva-primary-blue);
+    }
+
+    .stat-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .stat-badge.growth {
+        color: #3b82f6;
+    }
+
+    .stat-badge.new {
+        color: #ef4444;
+    }
+
+    /* Chart Area */
+    .chart-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 32px;
+    }
+
+    .chart-title {
+        font-weight: 700;
+        font-size: 18px;
+        color: #1e293b;
+        margin-bottom: 4px;
+    }
+
+    .chart-subtitle {
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    /* CSS Bar Chart */
+    .css-chart {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        height: 200px;
+        padding: 0 20px;
+    }
+
+    .chart-bar-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        width: 40px;
+        height: 100%;
+    }
+
+    .chart-bar {
+        width: 24px;
+        background: #e2e8f0;
+        border-radius: 4px 4px 0 0;
+        transition: background 0.3s;
+    }
+
+    .chart-bar.active {
+        background: var(--rovva-primary-blue);
+    }
+
+    .chart-label {
+        margin-top: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    /* Notifications */
+    .noti-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .noti-title {
+        font-weight: 700;
+        font-size: 16px;
+        color: #1e293b;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .noti-item {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    .noti-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--rovva-primary-blue);
+    }
+
+    .noti-item.alert::before {
+        background: #ef4444;
+    }
+
+    .noti-item.warning::before {
+        background: #f59e0b;
+    }
+
+    .noti-item-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #1e293b;
+        margin-bottom: 4px;
+    }
+
+    .noti-item-desc {
+        font-size: 12px;
+        color: #64748b;
+        line-height: 1.5;
+        margin-bottom: 4px;
+    }
+
+    .noti-item-time {
+        font-size: 10px;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+    }
+
+    /* Recent Bookings */
+    .table-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    .table-bookings th {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 700;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px 12px;
+    }
+
+    .table-bookings td {
+        font-size: 13px;
+        vertical-align: middle;
+        padding: 16px 12px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .table-bookings tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Tip Card */
+    .tip-card {
+        background: linear-gradient(135deg, #0f172a, var(--rovva-primary-blue));
+        border-radius: 12px;
+        padding: 24px;
+        color: white;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tip-card::after {
+        content: 'O';
+        position: absolute;
+        bottom: -40px;
+        right: -20px;
+        font-size: 120px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.05);
+        line-height: 1;
+    }
+
+    .tip-title {
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .tip-desc {
+        font-size: 13px;
+        color: #cbd5e1;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Profile Card */
+    .profile-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .profile-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    .profile-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: #1e293b;
+        margin-bottom: 4px;
+    }
+
+    .profile-rating {
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .profile-rating i {
+        color: #f59e0b;
+    }
+
+    .profile-stats {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 20px;
+    }
+
+    .p-stat-val {
+        font-weight: 800;
+        font-size: 24px;
+        color: #1e293b;
+    }
+
+    .p-stat-label {
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="h4 mb-4">Bước 2 — Models &amp; seed data (preview)</h1>
-    <div class="row g-3 mb-4">
+<div class="container-fluid py-4" style="max-width: 1400px;">
+
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Xin chào, {{ host.full_name if host else 'Văn Quản Gia' }}!</h1>
+        <p class="text-muted mb-0">Chào mừng bạn trở lại, Đây là tình hình kinh doanh hôm nay của bạn.</p>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="row g-4 mb-4">
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <small class="text-muted">TỔNG DOANH THU THÁNG</small>
-                    <div class="fs-4 fw-bold">{{ "{:,.0f}".format(stats.total_revenue).replace(",", ".") }}đ</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-badge growth">{{ stats.revenue_growth }} ↗</div>
+                <div class="stat-icon"><i class="bi bi-wallet2"></i></div>
+                <div class="stat-label">Tổng doanh thu tháng</div>
+                <div class="stat-value">{{ "{:,.0f}".format(stats.total_revenue).replace(",", ".") }}đ</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <small class="text-muted">BOOKING Đặt thành công</small>
-                    <div class="fs-4 fw-bold">{{ stats.booking_count }} booking</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-badge new">{{ stats.new_bookings }} mới</div>
+                <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+                <div class="stat-label">Booking đặt thành công</div>
+                <div class="stat-value">{{ stats.booking_count }} booking</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <small class="text-muted">PHÒNG ĐANG HOẠT ĐỘNG</small>
-                    <div class="fs-4 fw-bold">{{ stats.active_rooms }} / {{ stats.total_rooms }} phòng</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-house-door"></i></div>
+                <div class="stat-label">Phòng đang hoạt động</div>
+                <div class="stat-value">{{ stats.active_rooms }} / {{ stats.total_rooms }} phòng</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <small class="text-muted">TỶ LỆ LẤP ĐẦY</small>
-                    <div class="fs-4 fw-bold">{{ stats.occupancy_rate }}%</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="bi bi-bar-chart-fill"></i></div>
+                <div class="stat-label">Tỷ lệ lấp đầy</div>
+                <div class="stat-value">{{ "{:.1f}".format(stats.occupancy_rate) }}%</div>
             </div>
         </div>
     </div>
-    <p class="text-muted mb-2">CSLT mẫu ({{ accommodations|length }} / 12 hiển thị):</p>
-    <ul class="list-group">
-        {% for acc in accommodations %}
-        <li class="list-group-item d-flex justify-content-between">
-            <span>{{ acc.name }} — {{ acc.location }}</span>
-            <span class="badge bg-secondary">{{ acc.status_label }}</span>
-        </li>
-        {% endfor %}
-    </ul>
+
+    <div class="row g-4">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+
+            <!-- Revenue Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">Phân tích doanh thu</div>
+                        <div class="chart-subtitle">Thống kê theo 7 ngày qua</div>
+                    </div>
+                    <select class="form-select form-select-sm w-auto">
+                        <option>7 ngày qua</option>
+                        <option>Tháng này</option>
+                    </select>
+                </div>
+
+                <div class="css-chart">
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar" style="height: 40%"></div>
+                        <div class="chart-label">T2</div>
+                    </div>
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar" style="height: 60%"></div>
+                        <div class="chart-label">T3</div>
+                    </div>
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar active" style="height: 90%"></div>
+                        <div class="chart-label">T4</div>
+                    </div>
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar" style="height: 45%"></div>
+                        <div class="chart-label">T5</div>
+                    </div>
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar" style="height: 70%"></div>
+                        <div class="chart-label">T6</div>
+                    </div>
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar" style="height: 85%"></div>
+                        <div class="chart-label">T7</div>
+                    </div>
+                    <div class="chart-bar-wrap">
+                        <div class="chart-bar" style="height: 50%"></div>
+                        <div class="chart-label">CN</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Bookings Table -->
+            <div class="table-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0 fw-bold">Booking gần đây</h5>
+                    <a href="{{ url_for('booking.index') }}" class="text-decoration-none small fw-bold">Xem tất cả</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bookings mb-0">
+                        <thead>
+                            <tr>
+                                <th>Mã Booking</th>
+                                <th>CSLT & Phòng</th>
+                                <th>Thời gian lưu trú</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in recent_bookings %}
+                            <tr>
+                                <td><a href="#" class="fw-bold text-decoration-none">{{ booking.booking_code }}</a></td>
+                                <td>
+                                    <div>{{ booking.room.accommodation.name }}</div>
+                                    <div class="text-muted small">{{ booking.room.name }}</div>
+                                </td>
+                                <td>
+                                    {{ booking.check_in.strftime('%d/%m') }} - {{ booking.check_out.strftime('%d/%m')
+                                    }}<br>
+                                    <span class="text-muted small">{{ booking.nights }} đêm</span>
+                                </td>
+                                <td class="fw-bold text-dark">{{ "{:,.0f}".format(booking.total_amount).replace(',',
+                                    '.') }}đ</td>
+                                <td>
+                                    {% if booking.status == 'confirmed' %}
+                                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2">● Đã đặt
+                                        phòng</span>
+                                    {% elif booking.status == 'Đang lưu trú' %}
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">● Đang
+                                        lưu trú</span>
+                                    {% elif booking.status == 'cancelled' %}
+                                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">● Đã
+                                        hủy</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary rounded-pill px-2">{{ booking.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+
+            <!-- Notifications -->
+            <div class="noti-card">
+                <div class="noti-title"><i class="bi bi-bell"></i> Thông báo hệ thống</div>
+
+                <div class="noti-item">
+                    <div class="noti-item-title">Yêu cầu rút tiền thành công</div>
+                    <div class="noti-item-desc">Giao dịch 12,400,000đ đã được chuyển tới tài khoản của bạn.</div>
+                    <div class="noti-item-time">2 GIỜ TRƯỚC</div>
+                </div>
+
+                <div class="noti-item alert">
+                    <div class="noti-item-title">Tranh chấp mới phát sinh</div>
+                    <div class="noti-item-desc">Khách hàng P.402 yêu cầu hoàn tiền do điều hòa hỏng.</div>
+                    <div class="noti-item-time">5 GIỜ TRƯỚC</div>
+                </div>
+
+                <div class="noti-item warning">
+                    <div class="noti-item-title">Cập nhật chính sách Host</div>
+                    <div class="noti-item-desc">Vui lòng đọc các điều khoản mới về bảo hiểm tài sản homestay.</div>
+                    <div class="noti-item-time">HÔM QUA</div>
+                </div>
+
+                <button class="btn btn-outline-secondary w-100 mt-2 fw-bold" style="font-size: 13px;">Xem tất cả thông
+                    báo</button>
+            </div>
+
+            <!-- Tip Card -->
+            <div class="tip-card">
+                <div class="tip-title">Mẹo tăng doanh thu!</div>
+                <div class="tip-desc">Homestay của bạn có tỷ lệ lấp đầy thấp hơn trung bình khu vực 15%. Thử giảm giá
+                    vào ngày thường để thu hút khách.</div>
+                <button class="btn btn-light btn-sm fw-bold px-4"
+                    style="position: relative; z-index: 2; color: var(--rovva-primary-blue)">Tối ưu ngay</button>
+            </div>
+
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="{{ url_for('static', filename='images/host-avatar.png') }}" class="profile-avatar"
+                        alt="Host Avatar"
+                        onerror="this.src='https://ui-avatars.com/api/?name=Van+Quan+Gia&background=0D8ABC&color=fff'">
+                    <div>
+                        <div class="profile-name">{{ host.full_name if host else 'Văn Quản Gia' }}</div>
+                        <div class="profile-rating">
+                            <i class="bi bi-star-fill"></i> 4.9 <span class="text-muted">(124 đánh giá)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div>
+                        <div class="p-stat-val">2</div>
+                        <div class="p-stat-label">Tháng tham gia</div>
+                    </div>
+                    <div>
+                        <div class="p-stat-val">98%</div>
+                        <div class="p-stat-label">Phản hồi</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 {% endblock %}

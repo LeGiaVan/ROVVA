@@ -1,33 +1,38 @@
-<footer class="rovva-footer mt-auto">
-    <div class="rovva-footer-banner">
-        <img src="{{ url_for('static', filename='images/footer-bg.png') }}" alt="" class="rovva-footer-banner-bg" aria-hidden="true">
-        <div class="rovva-footer-banner-overlay"></div>
-
-        <div class="container position-relative">
-            <div class="rovva-footer-resort-wrap d-none d-lg-block">
-                <img src="{{ url_for('static', filename='images/footer-resort.png') }}" alt="">
-            </div>
-
-            <div class="rovva-footer-card rounded-0 ps-lg-5 pe-lg-4 py-4">
-                <div class="row align-items-center g-4 ps-lg-5 ms-lg-4">
-                    <div class="col-lg-5 text-center text-lg-start">
-                        <div class="rovva-footer-logo">
-                            <img src="{{ url_for('static', filename='images/footer-logo.png') }}" alt="Rovva - Smart Stay Platform">
+<footer class="rovva-footer-new mt-auto">
+    <!-- Blue section -->
+    <div class="rf-blue-section">
+        <div class="rf-white-stripe shadow-sm">
+            <div class="container-fluid p-0 h-100">
+                <div class="row m-0 h-100 align-items-stretch">
+                    <!-- Left: Resort Image -->
+                    <div class="col-lg-4 p-0 d-none d-lg-block h-100">
+                        <div class="rf-resort-image w-100 h-100">
+                            <img src="{{ url_for('static', filename='images/footer-resort.png') }}" alt="" class="w-100 h-100">
                         </div>
                     </div>
-                    <div class="col-lg-7">
-                        <h6 class="rovva-footer-contact-title mb-3">Liên hệ</h6>
-                        <div class="rovva-footer-contact-item phone">
-                            <img src="{{ url_for('static', filename='images/icon-phone.png') }}" alt="">
+                    
+                    <!-- Center: Logo -->
+                    <div class="col-lg-4 d-flex align-items-center justify-content-center py-4 py-lg-5">
+                        <img src="{{ url_for('static', filename='images/footer-logo.png') }}" class="rf-logo" alt="Rovva">
+                    </div>
+                    
+                    <!-- Right: Contact -->
+                    <div class="col-lg-4 d-flex flex-column justify-content-center py-4 py-lg-5 ps-lg-5">
+                        <h6 class="fw-bold mb-4" style="color: #0f294d; font-size: 16px;">Liên hệ</h6>
+                        
+                        <div class="d-flex align-items-center mb-3" style="font-size: 14px; color: #475569;">
+                            <i class="bi bi-telephone text-secondary me-3 fs-5"></i>
                             <span>Hotline: 1900 2005</span>
                         </div>
-                        <div class="rovva-footer-contact-item">
-                            <img src="{{ url_for('static', filename='images/icon-email.png') }}" alt="">
-                            <span>Email: hellloanacea.vn</span>
+                        
+                        <div class="d-flex align-items-center mb-3" style="font-size: 14px; color: #475569;">
+                            <i class="bi bi-envelope text-secondary me-3 fs-5"></i>
+                            <span>Email: hello@anacea.vn</span>
                         </div>
-                        <div class="rovva-footer-contact-item address">
-                            <img src="{{ url_for('static', filename='images/icon-map-marker.png') }}" alt="">
-                            <span>The Sarus Building, 67 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000</span>
+                        
+                        <div class="d-flex align-items-start" style="font-size: 14px; color: #475569;">
+                            <i class="bi bi-geo-alt text-secondary me-3 fs-5 mt-1"></i>
+                            <span style="line-height: 1.5; padding-right: 20px;">The Sarus Building, 67 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000</span>
                         </div>
                     </div>
                 </div>
@@ -35,42 +40,51 @@
         </div>
     </div>
 
-    <div class="container py-4 py-lg-5">
-        <div class="row rovva-footer-links g-4">
-            <div class="col-md-6 col-lg-3">
-                <h6>Hỗ trợ  Host</h6>
-                <a href="#">Câu hỏi thường gặp (FAQ) </a>
-                <a href="#">Hướng dẫn đăng phòng</a>
-                <a href="#">Hướng dẫn quản lý booking</a>
-                <a href="#">Chính sách hủy &amp; hoàn tiền</a>
+    <!-- White links section -->
+    <div class="bg-white pt-5 pb-4">
+        <div class="container" style="max-width: 1200px;">
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <h6 class="fw-bold mb-4" style="color: #0f294d; font-size: 16px;">Hỗ trợ Host</h6>
+                    <ul class="list-unstyled" style="font-size: 14px; line-height: 2;">
+                        <li><a href="#" class="text-decoration-none text-secondary">Câu hỏi thường gặp (FAQ)</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Hướng dẫn đăng phòng</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Hướng dẫn quản lý booking</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Chính sách hủy &amp; hoàn tiền</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="fw-bold mb-4" style="color: #0f294d; font-size: 16px;">Điều khoản và pháp lý</h6>
+                    <ul class="list-unstyled" style="font-size: 14px; line-height: 2;">
+                        <li><a href="#" class="text-decoration-none text-secondary">Điều khoản dịch vụ dành cho Host</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Chính sách bảo mật</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Quy định nội dung &amp; hình ảnh</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Chính sách giải quyết tranh chấp</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Chính sách thanh toán và giải ngân</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="fw-bold mb-4" style="color: #0f294d; font-size: 16px;">Tính năng</h6>
+                    <ul class="list-unstyled" style="font-size: 14px; line-height: 2;">
+                        <li><a href="#" class="text-decoration-none text-secondary">Trợ lý AI</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Gợi ý giá thông minh</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="fw-bold mb-4" style="color: #0f294d; font-size: 16px;">Về chúng tôi</h6>
+                    <ul class="list-unstyled" style="font-size: 14px; line-height: 2;">
+                        <li><a href="#" class="text-decoration-none text-secondary">Giới thiệu Rovva</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Tin tức và Blog</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <h6>Điều khoản và pháp lý</h6>
-                <a href="#">Điều khoản dịch vụ dành cho Host</a>
-                <a href="#">Chính sách bảo mật</a>
-                <a href="#">Quy định nội dung &amp; hình ảnh</a>
-                <a href="#">Chính sách giải quyết tranh chấp</a>
-                <a href="#">Chính sách thanh toán và giải ngân</a>
+            
+            <hr class="text-muted opacity-25 my-4">
+            
+            <div class="text-center text-secondary" style="font-size: 13px;">
+                <p class="mb-1">Công ty TNHH Rovva Việt Nam - The Sarus Building, 67 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000</p>
+                <p class="mb-0">Copyright 2025 Rovva. All rights reserved</p>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <h6>Tính năng</h6>
-                <a href="#">Trợ lý AI</a>
-                <a href="#">Gợi ý giá thông minh</a>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <h6>Về chúng tôi</h6>
-                <p>Giới thiệu Rovva</p>
-                <p>Tin tức và Blog</p>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-center my-4">
-            <hr class="rovva-footer-divider m-0">
-        </div>
-
-        <div class="rovva-footer-copyright">
-            <p class="mb-1">Công ty TNHH Rovva Việt Nam - The Sarus Building, 67 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000</p>
-            <p class="mb-0">Coppyright 2025 Rovva. All right reserved</p>
         </div>
     </div>
 </footer>
