@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Rovva — Đặt phòng khách sạn &amp; căn hộ{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='customer/css/customer.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="rova-page-shell {% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
+
+    {% if current_user.is_authenticated %}
+    {% include 'customer/includes/layout/header-member.html' ignore missing %}
+    {% else %}
+    {% include 'customer/includes/layout/header-guest.html' ignore missing %}
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'customer/includes/layout/footer.html' ignore missing %}
+
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script type="module" src="{{ url_for('static', filename='customer/js/app/app.js') }}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

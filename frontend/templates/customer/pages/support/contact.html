@@ -1,0 +1,129 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="support"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+
+    <section class="help-hero">
+      <div class="container-xxl">
+        <h1 class="help-hero__title">Gửi yêu cầu hỗ trợ</h1>
+        <p class="help-hero__subtitle">Đội ngũ Chăm sóc khách hàng và Trợ lý ảo AI của Rovva luôn sẵn sàng lắng nghe. Vui lòng chọn kênh liên hệ nhanh hoặc gửi yêu cầu chi tiết bên dưới.</p>
+      </div>
+    </section>
+
+    <div class="container-xxl pb-5">
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="help-channel">
+            <div class="help-channel__icon"><i class="bi bi-robot"></i></div>
+            <h3 class="help-channel__title">Trợ lý ảo AI 24/7</h3>
+            <p class="help-channel__text">Giải đáp tức thì các thắc mắc về chính sách, hóa đơn và quy trình đặt phòng.</p>
+            <a class="btn btn-rova-primary btn-sm mt-2" id="help-ai-link" href="../chat/guest.html">
+              <i class="bi bi-chat-dots"></i> Hỏi Trợ lý ảo ngay
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="help-channel">
+            <div class="help-channel__icon"><i class="bi bi-telephone"></i></div>
+            <h3 class="help-channel__title">Hotline khẩn cấp</h3>
+            <p class="help-channel__text">Hỗ trợ và giải đáp thắc mắc.</p>
+            <a class="help-channel__value" href="tel:19002005">1900 2005</a>
+            <span class="text-muted small">(Phục vụ 24/7)</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="help-channel">
+            <div class="help-channel__icon"><i class="bi bi-envelope"></i></div>
+            <h3 class="help-channel__title">Gửi Email hỗ trợ</h3>
+            <p class="help-channel__text">Hỗ trợ và giải đáp thắc mắc.</p>
+            <a class="help-channel__value" href="mailto:support@rovva.com">support@rovva.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="page-card">
+            <h2 class="fw-bold mb-3">Nhập thông tin yêu cầu</h2>
+            <form id="help-request-form">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Chủ đề cần hỗ trợ *</label>
+                  <select class="form-select" name="subject" required>
+                    <option value="">-- Vui lòng chọn một chủ đề --</option>
+                    <option>Đặt phòng</option>
+                    <option>Thanh toán &amp; Hoàn tiền</option>
+                    <option>Tài khoản</option>
+                    <option>Khiếu nại dịch vụ</option>
+                    <option>Khác</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Mã đơn đặt phòng (Nếu có)</label>
+                  <input class="form-control" name="bookingCode" placeholder="Ví dụ: #SS987654321">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Họ và tên *</label>
+                  <input class="form-control" name="name" placeholder="Nhập họ và tên của bạn" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email liên hệ *</label>
+                  <input class="form-control" name="email" type="email" placeholder="example@gmail.com" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Tiêu đề yêu cầu *</label>
+                  <input class="form-control" name="title" placeholder="Tóm tắt ngắn gọn vấn đề" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Chi tiết yêu cầu *</label>
+                  <textarea class="form-control" name="message" rows="5" placeholder="Vui lòng mô tả chi tiết sự cố..." required></textarea>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Hình ảnh / Tệp đính kèm</label>
+                  <input class="form-control" name="attachment" type="file" accept=".jpg,.jpeg,.png,.pdf">
+                  <div class="form-text">Hỗ trợ JPG, PNG, PDF (Tối đa 10MB)</div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-rova-primary btn-lg w-100">
+                    <i class="bi bi-send"></i> Gửi yêu cầu hỗ trợ
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="page-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="fw-bold mb-0 fs-5">Yêu cầu gần đây</h2>
+              <a class="small" href="#">Xem tất cả</a>
+            </div>
+            <div class="help-req-list">
+              <div class="help-req-item">
+                <div class="help-req-item__head">
+                  <span class="help-req-item__code">#REQ-10024</span>
+                  <span class="badge text-bg-warning">Đang xử lý</span>
+                </div>
+                <p class="help-req-item__desc">Hỏi về tiến độ hoàn tiền 100% cho đơn hàng hủy ngày 12/06</p>
+                <span class="help-req-item__date">14/06/2026</span>
+              </div>
+              <div class="help-req-item">
+                <div class="help-req-item__head">
+                  <span class="help-req-item__code">#REQ-09841</span>
+                  <span class="badge text-bg-success">Đã giải quyết</span>
+                </div>
+                <p class="help-req-item__desc">Khiếu nại điều hòa hỏng không được đổi phòng và thái độ lễ tân</p>
+                <span class="help-req-item__date">16/05/2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+{% endblock %}

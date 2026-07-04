@@ -1,0 +1,17 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="account"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+    <div class="account-layout">
+      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      <div class="account-main">
+        <div class="account-page-head">
+          <h1 class="account-page-title">Danh sách yêu thích</h1>
+          <p class="account-page-subtitle">Bạn đang có <strong id="favorites-count">0</strong> nơi lưu trú đã lưu</p>
+        </div>
+        <div id="favorites-list"></div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="support"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+
+    <section class="faq-hero">
+      <div class="container-xxl">
+        <h1 class="faq-hero__title">Câu hỏi thường gặp (FAQ)</h1>
+        <p class="faq-hero__subtitle">Dưới đây là tập hợp các giải đáp cho những thắc mắc phổ biến nhất của khách hàng. Nếu bạn cần hỗ trợ thêm, vui lòng liên hệ trực tiếp qua các kênh hỗ trợ.</p>
+      </div>
+    </section>
+
+    <div class="container-xxl">
+      <div class="faq-panel">
+        <div id="faq-root"></div>
+      </div>
+
+      <div class="faq-support mt-2 mb-5">
+        <h2 class="faq-support__title">Vẫn không tìm thấy câu trả lời bạn cần?</h2>
+        <p class="faq-support__text">Đội ngũ Chăm sóc khách hàng và Trợ lý ảo AI của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.</p>
+        <div class="faq-support__actions">
+          <a class="btn btn-rova-primary" id="faq-ai-link" href="../chat/guest.html">
+            <i class="bi bi-robot"></i> Hỏi Trợ lý ảo AI ngay
+          </a>
+          <a class="btn btn-rova-outline" href="contact.html">
+            <i class="bi bi-life-preserver"></i> Trợ giúp &amp; Yêu cầu
+          </a>
+          <a class="btn btn-rova-outline" href="tel:19002005">
+            <i class="bi bi-telephone"></i> Hotline: 1900 2005
+          </a>
+          <a class="btn btn-rova-outline" href="mailto:support@rovva.com">
+            <i class="bi bi-envelope"></i> Gửi Email hỗ trợ
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+{% endblock %}

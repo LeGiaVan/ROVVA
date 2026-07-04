@@ -1,0 +1,47 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="support"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+      <section class="host-hero">
+        <div class="host-hero__inner">
+          <h1 class="host-hero__title">Trở thành Host trên Rovva</h1>
+          <p class="host-hero__subtitle">Khai thác không gian của bạn, tiếp cận hàng triệu khách du lịch và tăng thu nhập ổn định.</p>
+        </div>
+      </section>
+      <section class="container-xxl py-5">
+        <div class="row g-4 mb-5">
+          <div class="col-md-4"><article class="why-card"><div class="why-card__icon why-card__icon--blue"><i class="bi bi-graph-up-arrow"></i></div><h3 class="why-card__title">Tăng thu nhập</h3><p class="why-card__text">Niêm yết miễn phí, chỉ trả hoa hồng khi có đơn thành công.</p></article></div>
+          <div class="col-md-4"><article class="why-card"><div class="why-card__icon why-card__icon--green"><i class="bi bi-headset"></i></div><h3 class="why-card__title">Hỗ trợ 24/7</h3><p class="why-card__text">Đội ngũ Rovva đồng hành từ đăng ký đến vận hành.</p></article></div>
+          <div class="col-md-4"><article class="why-card"><div class="why-card__icon why-card__icon--gold"><i class="bi bi-shield-check"></i></div><h3 class="why-card__title">An toàn & minh bạch</h3><p class="why-card__text">Thanh toán bảo mật, báo cáo doanh thu rõ ràng.</p></article></div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="page-card host-form-card">
+              <h2 class="page-header__title mb-1">Đăng ký Host</h2>
+              <p class="text-muted mb-4">Điền thông tin bên dưới — chúng tôi liên hệ trong 3–5 ngày làm việc.</p>
+              <form id="host-form">
+                <div class="row g-3">
+                  <div class="col-md-6"><label class="form-label">Họ và tên</label><input class="form-control" name="name" required></div>
+                  <div class="col-md-6"><label class="form-label">Số điện thoại</label><input class="form-control" name="phone" type="tel" required></div>
+                  <div class="col-12"><label class="form-label">Email</label><input class="form-control" name="email" type="email" required></div>
+                  <div class="col-12"><label class="form-label">Loại hình</label>
+                    <select class="form-select" name="propertyType" required>
+                      <option value="">Chọn loại hình</option>
+                      <option>Khách sạn</option>
+                      <option>Căn hộ / Homestay</option>
+                      <option>Resort / Villa</option>
+                    </select>
+                  </div>
+                  <div class="col-12"><label class="form-label">Địa chỉ / Thành phố</label><input class="form-control" name="location" required></div>
+                  <div class="col-12"><label class="form-label">Mô tả ngắn</label><textarea class="form-control" name="description" rows="3" placeholder="Số phòng, tiện nghi nổi bật..."></textarea></div>
+                  <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="host-terms" required><label class="form-check-label" for="host-terms">Tôi đồng ý với <a href="../../pages/support/terms.html">Điều khoản &amp; Chính sách Host</a></label></div></div>
+                  <div class="col-12"><button type="submit" class="btn btn-rova-primary btn-lg w-100"><i class="bi bi-send"></i> Gửi đăng ký</button></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="account"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+    <div class="account-layout">
+      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      <div class="account-main">
+        <div class="account-page-head">
+          <h1 class="account-page-title">Đánh giá của tôi</h1>
+        </div>
+        <div class="account-content-box">
+          <nav id="review-tabs" class="account-tabs" aria-label="Trạng thái đánh giá"></nav>
+          <div id="review-list" class="account-content-box__body"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

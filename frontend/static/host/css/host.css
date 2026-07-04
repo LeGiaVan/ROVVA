@@ -1,0 +1,158 @@
+﻿:root {
+    --rovva-black-blue: #0f294d;
+    --rovva-primary-blue: #2784f0;
+    --rovva-footer-bg: #fafafa;
+    --rovva-footer-banner: #5f6487;
+    --rovva-noti-badge: #ba1a1a;
+    --rovva-avatar-border: #dbe1ff;
+    --rovva-text-dark: #060505;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    color: var(--rovva-black-blue);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Header */
+.rovva-header {
+    height: 84px;
+    background: #fff;
+    box-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+}
+
+.rovva-header .navbar-brand img {
+    height: 46px;
+    width: auto;
+}
+
+.rovva-nav-link {
+    color: var(--rovva-black-blue) !important;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+    padding: 0.25rem 1.25rem !important;
+    white-space: nowrap;
+}
+
+.rovva-nav-link:hover {
+    color: var(--rovva-primary-blue) !important;
+}
+
+.rovva-nav-link.active {
+    color: var(--rovva-primary-blue) !important;
+    position: relative;
+}
+
+.rovva-nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 3px;
+    background-color: var(--rovva-primary-blue);
+    border-radius: 3px 3px 0 0;
+}
+
+.rovva-noti-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 9999px;
+}
+
+.rovva-noti-btn img {
+    width: 16px;
+    height: 20px;
+}
+
+.rovva-noti-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--rovva-noti-badge);
+    border-radius: 9999px;
+}
+
+.rovva-profile-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--rovva-black-blue);
+    white-space: nowrap;
+}
+
+.rovva-avatar {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--rovva-avatar-border);
+    border-radius: 9999px;
+    object-fit: cover;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Footer */
+.rovva-footer-new {
+    margin-top: 60px;
+    background: #fff;
+}
+
+.rf-blue-section {
+    position: relative;
+    padding: 35px 0;
+    /* Ensures the blue background forms thin stripes top and bottom */
+    background-color: #3b82f6;
+    background-image: url('../../shared/images/footer-bg.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Overlay to match mockup's lighter blue */
+.rf-blue-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(59, 130, 246, 0.85);
+}
+
+.rf-white-stripe {
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+    width: 100%;
+}
+
+.rf-resort-image {
+    display: flex;
+    /* Ensures child img stretches to fill container */
+}
+
+.rf-resort-image img {
+    object-fit: cover;
+    border-radius: 0 400px 400px 0;
+    display: block;
+}
+
+.rf-logo {
+    max-height: 90px;
+    /* Slightly larger logo to match mockup */
+    object-fit: contain;
+}
+
+/* Remove hover underlines for links */
+.rovva-footer-new ul li a {
+    transition: color 0.2s;
+}
+
+.rovva-footer-new ul li a:hover {
+    color: #3b82f6 !important;
+}

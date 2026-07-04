@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trợ lý AI - Rovva</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='customer/css/customer.css') }}" rel="stylesheet">
+</head>
+<body class="rova-page-shell" data-page="support" data-variant="chat">
+  <div data-component="headerGuest"></div>
+
+  <div class="ai-shell">
+    <!-- Sidebar trái -->
+    <aside class="ai-side ai-side--left">
+      <button type="button" class="ai-new-chat" id="ai-new-chat">
+        <i class="bi bi-plus-lg"></i> Cuộc trò chuyện mới
+      </button>
+
+      <div class="ai-history">
+        <div class="ai-history__group">
+          <p class="ai-history__label">Gợi ý</p>
+          <button type="button" class="ai-history__item ai-suggestion" data-prompt="Gợi ý cho tôi vài điểm đến nổi bật"><i class="bi bi-stars"></i><span>Điểm đến nổi bật</span></button>
+          <button type="button" class="ai-history__item ai-suggestion" data-prompt="Rovva có những ưu đãi nào cho khách mới?"><i class="bi bi-gift"></i><span>Ưu đãi khách mới</span></button>
+        </div>
+      </div>
+
+      <div class="ai-user ai-user--guest">
+        <span class="ai-user__avatar"><i class="bi bi-person"></i></span>
+        <div class="ai-user__info">
+          <span class="ai-user__name">Khách</span>
+          <a class="ai-user__login" href="../auth/login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Khu vực chat chính -->
+    <section class="ai-main">
+      <header class="ai-main__head">
+        <span class="ai-main__brand-icon"><i class="bi bi-robot"></i></span>
+        <span class="ai-main__brand">Trợ lý Rovva AI</span>
+      </header>
+
+      <div class="ai-main__body" id="ai-messages">
+        <div class="ai-welcome" id="ai-welcome">
+          <div class="ai-welcome__avatar"><i class="bi bi-robot"></i></div>
+          <h1 class="ai-welcome__title">Xin chào!</h1>
+          <p class="ai-welcome__desc">
+            Tôi là Trợ lý Rovva AI. Tôi có thể giúp bạn tìm chỗ ở phù hợp và lên kế hoạch
+            cho chuyến đi hoàn hảo. Bạn cần hỗ trợ gì hôm nay?
+          </p>
+          <div class="ai-suggestions">
+            <button type="button" class="ai-suggestion" data-prompt="Gợi ý điểm đến & lên lịch trình cho tôi">
+              <i class="bi bi-geo-alt"></i> Gợi ý điểm đến &amp; Lên lịch trình
+            </button>
+            <button type="button" class="ai-suggestion" data-prompt="Tìm khách sạn giá tốt giúp tôi">
+              <i class="bi bi-building"></i> Tìm khách sạn giá tốt
+            </button>
+            <button type="button" class="ai-suggestion" data-prompt="Tôi cần liên hệ nhân viên hỗ trợ">
+              <i class="bi bi-headset"></i> Liên hệ nhân viên hỗ trợ
+            </button>
+            <button type="button" class="ai-suggestion" data-prompt="Giải đáp giúp tôi về các ưu đãi hiện có">
+              <i class="bi bi-gift"></i> Giải đáp về Ưu đãi
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <form class="ai-main__input" id="ai-chat-form">
+        <input type="text" placeholder="Nhập điểm đến hoặc yêu cầu của bạn..." aria-label="Nhập yêu cầu" required>
+        <button type="submit" class="ai-main__send" aria-label="Gửi"><i class="bi bi-send-fill"></i></button>
+      </form>
+    </section>
+
+    <!-- Sidebar phải -->
+    <aside class="ai-side ai-side--right">
+      <h2 class="ai-aside__title"><i class="bi bi-stars"></i> Trở thành thành viên</h2>
+      <article class="ai-trip-card">
+        <div class="ai-trip-card__media ai-trip-card__media--promo">
+          <i class="bi bi-gift-fill"></i>
+        </div>
+        <div class="ai-trip-card__body">
+          <h3 class="ai-trip-card__name">Đăng nhập để cá nhân hóa</h3>
+          <p class="ai-trip-card__date">Lưu lịch sử trò chuyện, nhận gợi ý riêng và ưu đãi thành viên.</p>
+          <div class="ai-trip-card__actions">
+            <a class="btn btn-sm btn-rova-primary" href="../auth/login.html"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+            <a class="btn btn-sm btn-rova-outline" href="../auth/register.html"><i class="bi bi-person-plus"></i> Đăng ký</a>
+          </div>
+        </div>
+      </article>
+    </aside>
+  </div>
+
+  <div data-component="footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="{{ url_for('static', filename='customer/js/app/app.js') }}"></script>
+</body>
+</html>

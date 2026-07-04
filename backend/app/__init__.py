@@ -3,7 +3,7 @@ import os
 from flask import Flask
 
 from backend.app.config import config_by_name
-from backend.app.extensions import db
+from backend.app.extensions import db, login_manager
 from backend.app.routes import register_blueprints
 
 
@@ -21,6 +21,14 @@ def create_app(config_name="default"):
     app.config.from_object(config)
 
     db.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        from backend.app.models import User
+        return User.query.get(int(user_id))
+
     register_blueprints(app)
     register_cli(app)
 

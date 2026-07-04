@@ -1,0 +1,150 @@
+<!-- Member header — nav căn đều, yêu thích + thông báo + tài khoản bên phải -->
+<header class="rovva-header bg-white shadow-sm">
+  <nav class="navbar navbar-expand-lg rovva-navbar">
+    <div class="container-fluid rovva-navbar__inner px-0">
+      <div class="rovva-navbar__bar">
+        <a class="navbar-brand" href="{{ url_for('customer.show_page', page_path='pages/home/member.html') }}">
+          <img src="{{ url_for('static', filename='customer/images/logos/Logo.jpg') }}" alt="Rovva" height="46">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#rovvaNavMember"
+          aria-controls="rovvaNavMember" aria-expanded="false" aria-label="Menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse rovva-navbar__collapse" id="rovvaNavMember">
+          <ul class="navbar-nav rovva-navbar__nav">
+            <li class="nav-item">
+              <a class="nav-link" data-nav="home"
+                href="{{ url_for('customer.show_page', page_path='pages/home/member.html') }}">Trang chủ</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="promotion" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Ưu đãi</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}">Đặc quyền
+                    &amp; Khuyến mãi</a></li>
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/marketing/reward-points.html') }}">Chương
+                    trình Xu thưởng</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="support" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Hỗ trợ</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/faq.html') }}">Câu hỏi thường gặp
+                    (FAQ)</a></li>
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/guide-booking.html') }}">Hướng dẫn
+                    Đặt phòng / Hủy đặt phòng</a></li>
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/contact.html') }}">Trợ giúp &amp;
+                    Yêu cầu</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="policy" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Chính sách</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/privacy.html') }}">Chính sách bảo
+                    mật</a></li>
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/operation.html') }}">Chính sách hoạt
+                    động</a></li>
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/terms.html') }}">Điều khoản &amp;
+                    Điều kiện sử dụng</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="host" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Trở thành Host</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/marketing/become-host.html') }}">Đăng ký
+                    Host</a></li>
+                <li><a class="dropdown-item"
+                    href="{{ url_for('customer.show_page', page_path='pages/support/terms.html') }}">Điều khoản &amp;
+                    Chính sách Host</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <div class="rovva-navbar__actions">
+            <a class="rovva-header-util-link"
+              href="{{ url_for('customer.show_page', page_path='pages/account/favorites.html') }}">
+              <i class="bi bi-heart" aria-hidden="true"></i>
+              <span>Yêu thích</span>
+            </a>
+            <button type="button" class="rovva-header-util-btn rovva-notification-btn" aria-label="Thông báo">
+              <span class="rovva-notification-btn__icon-wrap">
+                <i class="bi bi-bell" aria-hidden="true"></i>
+                <span class="rovva-notification-btn__dot" aria-hidden="true"></span>
+              </span>
+            </button>
+
+            <div class="dropdown">
+              <button class="rovva-account-toggle rovva-account-toggle--pill dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false" aria-label="Tài khoản">
+                <span class="rovva-account-toggle__pill">
+                  <img class="rovva-account-toggle__avatar"
+                    src="{{ url_for('static', filename='customer/images/avatars/Hinh_avata.jpg') }}" alt=""
+                    data-rova-user-avatar-img onerror="this.style.visibility='hidden'">
+                  <i class="bi bi-list rovva-account-toggle__menu-icon" aria-hidden="true"></i>
+                </span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end rovva-account-menu">
+                <div class="rovva-account-menu__header">
+                  <img class="rovva-account-menu__avatar"
+                    src="{{ url_for('static', filename='customer/images/avatars/Hinh_avata.jpg') }}" alt=""
+                    data-rova-user-avatar-img onerror="this.style.visibility='hidden'">
+                  <div>
+                    <div class="rovva-account-menu__name" data-rova-user-name>Thành viên</div>
+                    <span class="rovva-tier-badge"><i class="bi bi-award-fill"></i> <span data-rova-user-tier>Thành viên
+                        vàng</span></span>
+                  </div>
+                </div>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/account/profile.html') }}">
+                  <i class="bi bi-person"></i> Tài khoản
+                </a>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/trip/upcoming.html') }}">
+                  <i class="bi bi-suitcase-lg"></i> Chuyến đi của tôi
+                </a>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/account/wallet.html') }}">
+                  <i class="bi bi-wallet2"></i> Ví xu
+                </a>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/account/tier.html') }}">
+                  <i class="bi bi-award"></i> Hạng thành viên
+                </a>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/account/favorites.html') }}">
+                  <i class="bi bi-heart"></i> Danh sách yêu thích
+                </a>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/account/reviews-pending.html') }}">
+                  <i class="bi bi-chat-square-text"></i> Đánh giá của tôi
+                </a>
+                <a class="dropdown-item"
+                  href="{{ url_for('customer.show_page', page_path='pages/account/security.html') }}">
+                  <i class="bi bi-shield-lock"></i> Bảo mật
+                </a>
+                <hr class="dropdown-divider">
+                <a href="{{ url_for('auth.logout') }}" class="dropdown-item text-danger" data-rova-logout>
+                  <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

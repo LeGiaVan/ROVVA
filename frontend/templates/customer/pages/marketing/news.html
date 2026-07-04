@@ -1,0 +1,180 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="support"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+
+    <section class="blog-hero">
+      <div class="container-xxl">
+        <h1 class="blog-hero__title">Khám phá thế giới qua lăng kính Rovva</h1>
+        <p class="blog-hero__subtitle">Từ cẩm nang điểm đến, câu chuyện trải nghiệm cho đến bí quyết bứt phá doanh thu lưu trú. Cùng Rovva kiến tạo những hành trình thông minh và trọn vẹn nhất.</p>
+      </div>
+    </section>
+
+    <div class="container-xxl pb-5">
+
+      <article class="blog-featured">
+        <div class="blog-featured__media" style="background-image: url(../../assets/images/hotels/KS_code_DaNang.jpg)"></div>
+        <div class="blog-featured__body">
+          <span class="blog-tag">Tin tức Rovva</span>
+          <h2 class="blog-featured__title">Kỷ nguyên du lịch thông minh: Cách Trợ lý Rovva AI thiết kế chuyến đi của bạn chỉ trong 3 phút.</h2>
+          <p class="blog-featured__excerpt">Khám phá công nghệ đằng sau Trợ lý AI thế hệ mới của Rovva, giúp bạn xóa bỏ hoàn toàn nỗi lo tìm kiếm và so sánh giá phòng mỗi khi đi du lịch.</p>
+          <div class="blog-featured__meta">
+            <span><i class="bi bi-person"></i> Ban Biên Tập</span>
+            <span><i class="bi bi-calendar3"></i> 20 Tháng 6, 2026</span>
+            <span><i class="bi bi-clock"></i> 5 phút đọc</span>
+          </div>
+        </div>
+      </article>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+
+          <div class="blog-filter">
+            <button class="blog-filter__chip is-active" type="button">Tất cả</button>
+            <button class="blog-filter__chip" type="button">Cẩm nang điểm đến</button>
+            <button class="blog-filter__chip" type="button">Câu chuyện trải nghiệm</button>
+            <button class="blog-filter__chip" type="button">Tin tức Rovva</button>
+            <button class="blog-filter__chip" type="button">Góc Đối tác (Host)</button>
+          </div>
+
+          <div class="row g-4" id="blog-grid">
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Săn mây Tà Xùa - Lưu ngay 5 homestay view triệu đô</h3>
+                  <p class="blog-card__excerpt">Bỏ túi danh sách những không gian lưu trú ấm cúng giúp bạn ôm trọn biển mây.</p>
+                  <div class="blog-card__meta"><span>Cẩm nang điểm đến</span><span>12/06/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Tối ưu hóa hồ sơ nhà cho thuê: Chụp ảnh sao cho hút khách</h3>
+                  <p class="blog-card__excerpt">Hướng dẫn chi tiết từ các chuyên gia Rovva giúp Host tự setup góc chụp chuyên nghiệp.</p>
+                  <div class="blog-card__meta"><span>Góc Đối tác</span><span>08/06/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Cẩm nang vi vu Đà Lạt cuối tuần chỉ với 2 triệu đồng</h3>
+                  <p class="blog-card__excerpt">Lịch trình chi tiết ăn gì, ở đâu, chơi gì để có một kỳ nghỉ chữa lành tại thành phố ngàn hoa.</p>
+                  <div class="blog-card__meta"><span>Cẩm nang điểm đến</span><span>05/06/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Xu hướng Du lịch Xanh: Nghỉ dưỡng không để lại dấu chân carbon</h3>
+                  <p class="blog-card__excerpt">Điểm tên những cơ sở lưu trú thân thiện với môi trường đang được yêu thích.</p>
+                  <div class="blog-card__meta"><span>Câu chuyện trải nghiệm</span><span>02/06/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="reward-points.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Hệ thống Đặc quyền: Tích lũy Xu và thăng hạng thành viên</h3>
+                  <p class="blog-card__excerpt">Tìm hiểu cách thăng hạng nhanh chóng và sử dụng Rovva Xu để đổi ưu đãi.</p>
+                  <div class="blog-card__meta"><span>Tin tức Rovva</span><span>28/05/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Solo Travel: Bí kíp du lịch một mình an toàn</h3>
+                  <p class="blog-card__excerpt">Vượt qua vùng an toàn để tự do khám phá thế giới. Những lưu ý không thể bỏ qua.</p>
+                  <div class="blog-card__meta"><span>Câu chuyện trải nghiệm</span><span>25/05/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Khám phá Tràng An - Cẩm nang lưu trú tại Vịnh Hạ Long trên cạn</h3>
+                  <p class="blog-card__excerpt">Gợi ý những không gian nghỉ dưỡng gần gũi với thiên nhiên, non nước hữu tình.</p>
+                  <div class="blog-card__meta"><span>Cẩm nang điểm đến</span><span>18/05/2026</span></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6">
+              <a class="blog-card h-100" href="introduction.html">
+                <div class="blog-card__image"><img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt=""></div>
+                <div class="blog-card__body">
+                  <h3 class="blog-card__title">Nét thơ Hội An: Trải nghiệm nghỉ dưỡng giữa phố cổ</h3>
+                  <p class="blog-card__excerpt">Hành trình tìm về những giá trị hoài cổ và văn hóa địa phương đặc sắc.</p>
+                  <div class="blog-card__meta"><span>Câu chuyện trải nghiệm</span><span>10/06/2026</span></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <nav class="mt-4" aria-label="Phân trang blog">
+            <ul class="pagination justify-content-center">
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+              <li class="page-item"><a class="page-link" href="#">12</a></li>
+            </ul>
+          </nav>
+
+        </div>
+
+        <aside class="col-lg-4">
+          <div class="blog-sidebar-card">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input class="form-control" type="search" placeholder="Tìm kiếm bài viết, điểm đến...">
+            </div>
+          </div>
+
+          <div class="blog-sidebar-card">
+            <h3 class="blog-sidebar-card__title">Đọc nhiều nhất tuần</h3>
+            <a class="blog-popular" href="introduction.html">
+              <img class="blog-popular__thumb" src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="">
+              <p class="blog-popular__title">Cách dùng App Rovva săn Deal khách sạn 5 sao cực hời.</p>
+            </a>
+            <a class="blog-popular" href="introduction.html">
+              <img class="blog-popular__thumb" src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="">
+              <p class="blog-popular__title">Top 5 địa điểm "workation" lý tưởng nhất khu vực miền Bắc.</p>
+            </a>
+            <a class="blog-popular" href="introduction.html">
+              <img class="blog-popular__thumb" src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="">
+              <p class="blog-popular__title">Công nghệ Keyless: Tương lai của ngành lưu trú ngắn hạn.</p>
+            </a>
+          </div>
+
+          <div class="blog-cta-card">
+            <h3>Lười lên kế hoạch? Để Trợ lý Rovva AI lo!</h3>
+            <p>Chỉ cần nói mong muốn, Rovva AI sẽ gợi ý toàn bộ lịch trình cho bạn.</p>
+            <a class="btn btn-light btn-sm" href="../chat/guest.html"><i class="bi bi-robot"></i> Trải nghiệm Trợ lý Rovva AI</a>
+          </div>
+
+          <div class="blog-sidebar-card">
+            <h3 class="blog-sidebar-card__title">Không bỏ lỡ ưu đãi</h3>
+            <p class="text-muted small mb-3">Nhận thông tin du lịch và các đặc quyền thành viên mới nhất qua email.</p>
+            <form onsubmit="return false">
+              <input class="form-control mb-2" type="email" placeholder="Địa chỉ email của bạn" required>
+              <button class="btn btn-rova-primary w-100" type="submit">Đăng ký ngay</button>
+            </form>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+
+  </main>
+{% endblock %}

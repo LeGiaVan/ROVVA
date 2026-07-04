@@ -1,0 +1,103 @@
+<aside class="search-filters" aria-label="Bộ lọc tìm kiếm">
+  <div class="search-filters__map">
+    <img src="{{ url_for('static', filename='customer/images/banners/P1_Dac_quyen&Khuyen_mai.jpg') }}" alt="Bản đồ khu vực">
+    <button type="button" class="search-filters__map-btn"><i class="bi bi-geo-alt-fill"></i> Xem trên bản đồ</button>
+  </div>
+  <button type="button" class="search-filters__clear">Xóa tất cả bộ lọc</button>
+
+  <section class="search-filter-block">
+    <h2 class="search-filter-block__title">KHOẢNG GIÁ</h2>
+    <div class="search-filter-block__slider">
+      <div class="search-filter-block__slider-track">
+        <div class="search-filter-block__slider-fill"></div>
+      </div>
+      <input type="range" class="search-filter-block__range search-filter-block__range--min"
+             min="0" max="30000000" value="0" step="100000" aria-label="Giá tối thiểu">
+      <input type="range" class="search-filter-block__range search-filter-block__range--max"
+             min="0" max="30000000" value="30000000" step="100000" aria-label="Giá tối đa">
+    </div>
+    <div class="search-filter-block__labels">
+      <span>0 ₫</span>
+      <span>30.000.000 ₫+</span>
+    </div>
+    <p class="search-filter-block__input-label">Tối thiểu<span aria-hidden="true"> - </span>Tối đa</p>
+    <div class="search-filter-block__inputs">
+      <input type="text" class="search-filter-block__input search-filter-block__input--min" value="0" aria-label="Giá tối thiểu">
+      <input type="text" class="search-filter-block__input search-filter-block__input--max" value="30.000.000" aria-label="Giá tối đa">
+    </div>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Chi tiết phòng</h3>
+    <div class="search-filter-card__stepper"><span>Phòng ngủ</span><div class="search-filter-card__stepper-controls"><button type="button" aria-label="Giảm">−</button><span>Bất kỳ</span><button type="button" aria-label="Tăng">+</button></div></div>
+    <div class="search-filter-card__stepper"><span>Giường</span><div class="search-filter-card__stepper-controls"><button type="button" aria-label="Giảm">−</button><span>Bất kỳ</span><button type="button" aria-label="Tăng">+</button></div></div>
+    <div class="search-filter-card__stepper"><span>Phòng tắm</span><div class="search-filter-card__stepper-controls"><button type="button" aria-label="Giảm">−</button><span>Bất kỳ</span><button type="button" aria-label="Tăng">+</button></div></div>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Loại hình nơi ở</h3>
+    <label class="search-filter-card__check"><input type="checkbox"> Khách sạn</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Homestay</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Căn hộ dịch vụ</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Resort</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Villa / Biệt thự</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Nhà nghỉ dưỡng</label>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Lựa chọn loại hình thanh toán</h3>
+    <label class="search-filter-card__radio"><input type="radio" name="pay-type"> Thanh toán khi nhận phòng</label>
+    <label class="search-filter-card__radio"><input type="radio" name="pay-type"> Thanh toán trực tuyến ngay</label>
+    <label class="search-filter-card__radio"><input type="radio" name="pay-type"> Thanh toán sau khi nhận phòng</label>
+    <label class="search-filter-card__radio"><input type="radio" name="pay-type"> Giữ phòng không cần thẻ</label>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Chính sách hủy đặt phòng</h3>
+    <label class="search-filter-card__check"><input type="checkbox"> Hủy miễn phí</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Hủy có phí</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Không cho hủy</label>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Tiện ích</h3>
+    <label class="search-filter-card__check"><input type="checkbox"> Sân vườn</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Hồ bơi ngoài trời</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Bãi đậu xe</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Thang máy</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Wi-Fi miễn phí</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Phòng tập thể hình</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Khu vui chơi trẻ em</label>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Tiện nghi phòng</h3>
+    <label class="search-filter-card__check"><input type="checkbox"> Bàn làm việc</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Cách âm tốt</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Bàn là</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Máy sấy tóc</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Máy chiếu màn hình lớn</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Bồn tắm</label>
+    <label class="search-filter-card__check"><input type="checkbox"> TV</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Tủ lạnh</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Ban công</label>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Dịch vụ</h3>
+    <label class="search-filter-card__check"><input type="checkbox"> Cho thuê xe máy/ô tô</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Dọn phòng hàng ngày</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Hỗ trợ đặt Tour</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Bữa sáng</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Spa</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Giặt ủi</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Đưa đón sân bay</label>
+  </section>
+
+  <section class="search-filter-card">
+    <h3 class="search-filter-card__title">Quy định nơi lưu trú</h3>
+    <label class="search-filter-card__check"><input type="checkbox"> Cho phép hút thuốc</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Cho phép tổ chức tiệc/sự kiện</label>
+    <label class="search-filter-card__check"><input type="checkbox"> Cho phép mang thú cưng</label>
+  </section>
+</aside>

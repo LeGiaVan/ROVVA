@@ -1,0 +1,129 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="support"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+
+    <section class="reward-hero">
+      <div class="container-xxl">
+        <span class="reward-hero__rate"><i class="bi bi-coin"></i> Tỷ lệ quy đổi: 1 xu = 1.000 VNĐ</span>
+        <h1 class="reward-hero__title">Giá trị của Xu thưởng</h1>
+        <p class="reward-hero__desc">Khi trở thành Thành viên bạn có thể tích lũy và sử dụng Xu để khấu trừ trực tiếp vào hóa đơn khi đặt phòng trên Rovva. Mức Xu tối đa được phép sử dụng trong mỗi lần đặt phụ thuộc vào cấp hạng thành viên hiện tại của bạn.</p>
+      </div>
+    </section>
+
+    <div class="container-xxl pb-5">
+
+      <section class="reward-banner-box">
+        <img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="Chương trình Xu thưởng Rovva"
+             onerror="this.style.display='none'">
+      </section>
+
+      <section class="mb-5">
+        <h2 class="promo-section-title text-center">3 cách đơn giản để làm đầy Ví xu</h2>
+        <p class="text-center text-muted mb-4">Khám phá cách thức tích lũy thông minh cho mọi hành trình.</p>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <article class="reward-card">
+              <div class="reward-card__icon"><i class="bi bi-house-check"></i></div>
+              <h3 class="reward-card__title">Đặt phòng</h3>
+              <p class="reward-card__text">Nhận ngay một tỷ lệ Xu thưởng tương ứng với Hạng thành viên của bạn sau khi hoàn tất trả phòng. Đặt phòng giá trị càng cao, Xu hoàn về càng lớn.</p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="reward-card">
+              <div class="reward-card__icon"><i class="bi bi-star"></i></div>
+              <h3 class="reward-card__title">Viết đánh giá chân thực</h3>
+              <p class="reward-card__text">Giúp đỡ cộng đồng du lịch bằng cách để lại đánh giá chi tiết kèm hình ảnh/video sau mỗi chuyến đi. Rovva sẽ tặng ngay Xu thưởng vào tài khoản của bạn như một lời cảm ơn.</p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="reward-card">
+              <div class="reward-card__icon"><i class="bi bi-gift"></i></div>
+              <h3 class="reward-card__title">Sự kiện &amp; quà tặng</h3>
+              <p class="reward-card__text">Thường xuyên đăng nhập và theo dõi các chương trình flash sale, ưu đãi ngày lễ, hoặc nhận Xu thưởng bất ngờ vào dịp sinh nhật của chính bạn.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="promo-section-title text-center">Một vài lưu ý</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="tier-rule">
+              <h3 class="tier-rule__title"><i class="bi bi-x-circle text-warning"></i> Không thể chuyển nhượng</h3>
+              <p class="tier-rule__text">Xu thưởng chỉ có giá trị sử dụng trên tài khoản của bạn và không thể chuyển hoặc tặng cho tài khoản khác.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="tier-rule">
+              <h3 class="tier-rule__title"><i class="bi bi-infinity text-success"></i> Không giới hạn thời hạn</h3>
+              <p class="tier-rule__text">Xu thưởng tích lũy không có hạn sử dụng. Bạn có thể thoải mái lưu trữ trong tài khoản và sử dụng cho bất kỳ chuyến đi nào trong tương lai.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="tier-rule">
+              <h3 class="tier-rule__title"><i class="bi bi-cash-stack text-danger"></i> Không quy đổi tiền mặt</h3>
+              <p class="tier-rule__text">Xu thưởng được dùng để khấu trừ trực tiếp khi đặt phòng trên Rovva, không có giá trị rút thành tiền mặt.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="promo-section-title text-center">Câu hỏi thường gặp (FAQ)</h2>
+
+        <div class="reward-faq">
+          <div class="faq-group">
+            <h3 class="faq-group__title">Về tích lũy xu</h3>
+            <div class="faq-list" id="acc-earn">
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-1" aria-expanded="false"><span>Bao lâu sau khi trả phòng thì tôi nhận được Xu?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-1" data-bs-parent="#acc-earn"><div class="faq-item__answer">Xu thưởng được cộng vào ví trong vòng 24–72 giờ sau khi bạn hoàn tất trả phòng (check-out thành công).</div></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-2" aria-expanded="false"><span>Tôi đặt phòng hộ người khác thì ai sẽ được cộng Xu?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-2" data-bs-parent="#acc-earn"><div class="faq-item__answer">Xu được cộng vào tài khoản thực hiện đặt phòng và thanh toán, không phụ thuộc vào người lưu trú.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-group">
+            <h3 class="faq-group__title">Về quản lý Xu</h3>
+            <div class="faq-list" id="acc-manage">
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-3" aria-expanded="false"><span>Làm thế nào để kiểm tra số dư và lịch sử dùng Xu?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-3" data-bs-parent="#acc-manage"><div class="faq-item__answer">Vào mục Tài khoản &gt; Ví xu để xem số dư hiện tại và toàn bộ lịch sử tích/dùng Xu.</div></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-4" aria-expanded="false"><span>Xu thưởng của tôi có hạn sử dụng không?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-4" data-bs-parent="#acc-manage"><div class="faq-item__answer">Không. Xu thưởng tích lũy không có hạn sử dụng, bạn có thể dùng cho bất kỳ chuyến đi nào trong tương lai.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-group">
+            <h3 class="faq-group__title">Về sử dụng Xu</h3>
+            <div class="faq-list" id="acc-use">
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-5" aria-expanded="false"><span>Tôi có thể dùng Xu kết hợp với mã giảm giá không?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-5" data-bs-parent="#acc-use"><div class="faq-item__answer">Có. Bạn có thể áp dụng đồng thời Xu và mã giảm giá trong cùng một đơn đặt phòng.</div></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-6" aria-expanded="false"><span>Dùng Xu để đặt phòng thì có tiếp tục được tích Xu không?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-6" data-bs-parent="#acc-use"><div class="faq-item__answer">Có. Phần giá trị thanh toán bằng tiền (sau khi trừ Xu) vẫn được tính để tích lũy Xu theo hạng thành viên.</div></div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-item__question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rp-7" aria-expanded="false"><span>Có yêu cầu số lượng Xu tối thiểu mỗi lần sử dụng không?</span><i class="bi bi-chevron-down"></i></button>
+                <div class="collapse" id="rp-7" data-bs-parent="#acc-use"><div class="faq-item__answer">Không có mức tối thiểu. Mức Xu tối đa mỗi đơn phụ thuộc vào hạng thành viên của bạn.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+{% endblock %}

@@ -14,6 +14,7 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     booking_code = db.Column(db.String(20), unique=True, index=True)
     room_id = db.Column(db.Integer, db.ForeignKey("rooms.id"), nullable=False)
+    guest_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True) # Link to customer
     guest_name = db.Column(db.String(120), nullable=False)
     guest_phone = db.Column(db.String(20))
     guest_email = db.Column(db.String(120))

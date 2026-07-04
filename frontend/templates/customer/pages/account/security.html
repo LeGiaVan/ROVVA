@@ -1,0 +1,45 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="account"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+    <div class="account-layout">
+      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      <div class="account-main">
+        <div class="account-page-head">
+          <h1 class="account-page-title">Bảo mật</h1>
+        </div>
+
+        <div class="security-box">
+          <h2 class="security-box__title">Đổi mật khẩu</h2>
+          <p class="security-box__text">Cập nhật mật khẩu định kỳ để bảo vệ tài khoản của bạn.</p>
+          <form id="security-form">
+            <div class="figma-field mb-3">
+              <label class="figma-field__label" for="sec-current">Mật khẩu hiện tại</label>
+              <input class="figma-field__box" id="sec-current" type="password" name="current" autocomplete="current-password">
+            </div>
+            <div class="figma-field mb-3">
+              <label class="figma-field__label" for="sec-new">Mật khẩu mới</label>
+              <input class="figma-field__box" id="sec-new" type="password" name="newPass" autocomplete="new-password">
+            </div>
+            <div class="figma-field mb-4">
+              <label class="figma-field__label" for="sec-confirm">Xác nhận mật khẩu mới</label>
+              <input class="figma-field__box" id="sec-confirm" type="password" name="confirmPass" autocomplete="new-password">
+            </div>
+            <button type="submit" class="profile-save-btn">
+              <i class="bi bi-shield-check"></i> Đổi mật khẩu
+            </button>
+          </form>
+        </div>
+
+        <div class="security-box security-box--danger">
+          <h2 class="security-box__title text-danger">Xóa tài khoản</h2>
+          <p class="security-box__text">Hành động này không thể hoàn tác. Toàn bộ dữ liệu chuyến đi, xu thưởng và đánh giá sẽ bị xóa vĩnh viễn.</p>
+          <button type="button" class="acc-trip-card__btn acc-trip-card__btn--danger" data-bs-toggle="modal" data-bs-target="#modalDeleteAccountStep1">
+            <i class="bi bi-trash"></i> Xóa tài khoản
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

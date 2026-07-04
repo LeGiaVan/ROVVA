@@ -1,0 +1,15 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="review"{% endblock %}
+
+{% block content %}
+<main class="page-content page-content--narrow"><div class="page-card">
+      <h1 class="page-header__title">Đánh giá <span id="review-target-name">...</span></h1>
+      <form id="review-form" class="mt-4">
+        <div class="mb-3"><label class="form-label">Số sao</label>
+          <select class="form-select" name="rating" required><option value="">Chọn</option><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select>
+        </div>
+        <div class="mb-3"><label class="form-label">Nhận xét</label><textarea class="form-control" name="comment" rows="4" required placeholder="Chia sẻ trải nghiệm của bạn..."></textarea></div>
+        <button type="submit" class="btn btn-rova-primary"><i class="bi bi-send"></i> Gửi đánh giá</button>
+      </form>
+    </div></main>
+{% endblock %}

@@ -1,0 +1,352 @@
+{% extends 'host/layout/base.html' %}
+
+{% block title %}Hồ sơ của tôi - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .profile-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+    .avatar-wrapper {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 16px;
+    }
+    .profile-avatar-lg {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .avatar-badge {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: var(--rovva-primary-blue, #0d6efd);
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #fff;
+    }
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .info-list li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 13px;
+        color: #475569;
+        margin-bottom: 12px;
+    }
+    .info-list i {
+        color: #94a3b8;
+        font-size: 16px;
+    }
+    .stat-box {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        height: 100%;
+    }
+    .stat-box-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+    .stat-box-value {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--rovva-primary-blue, #0d6efd);
+    }
+    .table-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+    .settings-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: #1e293b;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        background: #fff;
+        cursor: pointer;
+    }
+    .settings-btn:hover {
+        background: #f8f9fa;
+        color: var(--rovva-primary-blue, #0d6efd);
+    }
+    .settings-btn.btn-logout {
+        color: #ef4444;
+    }
+    .settings-btn.btn-logout:hover {
+        background: #fef2f2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4" style="max-width: 1200px;">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="row g-4">
+        <!-- Left Column (Profile Info) -->
+        <div class="col-lg-4">
+            <div class="profile-card text-center">
+                <div class="avatar-wrapper">
+                    <img src="{{ url_for('static', filename=host.avatar) }}" class="profile-avatar-lg" alt="Avatar"
+                        onerror="this.src='https://ui-avatars.com/api/?name={{ host.full_name | urlencode }}&background=0D8ABC&color=fff'">
+                    <div class="avatar-badge"><i class="bi bi-shield-check"></i></div>
+                </div>
+                <h4 class="fw-bold mb-1">{{ host.full_name }}</h4>
+                <p class="text-muted small mb-4">Host từ {{ host.created_at.strftime('%m/%Y') if host.created_at else '06/2024' }}</p>
+                
+                <ul class="info-list text-start">
+                    <li><i class="bi bi-envelope"></i> {{ host.email }}</li>
+                    <li><i class="bi bi-telephone"></i> {{ host.phone or 'Chưa cập nhật' }}</li>
+                    <li><i class="bi bi-lock"></i> ********123</li>
+                </ul>
+            </div>
+            
+            <div class="profile-card">
+                <h6 class="fw-bold mb-3">Giới thiệu</h6>
+                <p class="text-muted small mb-0" style="line-height: 1.6;">
+                    {{ host.introduction or 'Chưa có lời giới thiệu nào.' }}
+                </p>
+            </div>
+            
+            <div class="profile-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small fw-bold text-uppercase">Trạng thái Host</span>
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">● Đang hoạt động</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small">Ngày duyệt:</span>
+                    <span class="small fw-bold">15/06/2024</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Người duyệt:</span>
+                    <span class="small fw-bold">Admin</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column (Stats & Settings) -->
+        <div class="col-lg-8">
+            <!-- Stats -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-box-label">CSLT quản lý</div>
+                        <div class="stat-box-value">{{ host.accommodations.count() }}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-box-label">Phòng hoạt động</div>
+                        <div class="stat-box-value">28</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-box-label">Booking hoàn thành</div>
+                        <div class="stat-box-value">1.245</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-box-label">Tỷ lệ phản hồi</div>
+                        <div class="stat-box-value">98%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Accommodations Table -->
+            <div class="table-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Danh sách cơ sở lưu trú</h5>
+                    <a href="{{ url_for('accommodation.index') }}" class="text-decoration-none small fw-bold">Xem tất cả</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead class="border-bottom">
+                            <tr>
+                                <th class="text-muted small fw-bold pb-3">Cơ sở lưu trú</th>
+                                <th class="text-muted small fw-bold pb-3 text-center">Trạng thái</th>
+                                <th class="text-muted small fw-bold pb-3 text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for acc in host.accommodations.limit(3) %}
+                            <tr class="border-bottom">
+                                <td class="py-3 fw-bold">{{ acc.name }}</td>
+                                <td class="py-3 text-center">
+                                    {% if acc.status == 'active' %}
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Hoạt động</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3">Tạm ngừng</span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 text-end">
+                                    <a href="{{ url_for('accommodation.detail', id=acc.id) }}" class="text-decoration-none">Xem CSLT</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Settings Buttons -->
+            <div class="table-card">
+                <h5 class="fw-bold mb-4">Cài đặt tài khoản</h5>
+                <div class="d-flex flex-wrap gap-3">
+                    <button class="settings-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <i class="bi bi-arrow-repeat"></i> Đổi mật khẩu
+                    </button>
+                    <button class="settings-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="bi bi-pencil"></i> Chỉnh sửa hồ sơ
+                    </button>
+                    <button class="settings-btn btn-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Chỉnh sửa hồ sơ -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Chỉnh sửa hồ sơ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ url_for('main.edit_profile') }}" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Họ tên</label>
+                  <input type="text" name="full_name" class="form-control" value="{{ host.full_name }}" required>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Email</label>
+                  <input type="email" name="email" class="form-control" value="{{ host.email }}" required>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Số điện thoại</label>
+                  <input type="text" name="phone" class="form-control" value="{{ host.phone or '' }}">
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">CCCD</label>
+                  <input type="text" name="id_card" class="form-control" value="{{ host.id_card or '' }}">
+                  <div class="form-text" style="font-size: 11px;">Không thay đổi CCCD, liên hệ Admin để biết thêm chi tiết</div>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Giới thiệu</label>
+                  <textarea name="introduction" class="form-control" rows="3">{{ host.introduction or '' }}</textarea>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Ảnh đại diện mới</label>
+                  <input type="file" name="avatar" class="form-control" accept="image/*">
+              </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary" style="background-color: var(--rovva-primary-blue, #0d6efd);">Lưu thay đổi</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Đổi mật khẩu -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Đổi mật khẩu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ url_for('main.change_password') }}" method="POST">
+          <div class="modal-body">
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Nhập mật khẩu hiện tại</label>
+                  <input type="password" name="current_password" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Nhập mật khẩu mới</label>
+                  <input type="password" name="new_password" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Xác nhận mật khẩu mới</label>
+                  <input type="password" name="confirm_password" class="form-control" required>
+              </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary" style="background-color: var(--rovva-primary-blue, #0d6efd);">Lưu thay đổi</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Xác nhận đăng xuất -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content text-center p-4">
+      <div class="mb-3 text-primary">
+          <i class="bi bi-question-circle" style="font-size: 32px; color: var(--rovva-primary-blue, #0d6efd);"></i>
+      </div>
+      <h5 class="fw-bold mb-2">Xác nhận đăng xuất</h5>
+      <p class="text-muted small mb-4">Bạn có chắc chắn muốn đăng xuất?</p>
+      <div class="d-flex gap-2 justify-content-center">
+          <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Hủy</button>
+          <a href="{{ url_for('auth.logout') }}" class="btn btn-primary px-4" style="background-color: var(--rovva-primary-blue, #0d6efd);">Xác nhận</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

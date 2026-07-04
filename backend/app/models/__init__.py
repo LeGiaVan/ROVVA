@@ -10,3 +10,7 @@ from backend.app.models.withdrawal import Withdrawal
 from backend.app.models.message import Conversation, Message
 
 __all__ = ["User", "Accommodation", "Room", "Booking", "Promotion", "Review", "Dispute", "Withdrawal", "Conversation", "Message"]
+
+from backend.app.models.favorite import Favorite
+from backend.app.models.wallet_transaction import WalletTransaction
+

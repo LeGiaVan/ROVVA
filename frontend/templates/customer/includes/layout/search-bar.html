@@ -1,0 +1,48 @@
+<form class="search-widget" id="rovva-search-form" aria-label="Tìm kiếm chỗ ở">
+  <div class="search-widget__field">
+    <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+    <div class="w-100">
+      <div class="search-widget__label">Địa điểm</div>
+      <input type="text" name="location" placeholder="Bạn muốn đi đâu?" list="rovva-locations" required>
+    </div>
+  </div>
+  <datalist id="rovva-locations">
+    <option value="Đà Nẵng">
+    <option value="Nha Trang">
+    <option value="Đà Lạt">
+    <option value="Hồ Chí Minh">
+    <option value="Vũng Tàu">
+    <option value="Sapa">
+  </datalist>
+  <div class="search-widget__field">
+    <i class="bi bi-calendar-event" aria-hidden="true"></i>
+    <div class="w-100">
+      <div class="search-widget__label">Ngày đi</div>
+      <input type="date" name="checkIn" required>
+    </div>
+  </div>
+  <div class="search-widget__field">
+    <i class="bi bi-calendar-check" aria-hidden="true"></i>
+    <div class="w-100">
+      <div class="search-widget__label">Ngày về</div>
+      <input type="date" name="checkOut" required>
+    </div>
+  </div>
+  <div class="search-widget__field">
+    <i class="bi bi-people-fill" aria-hidden="true"></i>
+    <div class="w-100">
+      <div class="search-widget__label">Số người</div>
+      <select name="guests">
+        <option value="1">1 khách</option>
+        <option value="2" selected>2 khách</option>
+        <option value="3">3 khách</option>
+        <option value="4">4 khách</option>
+        <option value="5">5+ khách</option>
+      </select>
+    </div>
+  </div>
+  <button type="submit" class="search-widget__btn">
+    <i class="bi bi-search"></i>
+    Tìm kiếm
+  </button>
+</form>

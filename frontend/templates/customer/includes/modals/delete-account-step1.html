@@ -1,0 +1,29 @@
+<div class="modal fade" id="modalDeleteAccountStep1" tabindex="-1" aria-hidden="true" data-modal-alias="deleteAccountStep1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rovva-confirm-modal">
+      <div class="modal-body text-center">
+        <div class="rovva-confirm-modal__icon rovva-confirm-modal__icon--danger">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h2 class="rovva-confirm-modal__title">Xác nhận xóa tài khoản</h2>
+        <p class="rovva-confirm-modal__text">
+          Hành động này <strong class="text-danger">không thể hoàn tác</strong>. Toàn bộ dữ liệu,
+          lịch sử đặt phòng, điểm thưởng xu và ưu đãi của bạn sẽ bị xóa vĩnh viễn khỏi hệ thống Rovva.
+        </p>
+        <div class="form-check rovva-confirm-modal__check">
+          <input class="form-check-input" type="checkbox" id="deleteAccountAgree">
+          <label class="form-check-label" for="deleteAccountAgree">
+            Tôi hiểu rằng tài khoản của mình sẽ không thể khôi phục sau khi xóa.
+          </label>
+        </div>
+        <div class="rovva-confirm-modal__actions">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-danger" id="deleteAccountConfirm"
+                  data-rova-action="delete-account-confirm" disabled>
+            <i class="bi bi-trash"></i> Xóa tài khoản
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

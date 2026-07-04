@@ -1,0 +1,142 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="accommodation"{% endblock %}
+
+{% block content %}
+<main class="page-content page-accommodation">
+    <section class="home-hero home-hero--compact home-hero--accommodation">
+      <div class="container-xxl home-hero__inner px-3 px-lg-4">
+        <h1 class="home-hero__title home-hero__title--search">Tìm và đặt nơi lưu trú lý tưởng</h1>
+        <p class="home-hero__subtitle">Từ homestay ấm cúng đến khách sạn sang trọng – tất cả đều có trên Rovva</p>
+        {% include 'customer/includes/layout/search-bar.html' %}
+      </div>
+    </section>
+    
+    <div id="accommodation-detail" class="page-accommodation__detail container-xxl px-3 px-lg-4">
+        <header class="page-accommodation__header">
+          <div class="page-accommodation__title-row">
+            <h1 class="page-accommodation__title">{{ acc.name }}</h1>
+            <button type="button" class="page-accommodation__save" data-rova-action="favorite" data-rova-id="{{ acc.id }}">
+              <i class="bi bi-bookmark"></i> Lưu
+            </button>
+          </div>
+          <p class="page-accommodation__location">
+            <i class="bi bi-geo-alt-fill"></i>
+            {{ acc.address or acc.city }} • Cách trung tâm 1,5 km
+          </p>
+        </header>
+    
+        <div class="page-accommodation__mosaic">
+          <figure class="page-accommodation__mosaic-main">
+            <img src="{{ url_for('static', filename=acc.image) if acc.image else 'https://placehold.co/800x600' }}" alt="{{ acc.name }}">
+          </figure>
+          <figure class="page-accommodation__mosaic-item"><img src="{{ url_for('static', filename='customer/images/backgrounds/footer.jpg') }}" alt=""></figure>
+          <figure class="page-accommodation__mosaic-item"><img src="{{ url_for('static', filename='customer/images/backgrounds/footer2.jpg') }}" alt=""></figure>
+          <figure class="page-accommodation__mosaic-item"><img src="{{ url_for('static', filename=acc.image) if acc.image else 'https://placehold.co/800x600' }}" alt=""></figure>
+          <figure class="page-accommodation__mosaic-item page-accommodation__mosaic-item--overlay">
+            <img src="{{ url_for('static', filename='customer/images/backgrounds/footer.jpg') }}" alt="">
+            <button type="button" class="page-accommodation__gallery-all"><i class="bi bi-images"></i> Xem tất cả hình ảnh</button>
+          </figure>
+        </div>
+    
+        <p class="page-accommodation__specs">1 phòng khách • 3 phòng ngủ • 3 giường • 2 phòng tắm</p>
+        <hr class="page-accommodation__divider">
+    
+        <section class="page-accommodation__rooms">
+          <div class="page-accommodation__section-head">
+            <h2>Hình ảnh chi tiết phòng</h2>
+            <div class="page-accommodation__room-nav">
+              <button type="button" class="page-accommodation__room-nav-btn" data-room-nav="prev" hidden aria-label="Ảnh trước">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <button type="button" class="page-accommodation__room-nav-btn" data-room-nav="next" aria-label="Ảnh sau">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="page-accommodation__room-track" id="room-gallery-track">
+            {% for room in acc.rooms %}
+              <article class="page-accommodation__room-card">
+                <img src="https://placehold.co/400x300" alt="{{ room.name }}">
+                <h3>{{ room.name }}</h3>
+              </article>
+            {% endfor %}
+          </div>
+        </section>
+    
+        <hr class="page-accommodation__divider">
+    
+        <div class="page-accommodation__intro">
+          <section class="page-accommodation__about">
+            <h2>Giới thiệu về {{ acc.name }}</h2>
+            <p>{{ acc.description or 'Tọa lạc tại vị trí đắc địa, mang đến không gian nghỉ dưỡng hiện đại với tiện nghi cao cấp.' }}</p>
+          </section>
+          <aside class="page-accommodation__score" aria-label="Điểm đánh giá">
+            <div class="page-accommodation__score-value">4.8<span>★</span></div>
+            <strong>Xuất sắc</strong>
+            <p>Dựa trên hơn 900 đánh giá thực tế</p>
+          </aside>
+        </div>
+    
+        <div class="page-accommodation__split">
+          <div class="page-accommodation__amenities">
+            <section class="page-accommodation__section">
+              <h2>Tiện ích chung</h2>
+              <div class="accommodation-amenity-list">
+                <div class="accommodation-amenity"><i class="bi bi-wifi"></i><span>Wifi tốc độ cao</span></div>
+                <div class="accommodation-amenity"><i class="bi bi-water"></i><span>Hồ bơi</span></div>
+                <div class="accommodation-amenity"><i class="bi bi-snow"></i><span>Máy lạnh</span></div>
+              </div>
+            </section>
+          </div>
+    
+          <aside class="booking-panel booking-panel--figma">
+            <div class="booking-panel__price">800.000 đ <span>/ đêm</span></div>
+            <form id="booking-form" action="{{ url_for('customer.show_page', page_path='payment/step1-guest.html') }}" method="GET">
+              <div class="booking-panel__dates">
+                <div>
+                  <span>NHẬN PHÒNG</span>
+                  <strong>14 Th06</strong>
+                </div>
+                <div>
+                  <span>TRẢ PHÒNG</span>
+                  <strong>16 Th06</strong>
+                </div>
+              </div>
+              <div class="booking-panel__guests">
+                <span>SỐ KHÁCH</span>
+                <strong>2 người lớn</strong>
+              </div>
+              <button type="submit" class="booking-panel__submit">Đặt phòng ngay</button>
+              <p class="booking-panel__note">Giá đã bao gồm thuế &amp; phí</p>
+            </form>
+          </aside>
+        </div>
+    
+        <section class="page-accommodation__host">
+          <div class="page-accommodation__host-card">
+            <h2 class="page-accommodation__host-title">Thông tin chủ lưu trú</h2>
+            <div class="page-accommodation__host-profile">
+              <img src="{{ url_for('static', filename=acc.host.avatar) if acc.host.avatar else 'https://placehold.co/96x96' }}" alt="{{ acc.host.full_name }}">
+              <div>
+                <strong>{{ acc.host.full_name }}</strong>
+                <span class="page-accommodation__host-badge">ĐÃ XÁC MINH</span>
+              </div>
+            </div>
+            <div class="page-accommodation__host-meta">
+              <div class="page-accommodation__host-quote-row">
+                <div class="page-accommodation__host-rating">
+                  <span>ĐÁNH GIÁ</span>
+                  <strong>4.9<span>★</span></strong>
+                </div>
+                <blockquote>"{{ acc.host.introduction or 'Chào bạn! Rất mong được đón tiếp.' }}"</blockquote>
+              </div>
+              <div class="page-accommodation__host-stats">
+                <div><span>THAM GIA TỪ</span><strong>{{ acc.host.created_at.strftime('%Y') if acc.host.created_at else '2022' }}</strong></div>
+              </div>
+              <button type="button" class="page-accommodation__host-contact">Liên hệ ngay</button>
+            </div>
+          </div>
+        </section>
+    </div>
+  </main>
+{% endblock %}

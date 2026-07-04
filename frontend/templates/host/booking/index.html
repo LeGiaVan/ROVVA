@@ -1,0 +1,380 @@
+{% extends 'host/layout/base.html' %}
+
+{% block title %}Quản lý Booking - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .page-title {
+        color: var(--rovva-black-blue);
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-y: hidden !important;
+    }
+
+    .booking-container {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .nav-tabs-custom {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .nav-tabs-custom .nav-link {
+        color: #5f6487;
+        font-weight: 600;
+        font-size: 14px;
+        border: none;
+        padding: 16px 20px;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -1px;
+    }
+
+    .nav-tabs-custom .nav-link.active {
+        color: var(--rovva-primary-blue);
+        border-bottom-color: var(--rovva-primary-blue);
+        background: transparent;
+    }
+
+    .filters-section {
+        padding: 16px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table th {
+        background: #f8f9fa;
+        color: #5f6487;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 16px;
+        border-bottom: 1px solid #dee2e6;
+        text-align: center;
+    }
+
+    .table td {
+        padding: 16px;
+        vertical-align: middle;
+        font-size: 14px;
+        border-bottom: 1px solid #dee2e6;
+        text-align: center;
+    }
+
+    .badge-status {
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    .status-confirmed {
+        background: #e3f2fd;
+        color: #0d6efd;
+    }
+
+    .status-staying {
+        background: #e8f5e9;
+        color: #198754;
+    }
+
+    .status-completed {
+        background: #f3e5f5;
+        color: #9c27b0;
+    }
+
+    .status-cancelled {
+        background: #ffebee;
+        color: #dc3545;
+    }
+
+    .widget-card {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background: #fff;
+        height: 100%;
+        padding: 24px;
+    }
+
+    .revenue-card {
+        background: var(--rovva-primary-blue);
+        color: white;
+    }
+
+    .alert-item {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .alert-item:hover {
+        background: #f8f9fa;
+        border-color: #adb5bd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <div class="mb-4">
+        <h1 class="page-title h3 mb-1">Quản lý Booking</h1>
+        <p class="text-muted">Theo dõi và quản lý các yêu cầu đặt phòng từ khách hàng.</p>
+    </div>
+
+    <!-- Booking Table Section -->
+    <div class="booking-container">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs-custom mb-0 d-flex flex-nowrap overflow-auto no-scrollbar px-3">
+            {% set tabs = ['Tất cả', 'Đã đặt phòng', 'Đang lưu trú', 'Hoàn thành', 'Đã hủy'] %}
+            {% for tab in tabs %}
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if active_tab == tab else '' }}"
+                    href="{{ url_for('booking.index', status=tab) }}">
+                    {{ tab }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label small text-muted mb-1">Cơ sở</label>
+                    <select class="form-select">
+                        <option>Tất cả cơ sở</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small text-muted mb-1">Thời gian</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white text-muted"><i class="bi bi-calendar"></i></span>
+                        <input type="text" class="form-control border-start-0 ps-0" placeholder="Chọn khoảng thời gian">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted mb-1">Tìm kiếm</label>
+                    <div class="position-relative">
+                        <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
+                        <input type="text" class="form-control ps-5"
+                            placeholder="Tìm theo mã booking, tên khách hoặc số điện thoại...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-start ps-4">Mã Booking</th>
+                        <th class="text-start">Khách hàng</th>
+                        <th class="text-start">Homestay & Phòng</th>
+                        <th>Thời gian lưu trú</th>
+                        <th>Khách</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td class="text-start ps-4 fw-bold text-primary">
+                            <a href="{{ url_for('booking.detail', id=booking.id) }}" class="text-decoration-none">{{
+                                booking.booking_code if booking.booking_code else ('#RV' ~ booking.id) }}</a>
+                        </td>
+                        <td class="text-start">
+                            <div class="fw-bold">{{ booking.guest_name }}</div>
+                            <div class="small text-muted">{{ booking.guest_phone if booking.guest_phone else '09xx xxx
+                                xxx' }}</div>
+                        </td>
+                        <td class="text-start">
+                            <div class="fw-semibold text-dark">{{ booking.room.accommodation.name }}</div>
+                            <div class="small text-muted">{{ booking.room.name }}</div>
+                        </td>
+                        <td class="small">
+                            <div>{{ booking.check_in.strftime('%d/%m') }} - {{ booking.check_out.strftime('%d/%m') }}
+                            </div>
+                            <div class="text-muted">{{ booking.nights }} đêm</div>
+                        </td>
+                        <td>
+                            <div class="bg-light rounded d-inline-block px-2 py-1 small fw-bold">{{ booking.guest_count
+                                if booking.guest_count else 2 }}</div>
+                        </td>
+                        <td class="fw-bold">
+                            {{ "{:,.0f}".format(booking.total_amount).replace(",", ".") }}đ
+                        </td>
+                        <td>
+                            {% set status_class = 'status-confirmed' %}
+                            {% set status_text = 'Đã đặt phòng' %}
+
+                            {% if booking.status == 'Đang lưu trú' %}
+                            {% set status_class = 'status-staying' %}
+                            {% set status_text = 'Đang lưu trú' %}
+                            {% elif booking.status == 'Hoàn thành' or booking.status == 'completed' %}
+                            {% set status_class = 'status-completed' %}
+                            {% set status_text = 'Hoàn thành' %}
+                            {% elif booking.status == 'Đã hủy' or booking.status == 'cancelled' %}
+                            {% set status_class = 'status-cancelled' %}
+                            {% set status_text = 'Đã hủy' %}
+                            {% endif %}
+
+                            <span class="badge-status {{ status_class }}"><i class="bi bi-circle-fill"
+                                    style="font-size: 6px; vertical-align: middle; margin-right: 4px;"></i> {{
+                                status_text }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-3 bg-light border-top">
+            <span class="text-muted small">Hiển thị 1 - {{ bookings|length }} của {{ bookings|length }} kết quả</span>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary" disabled><i class="bi bi-chevron-left"></i></button>
+                <button class="btn btn-sm btn-primary">1</button>
+                <button class="btn btn-sm btn-outline-secondary">2</button>
+                <button class="btn btn-sm btn-outline-secondary">3</button>
+                <button class="btn btn-sm btn-outline-secondary" disabled><i class="bi bi-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Widgets -->
+    <div class="row g-4">
+        <!-- Alerts -->
+        <div class="col-lg-8">
+            <div class="widget-card">
+                <h5 class="fw-bold mb-4">Lưu ý trong ngày</h5>
+                <div class="d-flex flex-column gap-3">
+                    <div class="alert-item" data-bs-toggle="modal" data-bs-target="#checkInModal">
+                        <div class="text-primary fs-3"><i class="bi bi-box-arrow-in-right"></i></div>
+                        <div>
+                            <div class="fw-bold">1 Khách sắp Check-in</div>
+                            <div class="small text-muted">Đảm bảo phòng đã được dọn dẹp trước 14:00.</div>
+                        </div>
+                    </div>
+                    <div class="alert-item" data-bs-toggle="modal" data-bs-target="#checkOutModal">
+                        <div class="text-primary fs-3"><i class="bi bi-box-arrow-right"></i></div>
+                        <div>
+                            <div class="fw-bold">1 Khách sắp Check-out</div>
+                            <div class="small text-muted">Kiểm tra và thông báo đến khách hàng trước 11:00.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue -->
+        <div class="col-lg-4">
+            <div class="widget-card revenue-card d-flex flex-column">
+                <h5 class="mb-3">Doanh thu tháng này</h5>
+                <div class="display-5 fw-bold mb-1">45.200.000đ</div>
+                <div class="small text-white-50 mb-auto">+12% so với tháng trước</div>
+                <button class="btn btn-light w-100 fw-bold mt-4">Xem báo cáo chi tiết</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<!-- Check-in Modal -->
+<div class="modal fade" id="checkInModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom p-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 48px; height: 48px; font-size: 24px;">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold">Danh sách khách check-in trong ngày</h5>
+                        <div class="text-muted small">Thứ Hai, 15/06/2026</div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <div class="fw-bold mb-3"><i class="bi bi-box-arrow-in-right text-primary me-2"></i> 1 khách sắp
+                    Check-in</div>
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <div class="fw-bold fs-6">Nguyễn Văn A</div>
+                            <a href="#" class="text-primary text-decoration-none small fw-bold">[Xem booking]</a>
+                        </div>
+                        <div class="text-muted small mb-2">Sunside Homestay - Phòng Deluxe - Tầng 2</div>
+                        <div class="small text-muted"><i class="bi bi-clock me-1"></i> 15/06/2026 14:00</div>
+                    </div>
+                </div>
+
+                <div class="bg-primary bg-opacity-10 rounded border-start border-primary border-4 p-3 d-flex gap-2">
+                    <i class="bi bi-info-circle text-primary"></i>
+                    <span class="small text-dark">Đảm bảo phòng đã được dọn dẹp trước <strong>14:00</strong>.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Check-out Modal -->
+<div class="modal fade" id="checkOutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom p-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 48px; height: 48px; font-size: 24px;">
+                        <i class="bi bi-calendar-minus"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold">Danh sách khách check-out trong ngày</h5>
+                        <div class="text-muted small">Thứ Hai, 15/06/2026</div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <div class="fw-bold mb-3"><i class="bi bi-box-arrow-right text-primary me-2"></i> 1 khách sắp Check-out
+                </div>
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <div class="fw-bold fs-6">Lê Hoàng C</div>
+                            <a href="#" class="text-primary text-decoration-none small fw-bold">[Xem booking]</a>
+                        </div>
+                        <div class="text-muted small mb-2">Ocean Breeze - Studio 05</div>
+                        <div class="small text-muted"><i class="bi bi-clock me-1"></i> 15/06/2026 11:00</div>
+                    </div>
+                </div>
+
+                <div class="bg-primary bg-opacity-10 rounded border-start border-primary border-4 p-3 d-flex gap-2">
+                    <i class="bi bi-info-circle text-primary"></i>
+                    <span class="small text-dark">Hãy kiểm tra và thông báo đến khách hàng trước 11:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

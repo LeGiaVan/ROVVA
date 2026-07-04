@@ -1,0 +1,65 @@
+<!-- Guest header — 7 mục nav căn đều trên một hàng -->
+<header class="rovva-header">
+  <nav class="navbar navbar-expand-lg rovva-navbar">
+    <div class="container-fluid rovva-navbar__inner px-0">
+      <div class="rovva-navbar__bar">
+        <a class="navbar-brand" href="{{ url_for('customer.show_page', page_path='pages/home/guest.html') }}">
+          <img src="{{ url_for('static', filename='customer/images/logos/Logo.jpg') }}" alt="Rovva" height="46">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#rovvaNavGuest"
+                aria-controls="rovvaNavGuest" aria-expanded="false" aria-label="Menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse rovva-navbar__collapse" id="rovvaNavGuest">
+          <ul class="navbar-nav rovva-navbar__nav">
+            <li class="nav-item">
+              <a class="nav-link" data-nav="home" href="{{ url_for('customer.show_page', page_path='pages/home/guest.html') }}">Trang chủ</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="promotion" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">Ưu đãi</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}">Đặc quyền &amp; Khuyến mãi</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/marketing/reward-points.html') }}">Chương trình Xu thưởng</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="support" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">Hỗ trợ</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/faq.html') }}">Câu hỏi thường gặp (FAQ)</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/guide-booking.html') }}">Hướng dẫn Đặt phòng / Hủy đặt phòng</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/contact.html') }}">Trợ giúp &amp; Yêu cầu</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="policy" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">Chính sách</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/privacy.html') }}">Chính sách bảo mật</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/operation.html') }}">Chính sách hoạt động</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/terms.html') }}">Điều khoản &amp; Điều kiện sử dụng</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-nav="host" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">Trở thành Host</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/marketing/become-host.html') }}">Đăng ký Host</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('customer.show_page', page_path='pages/support/terms.html') }}">Điều khoản &amp; Chính sách Host</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('customer.show_page', page_path='pages/auth/login.html') }}">Đăng nhập</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('customer.show_page', page_path='pages/auth/register.html') }}">Đăng ký</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

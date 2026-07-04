@@ -15,7 +15,18 @@ def seed_database():
         avatar="images/host-avatar.png",
         role="host",
     )
+    host.set_password("password123")
     db.session.add(host)
+
+    guest = User(
+        full_name="Khách Hàng Mẫu",
+        email="1@ss",
+        phone="0909999999",
+        avatar="shared/images/avatars/Hinh_avata.jpg",
+        role="guest",
+    )
+    guest.set_password("1")
+    db.session.add(guest)
     db.session.flush()
 
     accommodations_data = [
@@ -491,3 +502,16 @@ def get_dashboard_stats():
         "total_rooms": total_rooms,
         "occupancy_rate": fill_rate,
     }
+    # Seed Favorites
+    from backend.app.models.favorite import Favorite
+    if Favorite.query.count() == 0:
+        fav1 = Favorite(user_id=1, accommodation_id=1)
+        db.session.add(fav1)
+        db.session.commit()
+
+    # Seed Wallet Transactions
+    from backend.app.models.wallet_transaction import WalletTransaction
+    if WalletTransaction.query.count() == 0:
+        tx1 = WalletTransaction(user_id=1, type='earn', amount=68, description='Earned from booking a hotel')
+        db.session.add(tx1)
+        db.session.commit()

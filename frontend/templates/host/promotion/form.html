@@ -1,0 +1,201 @@
+{% extends 'host/layout/base.html' %}
+
+{% block title %}{{ 'Chỉnh sửa' if promo else 'Tạo' }} khuyến mãi - Rovva Host{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .page-title {
+        color: var(--rovva-black-blue);
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+    .section-card {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background: #fff;
+        margin-bottom: 24px;
+        padding: 24px;
+    }
+    .section-title {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--rovva-black-blue);
+        margin-bottom: 20px;
+    }
+    .form-label {
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--rovva-black-blue);
+    }
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+    .tree-node {
+        margin-bottom: 8px;
+    }
+    .tree-children {
+        margin-left: 28px;
+        border-left: 1px solid #dee2e6;
+        padding-left: 12px;
+        margin-top: 8px;
+    }
+    .form-check-label {
+        font-size: 14px;
+        color: var(--rovva-black-blue);
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5" style="max-width: 900px;">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('accommodation.index') }}" class="text-decoration-none text-muted">Quản lý CSLT</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('promotion.index') }}" class="text-decoration-none text-muted">Quản lý khuyến mãi</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ 'Chỉnh sửa khuyến mãi' if promo else 'Tạo khuyến mãi mới' }}</li>
+        </ol>
+    </nav>
+    
+    <div class="mb-4">
+        <h1 class="page-title h3 mb-1">Thiết lập khuyến mãi</h1>
+        <p class="text-muted">Gia tăng lượng đặt phòng bằng cách tạo các ưu đãi hấp dẫn cho khách hàng.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('promotion.edit', id=promo.id) if promo else url_for('promotion.create') }}">
+        
+        <!-- Step 1 -->
+        <div class="section-card">
+            <h3 class="section-title">1. Thông tin cơ bản</h3>
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label">Tên chương trình <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" value="{{ promo.name if promo else '' }}" required placeholder="VD: Khuyến mãi mùa Hè 2024">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Loại cấu hình <span class="text-danger">*</span></label>
+                    <select name="type" class="form-select">
+                        <option value="Giảm %" {{ 'selected' if promo and promo.type == 'Giảm %' else '' }}>Giảm %</option>
+                        <option value="Giảm giá cố định" {{ 'selected' if promo and promo.type == 'Giảm giá cố định' else '' }}>Giảm giá cố định</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Mức giảm <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <input type="text" name="discount_value" class="form-control" value="{{ promo.discount_value if promo else '' }}" required>
+                        <span class="input-group-text bg-white">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="section-card">
+            <h3 class="section-title">2. Thời gian & Điều kiện</h3>
+            
+            <div class="mb-4" style="max-width: 300px;">
+                <label class="form-label">Khoảng ngày áp dụng</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                    <input type="text" class="form-control border-start-0 ps-0" placeholder="01/06/2026 - 31/08/2026" 
+                        value="{{ promo.start_date + ' - ' + promo.end_date if promo else '' }}">
+                    <!-- Gộp lại chỉ để hiển thị UI mockup -->
+                    <input type="hidden" name="start_date" value="{{ promo.start_date if promo else '01/06/2026' }}">
+                    <input type="hidden" name="end_date" value="{{ promo.end_date if promo else '31/08/2026' }}">
+                </div>
+            </div>
+            
+            <div class="d-flex flex-column gap-3">
+                <div class="form-check d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="checkbox" id="minNights" checked>
+                    <label class="form-check-label mb-0" for="minNights">
+                        Số đêm tối thiểu:
+                    </label>
+                    <input type="number" name="min_nights" class="form-control form-control-sm text-center" style="width: 50px;" value="{{ promo.min_nights if promo else 3 }}">
+                </div>
+                
+                <div class="form-check d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="checkbox" id="applyDays" {{ 'checked' if promo and promo.apply_days != 'Tất cả các ngày' else '' }}>
+                    <label class="form-check-label mb-0" for="applyDays">
+                        Chỉ áp dụng từ
+                    </label>
+                    <select class="form-select form-select-sm" style="width: auto;">
+                        <option>Thứ 2</option>
+                    </select>
+                    <span>đến</span>
+                    <select class="form-select form-select-sm" style="width: auto;">
+                        <option>Thứ 5</option>
+                    </select>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="not_combine" id="notCombine" {{ 'checked' if promo and promo.not_combine else '' }}>
+                    <label class="form-check-label" for="notCombine">
+                        Không áp dụng đồng thời với các khuyến mãi khác
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="section-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="section-title mb-0">3. Nơi áp dụng</h3>
+                <span class="text-muted small">Đã chọn: 2 cơ sở - 5 phòng</span>
+            </div>
+            
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="apply_to" id="applyAll" {{ 'checked' if not promo or (promo.applied_to and promo.applied_to.target == 'all') else '' }}>
+                <label class="form-check-label fw-bold" for="applyAll">
+                    Tất cả Cơ sở lưu trú
+                </label>
+            </div>
+            
+            <!-- Mock Tree View -->
+            <div class="tree-node ms-3">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-chevron-down text-muted" style="cursor:pointer;"></i>
+                    <input class="form-check-input m-0" type="checkbox" id="acc1" {{ 'checked' if promo else '' }}>
+                    <label class="form-check-label fw-semibold" for="acc1">Rovva Seaside Resort & Spa</label>
+                </div>
+                
+                <div class="tree-children">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="room1" {{ 'checked' if promo else '' }}>
+                        <label class="form-check-label" for="room1">Phòng Deluxe View Biển</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="room2" {{ 'checked' if promo else '' }}>
+                        <label class="form-check-label" for="room2">Phòng Suite Hoàng Gia</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tree-node ms-3 mt-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-chevron-right text-muted" style="cursor:pointer;"></i>
+                    <input class="form-check-input m-0" type="checkbox" id="acc2">
+                    <label class="form-check-label fw-semibold" for="acc2">Rovva Boutique Hotel Hanoi</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="d-flex justify-content-end gap-3 pt-3">
+            <a href="{{ url_for('promotion.index') }}" class="btn btn-outline-secondary px-4 fw-semibold">Hủy</a>
+            <button type="submit" class="btn btn-primary px-4 fw-semibold">Lưu chương trình</button>
+            {% if promo %}
+            <button type="button" class="btn btn-danger px-4 fw-semibold" onclick="document.getElementById('deletePromoForm').submit();">Xóa chương trình</button>
+            {% endif %}
+        </div>
+    </form>
+    
+    {% if promo %}
+    <form id="deletePromoForm" method="POST" action="{{ url_for('promotion.delete', id=promo.id) }}" style="display:none;"></form>
+    {% endif %}
+</div>
+{% endblock %}

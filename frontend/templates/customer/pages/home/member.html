@@ -1,0 +1,276 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="home"{% endblock %}
+
+{% block content %}
+<main>
+  <!-- Welcome & Search -->
+  <section class="home-welcome mt-5">
+    <div class="container text-center">
+      <h1 class="fw-bold mb-3" style="color: #0F294D; font-size: 32px;">Chào mừng trở lại, <span
+          data-rova-welcome-name>Lại Gia Hân</span>!</h1>
+      <p class="text-muted mb-4">Hôm nay bạn muốn đi đâu để tận hưởng kỳ nghỉ tiếp theo?</p>
+    </div>
+  </section>
+
+  <section class="home-hero home-hero--compact mb-5">
+    <div class="container home-hero__inner px-3 px-lg-4">
+      {% include 'customer/includes/layout/search-bar.html' %}
+    </div>
+  </section>
+
+  <!-- Quà tặng dành riêng cho bạn -->
+  <section class="home-section mb-5">
+    <div class="container px-3 px-lg-4">
+      <div class="mb-4">
+        <h2 class="fw-bold m-0" style="color: #0F294D; font-size: 20px;">Quà tặng dành riêng cho bạn</h2>
+        <p class="text-muted small m-0">Ưu đãi đặc biệt dành cho mọi thành viên của Smart Stay</p>
+      </div>
+      <div class="row g-3">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+          <div class="promo-card promo-card-blue h-100 p-4 rounded-4 position-relative overflow-hidden shadow-sm d-flex flex-column">
+            <span class="badge bg-white text-primary mb-3 align-self-start">Ưu đãi thành viên mới</span>
+            <h3 class="text-white fw-bold fs-5 mb-2">Giảm 10% cho lần đặt phòng đầu tiên</h3>
+            <p class="text-white-50 small mb-4">Áp dụng cho tất cả khách sạn trên hệ thống.</p>
+            <a href="#" class="btn btn-light text-primary fw-medium px-4 mt-auto align-self-start">Nhận mã ngay</a>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-4">
+          <div class="promo-card promo-card-green h-100 p-4 rounded-4 position-relative overflow-hidden shadow-sm d-flex flex-column">
+            <span class="badge bg-white text-success mb-3 align-self-start">Đặc quyền thành viên</span>
+            <h3 class="text-white fw-bold fs-5 mb-2">Miễn phí bữa sáng cho các kỳ nghỉ cuối tuần</h3>
+            <p class="text-white-50 small mb-4">Áp dụng cho các booking đặt trước 7 ngày.</p>
+            <a href="#" class="btn btn-light text-success fw-medium px-4 mt-auto align-self-start">Xem chi tiết</a>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-4">
+          <div class="promo-card promo-card-orange h-100 p-4 rounded-4 position-relative overflow-hidden shadow-sm d-flex flex-column">
+            <span class="badge bg-white text-warning mb-3 align-self-start">Tích lũy xu</span>
+            <h3 class="text-white fw-bold fs-5 mb-2">Nhận ngay xu thưởng khi hoàn thành đơn đặt phòng</h3>
+            <p class="text-white-50 small mb-4">Sử dụng Xu cho đơn đặt phòng.</p>
+            <a href="#" class="btn btn-light text-warning fw-medium px-4 mt-auto align-self-start">Khám phá ngay</a>
+            <div class="position-absolute top-50 end-0 translate-middle-y me-4 d-none d-lg-block">
+              <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center shadow"
+                style="width: 60px; height: 60px;">
+                <i class="bi bi-robot fs-4 text-white"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Điểm đến xu hướng -->
+  <section class="home-section mb-5">
+    <div class="container px-3 px-lg-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold m-0" style="color: #0F294D; font-size: 20px;">Điểm đến xu hướng</h2>
+        <div>
+          <button class="btn btn-light rounded-circle p-2 me-2 shadow-sm"><i class="bi bi-chevron-left"></i></button>
+          <button class="btn btn-light rounded-circle p-2 shadow-sm"><i class="bi bi-chevron-right"></i></button>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-6 col-md-3">
+          <div class="dest-card rounded-4 overflow-hidden position-relative shadow-sm" style="height: 240px;">
+            <img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="Vũng Tàu"
+              class="w-100 h-100 object-fit-cover">
+            <div class="dest-card-overlay position-absolute bottom-0 start-0 w-100 p-3 text-white">
+              <h3 class="fs-5 fw-bold mb-1">Vũng Tàu</h3>
+              <p class="small mb-0 opacity-75">Việt Nam • 550+ Stays</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="dest-card rounded-4 overflow-hidden position-relative shadow-sm" style="height: 240px;">
+            <img src="{{ url_for('static', filename='customer/images/apartments/CanHo_VT_House.jpg') }}" alt="Sapa"
+              class="w-100 h-100 object-fit-cover">
+            <div class="dest-card-overlay position-absolute bottom-0 start-0 w-100 p-3 text-white">
+              <h3 class="fs-5 fw-bold mb-1">Sapa</h3>
+              <p class="small mb-0 opacity-75">Việt Nam • 450+ Stays</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="dest-card rounded-4 overflow-hidden position-relative shadow-sm" style="height: 240px;">
+            <img src="{{ url_for('static', filename='customer/images/backgrounds/footer.jpg') }}" alt="Đà Lạt"
+              class="w-100 h-100 object-fit-cover">
+            <div class="dest-card-overlay position-absolute bottom-0 start-0 w-100 p-3 text-white">
+              <h3 class="fs-5 fw-bold mb-1">Đà Lạt</h3>
+              <p class="small mb-0 opacity-75">Việt Nam • 890+ Stays</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="dest-card rounded-4 overflow-hidden position-relative shadow-sm" style="height: 240px;">
+            <img src="{{ url_for('static', filename='shared/images/footer-resort.png') }}" alt="Đà Nẵng"
+              class="w-100 h-100 object-fit-cover">
+            <div class="dest-card-overlay position-absolute bottom-0 start-0 w-100 p-3 text-white">
+              <h3 class="fs-5 fw-bold mb-1">Đà Nẵng</h3>
+              <p class="small mb-0 opacity-75">Việt Nam • 1000+ Stays</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lưu trú nổi bật tại TP HCM -->
+  <section class="home-section mb-5">
+    <div class="container px-3 px-lg-4">
+      <div class="d-flex align-items-center mb-4 gap-3">
+        <h2 class="fw-bold m-0" style="color: #0F294D; font-size: 20px;">Lưu trú nổi bật tại Thành phố Hồ Chí Minh</h2>
+        <button class="btn btn-light rounded-circle p-2 shadow-sm ms-auto"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn btn-light rounded-circle p-2 shadow-sm"><i class="bi bi-chevron-right"></i></button>
+      </div>
+      <div class="row g-3 flex-nowrap overflow-auto hide-scrollbar pb-3">
+        {% for acc in featured_hotels %}
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3">
+          <a href="{{ url_for('customer.accommodation_detail', id=acc.id) }}" class="text-decoration-none text-dark">
+            <article class="listing-card card h-100 border-0 shadow-sm rounded-4">
+              <div class="listing-card__image-wrapper position-relative" style="height: 200px;">
+                <img src="{{ url_for('static', filename=acc.image) }}" alt="{{ acc.name }}"
+                  class="card-img-top h-100 w-100 object-fit-cover rounded-top-4">
+                <button
+                  class="favorite-btn position-absolute top-0 end-0 m-2 btn btn-light rounded-circle p-2 shadow-sm border-0 bg-transparent text-white"
+                  aria-label="Lưu vào yêu thích"><i class="bi bi-heart fs-5"></i></button>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h3 class="card-title text-truncate fs-6 fw-bold m-0">{{ acc.name }}</h3>
+                  <div class="listing-card__rating text-nowrap ms-2">
+                    <i class="bi bi-star-fill text-warning"></i> <span class="fw-medium text-dark small">4.9</span>
+                  </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                  <span class="badge bg-light text-secondary">Free Wi-Fi</span>
+                  <span class="badge bg-light text-secondary">Pool</span>
+                </div>
+                <div class="listing-card__price-wrap mt-auto">
+                  <span class="fw-bold text-primary fs-6">2.500.000đ</span>
+                  <span class="text-muted small">/ đêm</span>
+                </div>
+              </div>
+            </article>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Nơi lưu trú được ưa chuộng tại Đà Nẵng -->
+  <section class="home-section mb-5">
+    <div class="container px-3 px-lg-4">
+      <div class="d-flex align-items-center mb-4 gap-3">
+        <h2 class="fw-bold m-0" style="color: #0F294D; font-size: 20px;">Nơi lưu trú được ưa chuộng tại Đà Nẵng</h2>
+        <button class="btn btn-light rounded-circle p-2 shadow-sm ms-auto"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn btn-light rounded-circle p-2 shadow-sm"><i class="bi bi-chevron-right"></i></button>
+      </div>
+      <div class="row g-3 flex-nowrap overflow-auto hide-scrollbar pb-3">
+        {% for acc in featured_apartments %}
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3">
+          <a href="{{ url_for('customer.accommodation_detail', id=acc.id) }}" class="text-decoration-none text-dark">
+            <article class="listing-card card h-100 border-0 shadow-sm rounded-4">
+              <div class="listing-card__image-wrapper position-relative" style="height: 200px;">
+                <img src="{{ url_for('static', filename=acc.image) }}" alt="{{ acc.name }}"
+                  class="card-img-top h-100 w-100 object-fit-cover rounded-top-4">
+                <button
+                  class="favorite-btn position-absolute top-0 end-0 m-2 btn btn-light rounded-circle p-2 shadow-sm border-0 bg-transparent text-white"
+                  aria-label="Lưu vào yêu thích"><i class="bi bi-heart fs-5"></i></button>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h3 class="card-title text-truncate fs-6 fw-bold m-0">{{ acc.name }}</h3>
+                  <div class="listing-card__rating text-nowrap ms-2">
+                    <i class="bi bi-star-fill text-warning"></i> <span class="fw-medium text-dark small">4.8</span>
+                  </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                  <span class="badge bg-light text-secondary">Gym</span>
+                  <span class="badge bg-light text-secondary">Balcony</span>
+                </div>
+                <div class="listing-card__price-wrap mt-auto">
+                  <span class="fw-bold text-primary fs-6">1.850.000đ</span>
+                  <span class="text-muted small">/ đêm</span>
+                </div>
+              </div>
+            </article>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Nơi lưu trú được ưa chuộng tại Đà Lạt -->
+  <section class="home-section mb-5">
+    <div class="container px-3 px-lg-4">
+      <div class="d-flex align-items-center mb-4 gap-3">
+        <h2 class="fw-bold m-0" style="color: #0F294D; font-size: 20px;">Nơi lưu trú được ưa chuộng tại Đà Lạt</h2>
+        <button class="btn btn-light rounded-circle p-2 shadow-sm ms-auto"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn btn-light rounded-circle p-2 shadow-sm"><i class="bi bi-chevron-right"></i></button>
+      </div>
+      <div class="row g-3 flex-nowrap overflow-auto hide-scrollbar pb-3">
+        {% for acc in featured_hotels %}
+        <div class="col-10 col-sm-6 col-md-4 col-lg-3">
+          <a href="{{ url_for('customer.accommodation_detail', id=acc.id) }}" class="text-decoration-none text-dark">
+            <article class="listing-card card h-100 border-0 shadow-sm rounded-4">
+              <div class="listing-card__image-wrapper position-relative" style="height: 200px;">
+                <img src="{{ url_for('static', filename=acc.image) }}" alt="{{ acc.name }}"
+                  class="card-img-top h-100 w-100 object-fit-cover rounded-top-4">
+                <button
+                  class="favorite-btn position-absolute top-0 end-0 m-2 btn btn-light rounded-circle p-2 shadow-sm border-0 bg-transparent text-white"
+                  aria-label="Lưu vào yêu thích"><i class="bi bi-heart fs-5"></i></button>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h3 class="card-title text-truncate fs-6 fw-bold m-0">{{ acc.name }}</h3>
+                  <div class="listing-card__rating text-nowrap ms-2">
+                    <i class="bi bi-star-fill text-warning"></i> <span class="fw-medium text-dark small">4.7</span>
+                  </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                  <span class="badge bg-light text-secondary">Fireplace</span>
+                  <span class="badge bg-light text-secondary">Nature</span>
+                </div>
+                <div class="listing-card__price-wrap mt-auto">
+                  <span class="fw-bold text-primary fs-6">3.200.000đ</span>
+                  <span class="text-muted small">/ đêm</span>
+                </div>
+              </div>
+            </article>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner Wishlist -->
+  <section class="home-section mb-5">
+    <div class="container px-3 px-lg-4">
+      <div
+        class="wishlist-banner bg-primary bg-opacity-10 rounded-4 p-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+          <div
+            class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-4"
+            style="width: 56px; height: 56px;">
+            <i class="bi bi-heart fs-4"></i>
+          </div>
+          <div>
+            <h3 class="fs-5 fw-bold mb-1" style="color: #0F294D;">Danh sách yêu thích của bạn</h3>
+            <p class="text-muted small mb-0">Bạn có 10 nơi lưu trú yêu thích đang chờ được khám phá. Hãy lên kế hoạch
+              ngay!</p>
+          </div>
+        </div>
+        <a href="#" class="btn btn-primary px-4 py-2 fw-medium">Truy cập Wishlist</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+{% endblock %}

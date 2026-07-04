@@ -1,0 +1,11 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="trip"{% endblock %}
+
+{% block content %}
+<main class="page-content page-content--narrow">
+      <div class="page-card"><h1 class="page-header__title">Hủy thanh toán trực tiếp</h1>
+        <p class="content-prose">Đơn thanh toán tại quầy sẽ được hủy trong vòng 24h. Liên hệ hotline 1900 2005 nếu cần hỗ trợ.</p>
+        <form id="cancel-form" class="mt-3"><button type="submit" class="btn btn-danger">Xác nhận hủy</button></form>
+      </div>
+    </main>
+{% endblock %}

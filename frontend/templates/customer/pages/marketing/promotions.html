@@ -1,0 +1,50 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="support"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+
+    <section class="promo-hero">
+      <div class="container-xxl">
+        <h1 class="promo-hero__title">Đặc quyền &amp; Khuyến mãi</h1>
+        <p class="promo-hero__subtitle">Trở thành viên Rovva để mở khóa các đặc quyền hấp dẫn, tích lũy Xu thưởng không giới hạn, kho voucher, tối ưu chi phí cho mọi hành trình của bạn.</p>
+        <div class="promo-hero__nav promo-hero__nav--register-only">
+          <a href="../auth/register.html">Bạn vẫn chưa là thành viên? Đăng ký ngay</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container-xxl pb-4">
+      <div id="privileges-root"></div>
+    </div>
+
+    <section class="container-xxl pb-5">
+      <h2 class="promo-section-title text-center">Tại sao chọn Rovva?</h2>
+      <p class="text-center text-muted mb-4">Chúng tôi mang đến giải pháp lưu trú hiện đại, giúp kỳ nghỉ của bạn trở nên hoàn hảo và đáng nhớ hơn bao giờ hết.</p>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <article class="why-card h-100">
+            <div class="why-card__icon why-card__icon--blue"><i class="bi bi-hand-thumbs-up"></i></div>
+            <h3 class="why-card__title">Dễ dàng</h3>
+            <p class="why-card__text">Đặt phòng chỉ trong vài bước với giao diện trực quan và thanh toán nhanh chóng.</p>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="why-card h-100">
+            <div class="why-card__icon why-card__icon--green"><i class="bi bi-shield-check"></i></div>
+            <h3 class="why-card__title">An toàn</h3>
+            <p class="why-card__text">Hệ thống bảo mật đa lớp và các đối tác lưu trú được kiểm duyệt nghiêm ngặt.</p>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="why-card h-100">
+            <div class="why-card__icon why-card__icon--gold"><i class="bi bi-piggy-bank"></i></div>
+            <h3 class="why-card__title">Tiết kiệm</h3>
+            <p class="why-card__text">Cam kết giá tốt nhất cùng các chương trình ưu đãi độc quyền cho thành viên.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+{% endblock %}

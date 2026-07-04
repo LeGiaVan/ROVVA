@@ -1,0 +1,47 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="account"{% endblock %}
+
+{% block content %}
+<main class="page-content">
+    <div class="account-layout">
+      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      <div class="account-main">
+        <div class="wallet-banners">
+          <div class="wallet-banner wallet-banner--balance">
+            <div class="wallet-banner__head">
+              <i class="bi bi-wallet2"></i> Số dư Xu
+            </div>
+            <div class="wallet-banner__balance">
+              <span class="wallet-banner__balance-num" id="wallet-balance">0</span>
+              <span class="wallet-banner__balance-unit">xu</span>
+            </div>
+            <p class="wallet-banner__rate">Giá trị quy đổi: 1 xu = 1000đ</p>
+            <p class="wallet-banner__note" id="wallet-update-note">
+              <i class="bi bi-calendar3"></i>
+              <span>Cập nhật: Bạn hiện có xu trong tài khoản.</span>
+            </p>
+          </div>
+          <div class="wallet-banner wallet-banner--learn">
+            <div class="wallet-banner__head">Tìm hiểu thêm Xu</div>
+            <p class="wallet-banner__desc">
+              <i class="bi bi-coin text-warning"></i>
+              Tích lũy xu từ mỗi lần đặt phòng và đánh giá để nhận ưu đãi giảm giá trực tiếp cho những chuyến đi tiếp theo.
+            </p>
+            <a class="wallet-banner__cta" href="../marketing/reward-points.html">Tìm hiểu ngay</a>
+          </div>
+        </div>
+
+        <div class="account-content-box account-content-box--wallet">
+          <h2 class="account-content-box__title">Lịch sử Ví xu</h2>
+          <div class="account-tabs" id="wallet-filter">
+            <button type="button" class="account-tabs__chip is-active" data-filter="all">Tất cả</button>
+            <button type="button" class="account-tabs__chip" data-filter="pending">Chờ duyệt</button>
+            <button type="button" class="account-tabs__chip" data-filter="earn">Tăng xu</button>
+            <button type="button" class="account-tabs__chip" data-filter="spend">Giảm xu</button>
+          </div>
+          <div id="wallet-transactions" class="account-content-box__body"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

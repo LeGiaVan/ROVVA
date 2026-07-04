@@ -1,0 +1,66 @@
+{% extends 'customer/base.html' %}
+{% block body_attrs %}data-page="home"{% endblock %}
+
+{% block content %}
+<main class="search-results-page">
+
+    <section class="home-hero home-hero--compact home-hero--search">
+
+      <div class="container-xxl home-hero__inner px-3 px-lg-4">
+
+        <h1 class="home-hero__title home-hero__title--search">Tìm và đặt nơi lưu trú lý tưởng</h1>
+
+        <p class="home-hero__subtitle">Từ homestay ấm cúng đến khách sạn sang trọng – tất cả đều có trên Rovva</p>
+
+        {% include 'customer/includes/layout/search-bar.html' %}
+
+      </div>
+
+    </section>
+
+
+
+    <div class="search-results-layout container-xxl px-3 px-lg-4">
+
+      <div data-component="searchFilters"></div>
+
+
+
+      <section class="search-results-main">
+
+        <div class="search-results-toolbar">
+
+          <h2 id="search-results-title" class="search-results-toolbar__title">Vũng Tàu: Tìm thấy 1.153 cơ sở lưu trú</h2>
+
+          <label class="search-results-toolbar__sort">
+
+            <span>Sắp xếp theo:</span>
+
+            <select aria-label="Sắp xếp kết quả">
+
+              <option selected>Phù hợp nhất</option>
+
+              <option>Giá thấp đến cao</option>
+
+              <option>Giá cao đến thấp</option>
+
+              <option>Đánh giá cao nhất</option>
+
+            </select>
+
+          </label>
+
+        </div>
+
+
+
+        <div id="search-results-list" class="search-results-list"></div>
+
+        <nav id="search-pagination" class="search-pagination" aria-label="Phân trang kết quả"></nav>
+
+      </section>
+
+    </div>
+
+  </main>
+{% endblock %}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tr? lý AI - Rovva</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='customer/css/customer.css') }}" rel="stylesheet">
+</head>
+<body class="rova-page-shell" data-page="support" data-variant="chat">
+  <div data-component="headerMember"></div>
+
+  <div class="ai-shell">
+    <!-- Sidebar trái: l?ch s? trò chuy?n -->
+    <aside class="ai-side ai-side--left">
+      <button type="button" class="ai-new-chat" id="ai-new-chat">
+        <i class="bi bi-plus-lg"></i> Cu?c trò chuy?n m?i
+      </button>
+
+      <div class="ai-history">
+        <div class="ai-history__group">
+          <p class="ai-history__label">Hôm nay</p>
+          <button type="button" class="ai-history__item"><i class="bi bi-chat-left-text"></i><span>H? tr? h?y d?t phòng Rovva-8921</span></button>
+          <button type="button" class="ai-history__item"><i class="bi bi-chat-left-text"></i><span>L?ch trình Phú Qu?c 3N2Ð</span></button>
+        </div>
+        <div class="ai-history__group">
+          <p class="ai-history__label">Tu?n tru?c</p>
+          <button type="button" class="ai-history__item"><i class="bi bi-chat-left-text"></i><span>Tìm khách s?n g?n trung tâm Ðà N?ng</span></button>
+        </div>
+      </div>
+
+      <div class="ai-user">
+        <span class="ai-user__avatar"><i class="bi bi-person-fill"></i></span>
+        <div class="ai-user__info">
+          <span class="ai-user__name" data-user-name>L?i Gia Hân</span>
+          <span class="ai-user__tier"><i class="bi bi-award-fill"></i> H?ng Vàng</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Khu v?c chat chính -->
+    <section class="ai-main">
+      <header class="ai-main__head">
+        <span class="ai-main__brand-icon"><i class="bi bi-robot"></i></span>
+        <span class="ai-main__brand">Tr? lý Rovva AI</span>
+      </header>
+
+      <div class="ai-main__body" id="ai-messages">
+        <div class="ai-welcome" id="ai-welcome">
+          <div class="ai-welcome__avatar"><i class="bi bi-robot"></i></div>
+          <h1 class="ai-welcome__title">Xin chào, <span data-user-name>L?i Gia Hân</span>!</h1>
+          <p class="ai-welcome__desc">
+            Tôi là Tr? lý Rovva AI. Tôi có th? giúp b?n lên k? ho?ch cho m?t chuy?n di hoàn h?o
+            ho?c h? tr? b?n m?i v?n d? v? d?ch v? ngay lúc này.
+          </p>
+          <div class="ai-suggestions">
+            <button type="button" class="ai-suggestion" data-prompt="G?i ý di?m d?n & lên l?ch trình cho tôi">
+              <i class="bi bi-geo-alt"></i> G?i ý di?m d?n &amp; Lên l?ch trình
+            </button>
+            <button type="button" class="ai-suggestion" data-prompt="Tôi mu?n qu?n lý don d?t phòng c?a mình">
+              <i class="bi bi-calendar-check"></i> Qu?n lý Ðon d?t phòng
+            </button>
+            <button type="button" class="ai-suggestion" data-prompt="Tôi c?n liên h? nhân viên h? tr?">
+              <i class="bi bi-headset"></i> Liên h? nhân viên h? tr?
+            </button>
+            <button type="button" class="ai-suggestion" data-prompt="Gi?i dáp giúp tôi v? các uu dãi hi?n có">
+              <i class="bi bi-gift"></i> Gi?i dáp v? Uu dãi
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <form class="ai-main__input" id="ai-chat-form">
+        <input type="text" placeholder="Nh?p di?m d?n ho?c yêu c?u c?a b?n..." aria-label="Nh?p yêu c?u" required>
+        <button type="submit" class="ai-main__send" aria-label="G?i"><i class="bi bi-send-fill"></i></button>
+      </form>
+    </section>
+
+    <!-- Sidebar ph?i: chuy?n di s?p t?i -->
+    <aside class="ai-side ai-side--right">
+      <h2 class="ai-aside__title"><i class="bi bi-airplane-engines"></i> Chuy?n di s?p t?i</h2>
+      <article class="ai-trip-card">
+        <div class="ai-trip-card__media">
+          <img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="" onerror="this.style.display='none'">
+        </div>
+        <div class="ai-trip-card__body">
+          <h3 class="ai-trip-card__name">Dalat Edensee Lake Resort &amp; Spa</h3>
+          <p class="ai-trip-card__date"><i class="bi bi-calendar3"></i> 01 Tháng 7 - 05 Tháng 7, 2026</p>
+          <div class="ai-trip-card__actions">
+            <a class="btn btn-sm btn-rova-outline" href="../trip/upcoming.html"><i class="bi bi-map"></i> Xem du?ng di</a>
+            <button type="button" class="btn btn-sm btn-rova-primary ai-suggestion" data-prompt="Tu v?n giúp tôi v? chuy?n di Dalat Edensee Lake Resort">
+              <i class="bi bi-robot"></i> H?i Rovva AI
+            </button>
+          </div>
+        </div>
+      </article>
+    </aside>
+  </div>
+
+  <div data-component="footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="{{ url_for('static', filename='customer/js/app/app.js') }}"></script>
+</body>
+</html>
