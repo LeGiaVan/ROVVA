@@ -7,9 +7,11 @@ from backend.app.routes.host.dispute import dispute_bp
 from backend.app.routes.host.payment import payment_bp
 from backend.app.routes.host.message import message_bp
 from backend.app.routes.customer.main import customer_bp
+from backend.app.routes.customer.booking import customer_booking_bp
 from backend.app.routes.auth.routes import auth_bp
+from backend.app.routes.admin import admin_bp
 
-__all__ = ["main_bp", "accommodation_bp", "promotion_bp", "booking_bp", "report_bp", "dispute_bp", "payment_bp", "message_bp", "customer_bp", "auth_bp"]
+__all__ = ["main_bp", "accommodation_bp", "promotion_bp", "booking_bp", "report_bp", "dispute_bp", "payment_bp", "message_bp", "customer_bp", "customer_booking_bp", "auth_bp", "admin_bp"]
 
 def register_blueprints(app):
     app.register_blueprint(main_bp, url_prefix="/host")
@@ -21,4 +23,6 @@ def register_blueprints(app):
     app.register_blueprint(payment_bp, url_prefix="/host/payment")
     app.register_blueprint(message_bp, url_prefix="/host/message")
     app.register_blueprint(customer_bp)
+    app.register_blueprint(customer_booking_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp, url_prefix="/admin")

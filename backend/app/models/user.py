@@ -10,13 +10,25 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=True) # made nullable for now for backwards compat
+    password_hash = db.Column(db.String(255), nullable=True)
     phone = db.Column(db.String(20))
     id_card = db.Column(db.String(20), nullable=True)
     introduction = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(255), default="images/host-avatar.png")
-    role = db.Column(db.String(20), default="host")
+    role = db.Column(db.String(20), default="guest") # guest, host, admin
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Auth Status
+    is_email_verified = db.Column(db.Boolean, default=False)
+    email_verification_token = db.Column(db.String(255), nullable=True)
+    reset_password_token = db.Column(db.String(255), nullable=True)
+    reset_password_expiry = db.Column(db.DateTime, nullable=True)
+    failed_login_attempts = db.Column(db.Integer, default=0)
+    is_locked = db.Column(db.Boolean, default=False)
+    
+    # Host Onboarding Status
+    host_status = db.Column(db.String(20), default="none") # none, pending, approved, rejected
+    host_document_path = db.Column(db.String(255), nullable=True)
 
     accommodations = db.relationship("Accommodation", back_populates="host", lazy="dynamic")
     

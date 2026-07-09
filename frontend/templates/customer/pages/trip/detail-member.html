@@ -2,5 +2,11 @@
 {% block body_attrs %}data-page="trip"{% endblock %}
 
 {% block content %}
-<main id="booking-detail-root" class="page-booking-detail"></main>
+<main id="booking-detail-root" class="page-booking-detail">
+    <!-- PHASE 3 TASK 3: QR Code Check-in -->
+    <div style="text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ booking.id | default('1234') }}" alt="QR Code">
+        <p style="margin-top: 10px; font-weight: bold; color: #d9534f; font-size: 1.1rem;">Đưa mã QR này cho Host để Check-in</p>
+    </div>
+</main>
 {% endblock %}

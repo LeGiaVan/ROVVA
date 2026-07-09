@@ -8,12 +8,14 @@ class Accommodation(db.Model):
     STATUS_PENDING = "pending"
     STATUS_PAUSED = "paused"
     STATUS_DRAFT = "draft"
+    STATUS_REJECTED = "rejected"
 
     STATUS_LABELS = {
         STATUS_ACTIVE: "Đang hoạt động",
         STATUS_PENDING: "Chờ duyệt",
         STATUS_PAUSED: "Tạm ngừng",
         STATUS_DRAFT: "Bản nháp",
+        STATUS_REJECTED: "Từ chối",
     }
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,9 +28,10 @@ class Accommodation(db.Model):
     location = db.Column(db.String(200))
     description = db.Column(db.Text)
     image = db.Column(db.String(255))
-    status = db.Column(db.String(20), default=STATUS_ACTIVE, nullable=False)
+    status = db.Column(db.String(20), default=STATUS_PENDING, nullable=False)
     
     features = db.Column(db.JSON)
+    allows_pets = db.Column(db.Boolean, default=False)
     check_in_time = db.Column(db.String(10), default="14:00")
     check_out_time = db.Column(db.String(10), default="12:00")
     cancellation_policy = db.Column(db.String(255), default="Linh hoạt: Hoàn tiền 100% trước 24h")
@@ -60,6 +63,13 @@ class Accommodation(db.Model):
         if self.total_rooms == 0:
             return 0
         return round(self.active_rooms / self.total_rooms * 100)
+
+    @property
+    def average_rating(self):
+        from backend.app.models.review import Review
+        from sqlalchemy import func
+        avg = db.session.query(func.avg(Review.rating)).join(Room).filter(Room.accommodation_id == self.id).scalar()
+        return round(avg, 1) if avg else 0.0
 
     def __repr__(self):
         return f"<Accommodation {self.name}>"

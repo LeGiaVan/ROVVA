@@ -12,7 +12,14 @@
         </div>
         <div class="account-content-box">
           <nav id="trip-tabs" class="account-tabs" aria-label="Trạng thái chuyến đi"></nav>
-          <div id="trip-list" class="account-content-box__body"></div>
+          <div id="trip-list" class="account-content-box__body">
+            <!-- PHASE 3 TASK 6: Cancel Booking -->
+            {% if booking is defined and booking.status == 'Đã đặt phòng' %}
+              <form action="{{ url_for('customer.cancel_booking', id=booking.id) }}" method="POST">
+                  <button type="submit" class="btn btn-danger mt-3">Hủy đặt phòng</button>
+              </form>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>

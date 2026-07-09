@@ -18,6 +18,31 @@ def index():
     stats["revenue_growth"] = "+12.5%"
     stats["new_bookings"] = 8
     
+    from backend.app.models.room import Room
+    from backend.app.models.accommodation import Accommodation
+    
+    # Get all bookings for the current host
+    host_bookings = Booking.query.join(Room).join(Accommodation).filter(
+        Accommodation.host_id == current_user.id
+    ).all()
+    
+    total_revenue = 0
+    disbursed_pool = 0
+    disputed_amount = 0
+    
+    for b in host_bookings:
+        if b.status in [Booking.STATUS_CONFIRMED, "Hoàn thành", "Đang lưu trú"]:
+            total_revenue += b.total_amount
+            if b.payment_status == "disbursed":
+                disbursed_pool += b.total_amount
+            elif b.payment_status == "in_dispute":
+                disputed_amount += b.total_amount
+
+    stats["pending_payout"] = total_revenue
+    stats["disbursed_amount"] = max(0, disbursed_pool - disputed_amount)
+    stats["disputed_amount"] = disputed_amount
+    stats["total_revenue"] = total_revenue
+    
     return render_template(
         "host/index.html",
         active_nav="dashboard",

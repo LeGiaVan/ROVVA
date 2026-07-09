@@ -106,7 +106,7 @@ body.rova-page-shell>main {
 }
 
 .home-section {
-  padding: 3rem 0;
+  padding: 1.5rem 0;
 }
 
 @media (min-width: 1440px) {
@@ -1083,7 +1083,7 @@ body.rova-page-shell>main {
   font-size: 12px;
 }
 
-.status-badge {
+.status-badge { white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -2192,7 +2192,7 @@ body[data-page="support"] #privileges-root>section {
 .promo-hero {
   background: linear-gradient(120deg, #230B64 0%, #304DCC 100%);
   color: #fff;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   margin: 0 0 2rem;
 }
 
@@ -2668,7 +2668,7 @@ body[data-page="support"] #privileges-root>section {
 .reward-hero {
   background: linear-gradient(120deg, #F5A623 0%, #E67817 100%);
   color: #fff;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   margin: 0 0 2rem;
 }
 
@@ -2750,7 +2750,7 @@ body[data-page="support"] #privileges-root>section {
 .blog-hero {
   background: linear-gradient(120deg, #230B64 0%, #304DCC 100%);
   color: #fff;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   margin-bottom: 2rem;
 }
 
@@ -3871,7 +3871,7 @@ body[data-page="support"] #privileges-root>section {
 .policy-hero {
   background: linear-gradient(120deg, #304DCC 0%, #230B64 100%);
   color: #fff;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   margin: 0 0 2rem;
 }
 
@@ -4199,7 +4199,7 @@ body[data-page="support"] #privileges-root>section {
 
   .trip-card__image {
     width: 100%;
-    height: 180px;
+    height: 240px;
   }
 
   .booking-detail-grid {
@@ -4278,7 +4278,7 @@ body[data-page="support"] #privileges-root>section {
   margin-bottom: 0.5rem;
 }
 
-.bd-badge {
+.bd-badge { white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -5534,7 +5534,7 @@ body[data-page="trip"] .page-content {
   color: #0058be;
 }
 
-.acc-trip-card__badge {
+.acc-trip-card__badge { white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -6021,7 +6021,7 @@ body[data-page="trip"] .page-content {
 
 .fav-card__media {
   position: relative;
-  height: 180px;
+  height: 240px;
 }
 
 .fav-card__media img {
@@ -9454,154 +9454,189 @@ ul {
   }
 }
 
-.rovva-footer-new {
-  margin-top: 60px;
-  background: #fff;
+
+
+/* ==========================================================================
+
+/* ==========================================================================
+   ROVVA FOOTER (BASE & MODIFIERS)
+   ========================================================================== */
+
+/* Unified Base Footer */
+.rovva-footer {
+    background-color: #ffffff;
+    font-family: inherit;
+    margin-top: auto;
 }
 
-.rf-blue-section {
-  position: relative;
-  padding: 35px 0;
-  /* Ensures the blue background forms thin stripes top and bottom */
-  background-color: #3b82f6;
-  background-image: url('../../shared/images/footer-bg.png');
-  background-size: cover;
-  background-position: center;
+/* --- 1. The Blue Banner (Top Section) --- */
+.rovva-footer__banner {
+    position: relative;
+    background-color: #3b82f6;
+    background-image: url('../../shared/images/footer-bg.png');
+    background-size: cover;
+    background-position: center;
+    /* Fixed height for the entire banner area */
+    height: 240px; 
+    padding: 24px 0;
+    overflow: hidden; 
 }
 
-/* Overlay to match mockup's lighter blue */
-.rf-blue-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(59, 130, 246, 0.85);
+/* Deep blue overlay */
+.rovva-footer__banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(59, 130, 246, 0.85);
+    z-index: 1;
 }
 
-.rf-white-stripe {
-  position: relative;
-  z-index: 2;
-  background: #ffffff;
-  width: 100%;
+/* The inner white stripe containing logo and contact */
+.rovva-footer__banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 100%; /* Fills the 150px remaining inner height */
+    width: 100%;
+    background: #ffffff; 
 }
 
-.rf-resort-image {
-  display: flex;
-  /* Ensures child img stretches to fill container */
+/* The Left Graphic Fix */
+.rovva-footer__banner-graphic {
+    flex: 0 0 35%;
+    max-width: 35%; 
+    height: 100%;
+    overflow: hidden; /* CRITICAL: prevents image from stretching parent or breaking layout */
 }
 
-.rf-resort-image img {
-  object-fit: cover;
-  border-radius: 0 400px 400px 0;
-  display: block;
+.rovva-footer__banner-graphic img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; 
+    border-radius: 0 400px 400px 0; 
+    display: block;
 }
 
-.rf-logo {
-  max-height: 90px;
-  /* Slightly larger logo to match mockup */
-  object-fit: contain;
+/* Center Logo */
+.rovva-footer__banner-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 }
 
-/* Remove hover underlines for links */
-.rovva-footer-new ul li a {
-  transition: color 0.2s;
+.rovva-footer__banner-logo img {
+    max-height: 75px;
+    width: auto;
+    object-fit: contain;
 }
 
-.rovva-footer-new ul li a:hover {
-  color: #3b82f6 !important;
+/* Right Contact Info */
+.rovva-footer__banner-contact {
+    flex: 0 0 35%;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-/* Promo Cards */
-.promo-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.rovva-footer__banner-contact h6 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f294d;
+    margin-bottom: 16px;
 }
 
-.promo-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+.rovva-footer__banner-contact p {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
 }
 
-.promo-card-blue {
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
+.rovva-footer__banner-contact i {
+    font-size: 18px;
+    color: #64748b;
+    margin-top: 2px;
 }
 
-.promo-card-green {
-  background: linear-gradient(135deg, #10b981, #34d399);
+/* --- 2. The 4-Column Link Section (White Background) --- */
+.rovva-footer__links-section {
+    padding: 40px 20px 20px 20px; 
+    background-color: #ffffff;
 }
 
-.promo-card-orange {
-  background: linear-gradient(135deg, #d97706, #f59e0b);
+.rovva-footer__links-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Destination Cards */
-.dest-card {
-  transition: transform 0.2s ease;
+/* --- 3. Typography & Proportions --- */
+.rovva-footer__col h6 {
+    font-size: 18px;
+    font-weight: 600; 
+    color: #0f294d;
+    margin-bottom: 20px;
 }
 
-.dest-card:hover {
-  transform: scale(1.03);
+.rovva-footer__col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.dest-card-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+.rovva-footer__col ul li {
+    margin-bottom: 12px;
 }
 
-/* Utilities */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
+.rovva-footer__col ul li a {
+    font-size: 15px;
+    font-weight: 400; 
+    color: #64748b;
+    text-decoration: none;
+    line-height: 1.6; 
+    transition: color 0.2s ease-in-out;
 }
 
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.rovva-footer__col ul li a:hover {
+    color: #3b82f6;
 }
 
-/* Footer (Host Style for Customer) */
-.rovva-footer-new {
-  margin-top: auto;
+/* --- 4. Copyright & Divider --- */
+.rovva-footer__divider {
+    border: none;
+    border-top: 1px solid #E5E7EB; 
+    max-width: 1200px;
+    margin: 15px auto 10px auto;
 }
 
-.rf-blue-section {
-  position: relative;
-  padding: 35px 0;
-  background-color: #3b82f6;
-  background-image: url('../../shared/images/footer-bg.png');
-  background-size: cover;
-  background-position: center;
+.rovva-footer__copyright {
+    text-align: center;
+    padding-bottom: 25px;
 }
 
-.rf-blue-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(59, 130, 246, 0.85);
+.rovva-footer__copyright p {
+    font-size: 13px; 
+    color: #6B7280;
+    margin: 4px 0;
+    line-height: 1.4;
 }
 
-.rf-white-stripe {
-  position: relative;
-  z-index: 2;
-  background: #ffffff;
-  width: 100%;
+/* --- Modifiers --- */
+.footer-host {
+    /* Host specific overrides */
 }
 
-.rf-resort-image {
-  display: flex;
+.footer-customer .rovva-footer__links-grid {
+    grid-template-columns: repeat(5, 1fr); 
+    max-width: 1400px; 
 }
 
-.rf-resort-image img {
-  object-fit: cover;
-  border-radius: 0 400px 400px 0;
-  display: block;
-}
-
-.rf-logo {
-  max-height: 90px;
-  object-fit: contain;
-}
-
-.rovva-footer-new ul li a {
-  transition: color 0.2s;
-}
-
-.rovva-footer-new ul li a:hover {
-  color: #3b82f6 !important;
-}

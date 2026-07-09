@@ -14,6 +14,8 @@ def seed_database():
         phone="0901234567",
         avatar="images/host-avatar.png",
         role="host",
+        is_email_verified=True,
+        host_status="approved"
     )
     host.set_password("password123")
     db.session.add(host)
@@ -24,6 +26,7 @@ def seed_database():
         phone="0909999999",
         avatar="shared/images/avatars/Hinh_avata.jpg",
         role="guest",
+        is_email_verified=True
     )
     guest.set_password("1")
     db.session.add(guest)
@@ -229,6 +232,8 @@ def seed_database():
             acc_data["district"] = ""
         if "features" not in acc_data:
             acc_data["features"] = ["Hủy phòng linh hoạt", "Không hút thuốc", "Cho phép thú cưng"]
+        if "allows_pets" not in acc_data:
+            acc_data["allows_pets"] = True if "Cho phép thú cưng" in acc_data.get("features", []) else False
         acc = Accommodation(host_id=host.id, **acc_data)
         db.session.add(acc)
         db.session.flush()

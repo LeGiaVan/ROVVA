@@ -1,0 +1,248 @@
+{% extends 'auth/base_auth.html' %}
+{% block title %}Xác thực tài khoản - Rovva{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Reuse left panel styling from login */
+    .auth-brand {
+        flex: 1;
+        background: linear-gradient(135deg, var(--accent) 0%, #1e40af 100%);
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-brand::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
+        opacity: 0.2;
+        mix-blend-mode: overlay;
+    }
+
+    .auth-brand-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .auth-logo {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .auth-brand h1 {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-brand p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    /* Right panel styling */
+    .auth-form-wrap {
+        flex: 1.2;
+        padding: 60px 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        text-align: center;
+    }
+
+    .verify-icon-wrapper {
+        width: 100px;
+        height: 100px;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem auto;
+    }
+
+    .verify-icon {
+        font-size: 3.5rem;
+        color: var(--accent);
+    }
+
+    .verify-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+
+    .verify-text {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        max-width: 400px;
+    }
+
+    .email-highlight {
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 1.15rem;
+        display: inline-block;
+        margin: 0.5rem 0;
+        padding: 0.5rem 1rem;
+        background: #f1f5f9;
+        border-radius: 8px;
+    }
+
+    .demo-box {
+        background: #eef2ff;
+        border: 1px dashed #6366f1;
+        border-radius: 16px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 450px;
+        margin-top: 1.5rem;
+        position: relative;
+    }
+    
+    .demo-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4f46e5;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .btn-verify {
+        background: var(--accent);
+        color: white;
+        padding: 0.9rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+        width: 100%;
+        font-size: 1.05rem;
+    }
+
+    .btn-verify:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        color: white;
+    }
+
+    .back-link {
+        margin-top: 2.5rem;
+        display: inline-block;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+    }
+    
+    @media (max-width: 991px) {
+        .auth-brand {
+            display: none;
+        }
+        .auth-form-wrap {
+            padding: 40px 30px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Left Panel -->
+<div class="auth-brand">
+    <div class="auth-brand-content">
+        <div class="auth-logo">
+            <i class="bi bi-house-heart-fill"></i> Rovva
+        </div>
+        
+        {% if action == 'register' %}
+            <h1>Gần xong rồi!</h1>
+            <p>Chỉ còn một bước nhỏ nữa là bạn có thể khám phá hàng ngàn chỗ nghỉ tuyệt vời trên khắp thế giới.</p>
+        {% else %}
+            <h1>Khôi phục tài khoản</h1>
+            <p>Đừng lo lắng, chúng tôi sẽ giúp bạn lấy lại quyền truy cập vào tài khoản của mình một cách nhanh chóng.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Right Panel -->
+<div class="auth-form-wrap">
+    <div class="verify-icon-wrapper">
+        <i class="bi bi-envelope-paper-heart verify-icon"></i>
+    </div>
+    
+    {% if action == 'register' %}
+        <h1 class="verify-title">Kiểm tra hộp thư</h1>
+        <p class="verify-text">
+            Chúng tôi đã gửi một email xác thực tài khoản đến địa chỉ:<br>
+            <span class="email-highlight">{{ email }}</span><br>
+            Vui lòng nhấp vào liên kết trong email để kích hoạt.
+        </p>
+    {% elif action == 'reset' %}
+        <h1 class="verify-title">Đã gửi email khôi phục</h1>
+        <p class="verify-text">
+            Hướng dẫn đặt lại mật khẩu đã được gửi đến:<br>
+            <span class="email-highlight">{{ email }}</span><br>
+            Vui lòng kiểm tra hộp thư đến (bao gồm cả thư mục Spam).
+        </p>
+    {% endif %}
+
+    <!-- DEMO BOX (Simulating clicking the email) -->
+    <div class="demo-box shadow-sm">
+        <div class="demo-badge">MÔ PHỎNG SMTP</div>
+        <p class="text-muted mb-4 small">Nhấp vào nút dưới đây để giả lập việc bạn vừa click vào đường link xác nhận từ trong email thực tế.</p>
+        
+        {% if action == 'register' %}
+            <a href="{{ url_for('auth.verify_email', token=token) }}" class="btn-verify">
+                <i class="bi bi-shield-check"></i> Xác thực tài khoản ngay
+            </a>
+        {% elif action == 'reset' %}
+            <a href="{{ url_for('auth.reset_password', token=token) }}" class="btn-verify">
+                <i class="bi bi-key"></i> Đặt lại mật khẩu ngay
+            </a>
+        {% endif %}
+    </div>
+    
+    <a href="{{ url_for('auth.login') }}" class="back-link">
+        <i class="bi bi-arrow-left me-1"></i> Quay lại Đăng nhập
+    </a>
+</div>
+{% endblock %}

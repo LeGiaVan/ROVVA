@@ -70,11 +70,13 @@
             <h2>Giới thiệu về {{ acc.name }}</h2>
             <p>{{ acc.description or 'Tọa lạc tại vị trí đắc địa, mang đến không gian nghỉ dưỡng hiện đại với tiện nghi cao cấp.' }}</p>
           </section>
+          {% if acc.average_rating > 0 %}
           <aside class="page-accommodation__score" aria-label="Điểm đánh giá">
-            <div class="page-accommodation__score-value">4.8<span>★</span></div>
+            <div class="page-accommodation__score-value">{{ acc.average_rating }}<span>★</span></div>
             <strong>Xuất sắc</strong>
-            <p>Dựa trên hơn 900 đánh giá thực tế</p>
+            <p>Dựa trên các đánh giá thực tế</p>
           </aside>
+          {% endif %}
         </div>
     
         <div class="page-accommodation__split">
@@ -103,7 +105,11 @@
                 </div>
               </div>
               <div class="booking-panel__guests">
-                <span>SỐ KHÁCH</span>
+                <span>SỐ KHÁCH 
+                  <span style="font-size: 0.85em; color: #666; margin-left: 10px;">
+                    | Cho phép thú cưng: {% if acc.allows_pets %}Có{% else %}Không{% endif %}
+                  </span>
+                </span>
                 <strong>2 người lớn</strong>
               </div>
               <button type="submit" class="booking-panel__submit">Đặt phòng ngay</button>

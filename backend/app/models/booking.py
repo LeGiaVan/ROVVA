@@ -8,6 +8,7 @@ class Booking(db.Model):
 
     STATUS_CONFIRMED = "confirmed"
     STATUS_PENDING = "pending"
+    STATUS_HOLDING = "holding"
     STATUS_CANCELLED = "cancelled"
     STATUS_COMPLETED = "completed"
 
@@ -24,7 +25,12 @@ class Booking(db.Model):
     check_out = db.Column(db.Date, nullable=False)
     total_amount = db.Column(db.Integer, default=0)
     status = db.Column(db.String(20), default=STATUS_CONFIRMED, nullable=False)
-    payment_status = db.Column(db.String(20), default="pending", nullable=False) # pending, disbursed, in_dispute, resolved
+    payment_status = db.Column(db.String(20), default="pending", nullable=False) # pending, paid, in_dispute, resolved
+    payment_method = db.Column(db.String(50), nullable=True) # online, cash
+    payment_gateway_ref = db.Column(db.String(255), nullable=True)
+    commission_fee = db.Column(db.Integer, default=0)
+    host_payout_amount = db.Column(db.Integer, default=0)
+    hold_expiry_at = db.Column(db.DateTime, nullable=True)
     disbursed_at = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
