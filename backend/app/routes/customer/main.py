@@ -56,6 +56,44 @@ def become_host():
         
     return render_template("customer/pages/host_registration.html")
 
+@customer_bp.route("/smart-search")
+def smart_search():
+    from backend.app.models import Room
+    from backend.app.services.smart_match import smart_match
+
+    query = request.args.get("q", "").strip()
+    results = []
+    error = None
+
+    if query:
+        try:
+            matches = smart_match(query, top_n=6)
+        except Exception:  # noqa: BLE001 - tránh 500 nếu DB/model lỗi
+            matches = []
+            error = "Không thể chạy Smart Match lúc này. Vui lòng thử lại."
+
+        if matches:
+            ids = [m["room_id"] for m in matches]
+            rooms = Room.query.filter(Room.id.in_(ids)).all()
+            room_by_id = {r.id: r for r in rooms}
+            for m in matches:
+                room = room_by_id.get(m["room_id"])
+                if room:
+                    results.append({
+                        "room": room,
+                        "score": m["score"],
+                        "rating": m.get("rating", 0),
+                        "reasons": m.get("reasons", []),
+                    })
+
+    return render_template(
+        "customer/pages/home/smart-results.html",
+        query=query,
+        results=results,
+        error=error,
+    )
+
+
 @customer_bp.route("/<path:page_path>")
 def show_page(page_path):
     if ".." in page_path:

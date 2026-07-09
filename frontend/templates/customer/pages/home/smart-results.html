@@ -1,0 +1,86 @@
+{% extends 'customer/base.html' %}
+{% block title %}Kết quả Smart Match — Rovva{% endblock %}
+
+{% block content %}
+<main class="page-content">
+  <section class="home-hero home-hero--compact">
+    <div class="container-xxl home-hero__inner px-3 px-lg-4">
+      <h1 class="home-hero__title home-hero__title--search">
+        <i class="bi bi-stars text-warning"></i> Smart Match
+      </h1>
+      <p class="home-hero__subtitle">Gợi ý phòng phù hợp nhất dựa trên mô tả nhu cầu của bạn</p>
+      {% include 'customer/includes/layout/search-bar.html' %}
+    </div>
+  </section>
+
+  <div class="container-xxl px-3 px-lg-4 py-4 py-lg-5">
+    {% if query %}
+    <p class="text-secondary mb-4">
+      Kết quả cho: <span class="fw-semibold text-dark">"{{ query }}"</span>
+    </p>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-warning">{{ error }}</div>
+    {% endif %}
+
+    {% if results %}
+    <div class="row g-4">
+      {% for item in results %}
+      {% set room = item.room %}
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('customer.accommodation_detail', id=room.accommodation_id) }}"
+           class="card border-0 shadow-sm h-100 text-decoration-none text-dark position-relative overflow-hidden">
+          <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-1">
+            <i class="bi bi-magic"></i> {{ (item.score * 100) | round(0, 'floor') | int }}% phù hợp
+          </span>
+          <img src="{{ url_for('static', filename=room.image) if room.image else 'https://placehold.co/600x400' }}"
+               class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ room.name }}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <h2 class="h6 fw-semibold mb-1">{{ room.name }}</h2>
+              {% if item.rating and item.rating > 0 %}
+              <span class="badge bg-warning-subtle text-warning-emphasis flex-shrink-0">
+                <i class="bi bi-star-fill"></i> {{ item.rating }}
+              </span>
+              {% endif %}
+            </div>
+            <p class="text-secondary small mb-2">
+              <i class="bi bi-building"></i> {{ room.accommodation.name }}
+              <br>
+              <i class="bi bi-geo-alt"></i> {{ room.accommodation.city }}
+            </p>
+            {% if item.reasons %}
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              {% for reason in item.reasons %}
+              <span class="badge rounded-pill bg-success-subtle text-success-emphasis fw-normal">
+                <i class="bi bi-check-lg"></i> {{ reason }}
+              </span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-primary">{{ "{:,.0f}".format(room.base_price) }} đ<span class="text-secondary fw-normal small">/đêm</span></span>
+              <span class="badge bg-light text-dark border"><i class="bi bi-people"></i> {{ room.capacity }} khách</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% elif query and not error %}
+    <div class="text-center py-5">
+      <i class="bi bi-search text-secondary" style="font-size: 2.5rem;"></i>
+      <p class="mt-3 mb-1 fw-semibold">Chưa tìm thấy phòng phù hợp</p>
+      <p class="text-secondary">Hãy thử mô tả khác, ví dụ: "phòng cho 2 người có hồ bơi gần biển".</p>
+    </div>
+    {% elif not query %}
+    <div class="text-center py-5">
+      <i class="bi bi-stars text-warning" style="font-size: 2.5rem;"></i>
+      <p class="mt-3 mb-1 fw-semibold">Nhập mô tả nhu cầu để bắt đầu</p>
+      <p class="text-secondary">Ví dụ: "homestay Đà Lạt cho 4 người, cho mang thú cưng, view đẹp".</p>
+    </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

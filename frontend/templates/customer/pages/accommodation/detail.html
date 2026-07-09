@@ -92,29 +92,48 @@
           </div>
     
           <aside class="booking-panel booking-panel--figma">
-            <div class="booking-panel__price">800.000 đ <span>/ đêm</span></div>
-            <form id="booking-form" action="{{ url_for('customer.show_page', page_path='payment/step1-guest.html') }}" method="GET">
-              <div class="booking-panel__dates">
-                <div>
-                  <span>NHẬN PHÒNG</span>
-                  <strong>14 Th06</strong>
+            {% set rooms = acc.rooms.all() %}
+            {% if rooms %}
+            <div class="booking-panel__price">
+              <span id="booking-price">{{ "{:,.0f}".format(rooms[0].base_price) }}</span> đ <span>/ đêm</span>
+            </div>
+            <form id="booking-form" method="POST"
+                  action="{{ url_for('customer_booking.create_booking', room_id=rooms[0].id) }}">
+              <div class="mb-3">
+                <label for="room-select" class="form-label small text-uppercase fw-semibold text-secondary">Chọn phòng</label>
+                <select id="room-select" name="room_select" class="form-select">
+                  {% for room in rooms %}
+                  <option value="{{ room.id }}" data-price="{{ room.base_price }}" data-capacity="{{ room.capacity }}">
+                    {{ room.name }} — {{ "{:,.0f}".format(room.base_price) }}đ/đêm
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label for="check_in" class="form-label small text-uppercase fw-semibold text-secondary">Nhận phòng</label>
+                  <input type="date" id="check_in" name="check_in" class="form-control" required>
                 </div>
-                <div>
-                  <span>TRẢ PHÒNG</span>
-                  <strong>16 Th06</strong>
+                <div class="col-6">
+                  <label for="check_out" class="form-label small text-uppercase fw-semibold text-secondary">Trả phòng</label>
+                  <input type="date" id="check_out" name="check_out" class="form-control" required>
                 </div>
               </div>
-              <div class="booking-panel__guests">
-                <span>SỐ KHÁCH 
-                  <span style="font-size: 0.85em; color: #666; margin-left: 10px;">
-                    | Cho phép thú cưng: {% if acc.allows_pets %}Có{% else %}Không{% endif %}
-                  </span>
-                </span>
-                <strong>2 người lớn</strong>
+              <div class="mb-3">
+                <label for="guest_count" class="form-label small text-uppercase fw-semibold text-secondary">Số khách</label>
+                <input type="number" id="guest_count" name="guest_count" class="form-control" min="1" value="2" required>
+                <div class="form-text">Cho phép thú cưng: {% if acc.allows_pets %}Có{% else %}Không{% endif %}</div>
               </div>
-              <button type="submit" class="booking-panel__submit">Đặt phòng ngay</button>
-              <p class="booking-panel__note">Giá đã bao gồm thuế &amp; phí</p>
+              <div class="mb-3">
+                <label for="guest_note" class="form-label small text-uppercase fw-semibold text-secondary">Ghi chú (tuỳ chọn)</label>
+                <textarea id="guest_note" name="guest_note" class="form-control" rows="2" placeholder="Yêu cầu thêm cho chủ nhà..."></textarea>
+              </div>
+              <button type="submit" class="booking-panel__submit btn w-100">Đặt phòng ngay</button>
+              <p class="booking-panel__note">Giá đã bao gồm thuế &amp; phí • Giữ chỗ trong 15 phút</p>
             </form>
+            {% else %}
+            <div class="booking-panel__price">Hiện chưa có phòng trống</div>
+            {% endif %}
           </aside>
         </div>
     
@@ -145,4 +164,39 @@
         </section>
     </div>
   </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    var form = document.getElementById('booking-form');
+    if (!form) return;
+
+    var sel = document.getElementById('room-select');
+    var priceEl = document.getElementById('booking-price');
+    var checkIn = document.getElementById('check_in');
+    var checkOut = document.getElementById('check_out');
+    var today = new Date().toISOString().split('T')[0];
+
+    if (checkIn) checkIn.min = today;
+    if (checkOut) checkOut.min = today;
+
+    function fmt(n) { return Number(n).toLocaleString('vi-VN'); }
+
+    if (sel) {
+      sel.addEventListener('change', function () {
+        form.action = form.action.replace(/\/create\/\d+$/, '/create/' + sel.value);
+        var opt = sel.options[sel.selectedIndex];
+        if (priceEl && opt) priceEl.textContent = fmt(opt.dataset.price);
+      });
+    }
+
+    if (checkIn && checkOut) {
+      checkIn.addEventListener('change', function () {
+        checkOut.min = checkIn.value;
+        if (checkOut.value && checkOut.value <= checkIn.value) checkOut.value = '';
+      });
+    }
+  })();
+</script>
 {% endblock %}

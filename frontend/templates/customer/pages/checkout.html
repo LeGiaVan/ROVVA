@@ -1,0 +1,69 @@
+{% extends 'customer/base.html' %}
+{% block title %}Thanh toán đặt phòng — Rovva{% endblock %}
+
+{% block content %}
+<main class="page-content">
+  <div class="container-xxl px-3 px-lg-4 py-4 py-lg-5">
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-lg-7">
+        <h1 class="h4 fw-bold mb-1">Xác nhận &amp; thanh toán</h1>
+        <p class="text-secondary mb-4">Mã đặt phòng <strong>{{ booking.booking_code }}</strong> đang được giữ chỗ.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category in ['error','danger'] else category }} py-2">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h2 class="h6 fw-semibold mb-3">Thông tin lưu trú</h2>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Phòng</span>
+              <span class="fw-medium text-end">{{ booking.room.name }}</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Nhận phòng</span>
+              <span class="fw-medium">{{ booking.check_in.strftime('%d/%m/%Y') }}</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Trả phòng</span>
+              <span class="fw-medium">{{ booking.check_out.strftime('%d/%m/%Y') }}</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Số đêm</span>
+              <span class="fw-medium">{{ booking.nights }} đêm</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Số khách</span>
+              <span class="fw-medium">{{ booking.guest_count }} người</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-semibold">Tổng cộng</span>
+              <span class="h5 fw-bold text-primary mb-0">{{ "{:,.0f}".format(booking.total_amount) }} đ</span>
+            </div>
+          </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('customer_booking.checkout', booking_code=booking.booking_code) }}">
+          <h2 class="h6 fw-semibold mb-3">Chọn phương thức thanh toán</h2>
+          <div class="form-check border rounded-3 p-3 mb-2 d-flex align-items-center gap-2">
+            <input class="form-check-input mt-0" type="radio" name="payment_method" id="pm-online" value="online" checked>
+            <label class="form-check-label w-100" for="pm-online">
+              <i class="bi bi-credit-card-2-front me-1"></i> Thanh toán online (cổng thanh toán mô phỏng)
+            </label>
+          </div>
+          <div class="form-check border rounded-3 p-3 mb-4 d-flex align-items-center gap-2">
+            <input class="form-check-input mt-0" type="radio" name="payment_method" id="pm-cash" value="cash">
+            <label class="form-check-label w-100" for="pm-cash">
+              <i class="bi bi-cash-coin me-1"></i> Thanh toán tiền mặt khi nhận phòng
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Tiến hành thanh toán</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
