@@ -1,5 +1,6 @@
 {% extends 'admin/layout/base.html' %}
-{% block title %}Quản lý Host — Rovva Admin{% endblock %}
+{% block title %}Host — Rovva Admin{% endblock %}
+{% block breadcrumb %}Host{% endblock %}
 
 {% block content %}
 <div class="admin-page-head">
@@ -8,50 +9,76 @@
 </div>
 
 <div class="admin-panel">
-  <div class="admin-panel__title">Chờ duyệt ({{ pending|length }})</div>
-  <div class="table-responsive">
-    <table class="table admin-table">
-      <thead><tr><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Giới thiệu</th><th></th></tr></thead>
-      <tbody>
-        {% for u in pending %}
-        <tr>
-          <td>{{ u.full_name }}</td>
-          <td>{{ u.email }}</td>
-          <td>{{ u.phone or '—' }}</td>
-          <td class="text-secondary small">{{ u.introduction or '—' }}</td>
-          <td class="text-end text-nowrap">
-            <form method="POST" action="{{ url_for('admin.approve_host', user_id=u.id) }}" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-success">Duyệt</button>
-            </form>
-            <form method="POST" action="{{ url_for('admin.reject_host', user_id=u.id) }}" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-outline-danger">Từ chối</button>
-            </form>
-          </td>
-        </tr>
-        {% else %}
-        <tr><td colspan="5" class="text-secondary">Không có Host chờ duyệt.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="admin-panel__head">
+    <h2 class="admin-panel__title">
+      <i class="bi bi-hourglass-split text-warning"></i> Chờ duyệt
+      <span class="badge bg-warning text-dark">{{ pending|length }}</span>
+    </h2>
+  </div>
+  <div class="admin-panel__body">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Host</th><th>Email</th><th>SĐT</th><th>Giới thiệu</th><th></th></tr></thead>
+        <tbody>
+          {% for u in pending %}
+          <tr>
+            <td>
+              <div class="admin-user-cell">
+                <div class="admin-user-cell__avatar">{{ u.full_name[:2]|upper }}</div>
+                <span class="admin-user-cell__name">{{ u.full_name }}</span>
+              </div>
+            </td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.phone or '—' }}</td>
+            <td class="text-sub" style="max-width:200px">{{ u.introduction or '—' }}</td>
+            <td>
+              <div class="admin-btn-group">
+                <form method="POST" action="{{ url_for('admin.approve_host', user_id=u.id) }}">
+                  <button type="submit" class="admin-btn admin-btn--success admin-btn--sm"><i class="bi bi-check-lg"></i> Duyệt</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.reject_host', user_id=u.id) }}">
+                  <button type="submit" class="admin-btn admin-btn--danger-outline admin-btn--sm"><i class="bi bi-x-lg"></i> Từ chối</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5"><div class="admin-empty"><i class="bi bi-check-circle"></i><p>Không có Host chờ duyệt.</p></div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <div class="admin-panel">
-  <div class="admin-panel__title">Host đã duyệt ({{ approved|length }})</div>
-  <div class="table-responsive">
-    <table class="table admin-table">
-      <thead><tr><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Tham gia</th></tr></thead>
-      <tbody>
-        {% for u in approved %}
-        <tr>
-          <td>{{ u.full_name }}</td>
-          <td>{{ u.email }}</td>
-          <td>{{ u.phone or '—' }}</td>
-          <td>{{ u.created_at.strftime('%d/%m/%Y') if u.created_at else '—' }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="admin-panel__head">
+    <h2 class="admin-panel__title">
+      <i class="bi bi-person-check-fill text-success"></i> Đã duyệt
+      <span class="badge bg-success">{{ approved|length }}</span>
+    </h2>
+  </div>
+  <div class="admin-panel__body">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Host</th><th>Email</th><th>SĐT</th><th>Tham gia</th></tr></thead>
+        <tbody>
+          {% for u in approved %}
+          <tr>
+            <td>
+              <div class="admin-user-cell">
+                <div class="admin-user-cell__avatar">{{ u.full_name[:2]|upper }}</div>
+                <span class="admin-user-cell__name">{{ u.full_name }}</span>
+              </div>
+            </td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.phone or '—' }}</td>
+            <td>{{ u.created_at.strftime('%d/%m/%Y') if u.created_at else '—' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 {% endblock %}

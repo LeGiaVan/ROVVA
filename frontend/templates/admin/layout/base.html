@@ -13,22 +13,47 @@
 <body class="admin-body">
   <div class="admin-shell">
     {% include 'admin/includes/sidebar.html' %}
-    <div class="admin-main">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-      {% for category, message in messages %}
-      {% set cls = 'danger' if category == 'error' else category %}
-      <div class="alert alert-{{ cls }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-      {% endfor %}
-      {% endif %}
-      {% endwith %}
-      {% block content %}{% endblock %}
+    <div class="admin-main-wrap">
+      {% include 'admin/includes/topbar.html' %}
+      <main class="admin-main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="admin-flash">
+          {% for category, message in messages %}
+          {% set cls = 'danger' if category == 'error' else category %}
+          <div class="alert alert-{{ cls }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      var sidebar = document.getElementById('admin-sidebar');
+      var overlay = document.getElementById('admin-overlay');
+      var toggle = document.getElementById('admin-sidebar-toggle');
+      if (sidebar && toggle) {
+        function open() { sidebar.classList.add('is-open'); overlay.classList.add('is-open'); }
+        function close() { sidebar.classList.remove('is-open'); overlay.classList.remove('is-open'); }
+        toggle.addEventListener('click', function () {
+          sidebar.classList.contains('is-open') ? close() : open();
+        });
+        overlay.addEventListener('click', close);
+      }
+      var dateEl = document.getElementById('admin-date');
+      if (dateEl) {
+        var now = new Date();
+        dateEl.textContent = now.toLocaleDateString('vi-VN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+      }
+    })();
+  </script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

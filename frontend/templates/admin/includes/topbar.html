@@ -1,0 +1,28 @@
+<header class="admin-topbar">
+  <div class="admin-topbar__left">
+    <button type="button" class="admin-topbar__toggle" id="admin-sidebar-toggle" aria-label="Mở menu">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="admin-topbar__search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Tìm kiếm nhanh..." disabled>
+    </div>
+    <div class="admin-topbar__breadcrumb d-none d-md-block">
+      / <strong>{% block breadcrumb %}Quản trị{% endblock %}</strong>
+    </div>
+  </div>
+  <div class="admin-topbar__right">
+    <span class="admin-topbar__date" id="admin-date"></span>
+    <button type="button" class="admin-topbar__icon-btn" aria-label="Thông báo">
+      <i class="bi bi-bell"></i>
+      <span class="dot"></span>
+    </button>
+    <div class="admin-topbar__user">
+      <img class="admin-topbar__avatar" src="{{ current_user.avatar_url }}" alt="">
+      <div class="admin-topbar__user-info">
+        <div class="admin-topbar__user-name">{{ current_user.full_name }}</div>
+        <div class="admin-topbar__user-role">Administrator</div>
+      </div>
+    </div>
+  </div>
+</header>

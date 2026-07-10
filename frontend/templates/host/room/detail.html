@@ -139,17 +139,17 @@
     
     <!-- Image Grid -->
     <div class="img-grid d-none d-md-grid">
-        <img src="{{ url_for('static', filename=room.image if room.image else (acc.image if acc.image else 'images/demo-acc.png')) }}" class="img-main" alt="Main" onerror="this.onerror=null; this.src='{{ url_for('static', filename='shared/images/demo-acc.png') }}';">
-        <img src="{{ url_for('static', filename='shared/images/demo-acc.png') }}" class="img-sub" alt="Sub 1">
+        <img src="{{ room.image_url }}" class="img-main" alt="Main">
+        <img src="{{ acc.cover_url }}" class="img-sub" alt="Sub 1">
         <div class="img-more">
-            <img src="{{ url_for('static', filename='shared/images/demo-acc.png') }}" class="img-sub" alt="Sub 2">
+            <img src="{{ acc.cover_url }}" class="img-sub" alt="Sub 2">
             <div class="img-overlay">+12 ảnh</div>
         </div>
     </div>
     
     <!-- Mobile Image -->
     <div class="d-block d-md-none mb-4">
-        <img src="{{ url_for('static', filename=room.image if room.image else 'images/demo-acc.png') }}" class="img-fluid rounded w-100" alt="Room" style="height: 250px; object-fit: cover;" onerror="this.onerror=null; this.src='{{ url_for('static', filename='shared/images/demo-acc.png') }}';">
+        <img src="{{ room.image_url }}" class="img-fluid rounded w-100" alt="Room" style="height: 250px; object-fit: cover;">
     </div>
     
     <div class="row g-4">

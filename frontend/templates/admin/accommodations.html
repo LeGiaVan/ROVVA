@@ -1,58 +1,75 @@
 {% extends 'admin/layout/base.html' %}
-{% block title %}Quản lý CSLT — Rovva Admin{% endblock %}
+{% block title %}Cơ sở lưu trú — Rovva Admin{% endblock %}
+{% block breadcrumb %}Cơ sở lưu trú{% endblock %}
 
 {% block content %}
 <div class="admin-page-head">
-  <h1>Quản lý đơn vị lưu trú</h1>
-  <p>Duyệt cơ sở lưu trú mới trước khi hiển thị cho khách</p>
+  <h1>Quản lý cơ sở lưu trú</h1>
+  <p>Duyệt và theo dõi toàn bộ đơn vị lưu trú trên nền tảng</p>
 </div>
 
 <div class="admin-panel">
-  <div class="admin-panel__title">Chờ duyệt ({{ pending|length }})</div>
-  <div class="table-responsive">
-    <table class="table admin-table">
-      <thead><tr><th>Tên</th><th>Loại</th><th>Địa điểm</th><th>Host</th><th></th></tr></thead>
-      <tbody>
-        {% for acc in pending %}
-        <tr>
-          <td>{{ acc.name }}</td>
-          <td>{{ acc.type }}</td>
-          <td>{{ acc.city or acc.location }}</td>
-          <td>{{ acc.host.full_name if acc.host else '—' }}</td>
-          <td class="text-end text-nowrap">
-            <form method="POST" action="{{ url_for('admin.approve_accommodation', acc_id=acc.id) }}" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-success">Duyệt</button>
-            </form>
-            <form method="POST" action="{{ url_for('admin.reject_accommodation', acc_id=acc.id) }}" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-outline-danger">Từ chối</button>
-            </form>
-          </td>
-        </tr>
-        {% else %}
-        <tr><td colspan="5" class="text-secondary">Không có CSLT chờ duyệt.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="admin-panel__head">
+    <h2 class="admin-panel__title">
+      <i class="bi bi-hourglass-split text-warning"></i> Chờ duyệt
+      <span class="badge bg-warning text-dark">{{ pending|length }}</span>
+    </h2>
+  </div>
+  <div class="admin-panel__body">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Tên</th><th>Loại</th><th>Địa điểm</th><th>Host</th><th></th></tr></thead>
+        <tbody>
+          {% for acc in pending %}
+          <tr>
+            <td><strong>{{ acc.name }}</strong></td>
+            <td><span class="admin-badge admin-badge--info">{{ acc.type }}</span></td>
+            <td>{{ acc.city or acc.location }}</td>
+            <td>{{ acc.host.full_name if acc.host else '—' }}</td>
+            <td>
+              <div class="admin-btn-group">
+                <form method="POST" action="{{ url_for('admin.approve_accommodation', acc_id=acc.id) }}">
+                  <button type="submit" class="admin-btn admin-btn--success admin-btn--sm"><i class="bi bi-check-lg"></i> Duyệt</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.reject_accommodation', acc_id=acc.id) }}">
+                  <button type="submit" class="admin-btn admin-btn--danger-outline admin-btn--sm"><i class="bi bi-x-lg"></i> Từ chối</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5"><div class="admin-empty"><i class="bi bi-check-circle"></i><p>Không có CSLT chờ duyệt.</p></div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <div class="admin-panel">
-  <div class="admin-panel__title">Đang hoạt động ({{ active|length }})</div>
-  <div class="table-responsive">
-    <table class="table admin-table">
-      <thead><tr><th>Tên</th><th>Loại</th><th>Địa điểm</th><th>Phòng</th><th>Giá từ</th></tr></thead>
-      <tbody>
-        {% for acc in active %}
-        <tr>
-          <td>{{ acc.name }}</td>
-          <td>{{ acc.type }}</td>
-          <td>{{ acc.city or acc.location }}</td>
-          <td>{{ acc.total_rooms }}</td>
-          <td>{{ "{:,.0f}".format(acc.min_price) }}đ</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="admin-panel__head">
+    <h2 class="admin-panel__title">
+      <i class="bi bi-building-check text-success"></i> Đang hoạt động
+      <span class="badge bg-success">{{ active|length }}</span>
+    </h2>
+  </div>
+  <div class="admin-panel__body">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Tên</th><th>Loại</th><th>Địa điểm</th><th>Phòng</th><th>Giá từ</th></tr></thead>
+        <tbody>
+          {% for acc in active %}
+          <tr>
+            <td><strong>{{ acc.name }}</strong></td>
+            <td><span class="admin-badge admin-badge--neutral">{{ acc.type }}</span></td>
+            <td>{{ acc.city or acc.location }}</td>
+            <td>{{ acc.total_rooms }} phòng</td>
+            <td><strong class="text-primary">{{ "{:,.0f}".format(acc.min_price) }}đ</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 {% endblock %}

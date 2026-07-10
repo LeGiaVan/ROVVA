@@ -1,31 +1,60 @@
 {% extends 'admin/layout/base.html' %}
-{% block title %}Quản lý booking — Rovva Admin{% endblock %}
+{% block title %}Booking — Rovva Admin{% endblock %}
+{% block breadcrumb %}Booking{% endblock %}
 
 {% block content %}
 <div class="admin-page-head">
   <h1>Quản lý booking</h1>
-  <p>Theo dõi toàn bộ đơn đặt phòng</p>
+  <p>{{ bookings|length }} đơn đặt phòng trên hệ thống</p>
 </div>
+
 <div class="admin-panel">
-  <div class="table-responsive">
-    <table class="table admin-table">
-      <thead><tr><th>Mã</th><th>Khách</th><th>Phòng / CSLT</th><th>Check-in</th><th>Check-out</th><th>Trạng thái</th><th>Tổng tiền</th></tr></thead>
-      <tbody>
-        {% for b in bookings %}
-        <tr>
-          <td>{{ b.booking_code }}</td>
-          <td>{{ b.guest_name }}<br><span class="text-secondary small">{{ b.guest_email or '' }}</span></td>
-          <td>{{ b.room.name if b.room else '—' }}<br><span class="text-secondary small">{{ b.room.accommodation.name if b.room and b.room.accommodation else '' }}</span></td>
-          <td>{{ b.check_in.strftime('%d/%m/%Y') }}</td>
-          <td>{{ b.check_out.strftime('%d/%m/%Y') }}</td>
-          <td><span class="badge bg-light text-dark">{{ b.status }}</span></td>
-          <td>{{ "{:,.0f}".format(b.total_amount) }}đ</td>
-        </tr>
-        {% else %}
-        <tr><td colspan="7" class="text-secondary">Chưa có booking.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="admin-panel__head">
+    <h2 class="admin-panel__title"><i class="bi bi-calendar-check-fill"></i> Tất cả booking</h2>
+  </div>
+  <div class="admin-panel__body">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Mã</th><th>Khách</th><th>Phòng / CSLT</th><th>Check-in</th><th>Check-out</th><th>Trạng thái</th><th>Tổng tiền</th></tr>
+        </thead>
+        <tbody>
+          {% for b in bookings %}
+          <tr>
+            <td><strong>{{ b.booking_code }}</strong></td>
+            <td>
+              {{ b.guest_name }}
+              {% if b.guest_email %}<span class="text-sub">{{ b.guest_email }}</span>{% endif %}
+            </td>
+            <td>
+              {{ b.room.name if b.room else '—' }}
+              {% if b.room and b.room.accommodation %}
+              <span class="text-sub">{{ b.room.accommodation.name }}</span>
+              {% endif %}
+            </td>
+            <td>{{ b.check_in.strftime('%d/%m/%Y') }}</td>
+            <td>{{ b.check_out.strftime('%d/%m/%Y') }}</td>
+            <td>
+              {% if b.status == 'completed' %}
+              <span class="admin-badge admin-badge--success">Hoàn thành</span>
+              {% elif b.status == 'confirmed' %}
+              <span class="admin-badge admin-badge--primary">Đã xác nhận</span>
+              {% elif b.status == 'cancelled' %}
+              <span class="admin-badge admin-badge--danger">Đã hủy</span>
+              {% elif b.status == 'holding' %}
+              <span class="admin-badge admin-badge--warning">Giữ chỗ</span>
+              {% else %}
+              <span class="admin-badge admin-badge--neutral">{{ b.status }}</span>
+              {% endif %}
+            </td>
+            <td><strong>{{ "{:,.0f}".format(b.total_amount) }}đ</strong></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7"><div class="admin-empty"><i class="bi bi-calendar-x"></i><p>Chưa có booking.</p></div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 {% endblock %}

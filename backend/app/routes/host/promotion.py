@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import current_user, login_required
 from backend.app.models import Promotion
 from backend.app.extensions import db
 
 promotion_bp = Blueprint("promotion", __name__, url_prefix="/promotions")
 
 @promotion_bp.route("/")
+@login_required
 def index():
     promotions = Promotion.query.all()
     return render_template(
@@ -14,10 +16,11 @@ def index():
     )
 
 @promotion_bp.route("/create", methods=["GET", "POST"])
+@login_required
 def create():
     if request.method == "POST":
         promo = Promotion(
-            host_id=1,  # Mock host
+            host_id=current_user.id,
             name=request.form.get("name"),
             type=request.form.get("type"),
             discount_value=request.form.get("discount_value"),
@@ -35,10 +38,18 @@ def create():
     return render_template(
         "host/promotion/form.html",
         active_nav="accommodations",
-        promo=None
+        promo=None,
+        prefill={
+            "name": request.args.get("name", ""),
+            "type": request.args.get("type", ""),
+            "discount_value": request.args.get("discount_value", ""),
+            "apply_days": request.args.get("apply_days", ""),
+            "min_nights": request.args.get("min_nights", ""),
+        },
     )
 
 @promotion_bp.route("/<int:id>/edit", methods=["GET", "POST"])
+@login_required
 def edit(id):
     promo = Promotion.query.get_or_404(id)
     if request.method == "POST":
@@ -61,6 +72,7 @@ def edit(id):
     )
 
 @promotion_bp.route("/<int:id>/delete", methods=["POST"])
+@login_required
 def delete(id):
     promo = Promotion.query.get_or_404(id)
     db.session.delete(promo)

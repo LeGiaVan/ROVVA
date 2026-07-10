@@ -74,7 +74,7 @@
             <div class="row g-3">
                 <div class="col-md-5">
                     <label class="form-label">Tên chương trình <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" value="{{ promo.name if promo else '' }}" required placeholder="VD: Khuyến mãi mùa Hè 2024">
+                    <input type="text" name="name" class="form-control" value="{{ promo.name if promo else (prefill.name if prefill is defined else '') }}" required placeholder="VD: Khuyến mãi mùa Hè 2024">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Loại cấu hình <span class="text-danger">*</span></label>
@@ -86,7 +86,7 @@
                 <div class="col-md-4">
                     <label class="form-label">Mức giảm <span class="text-danger">*</span></label>
                     <div class="input-group">
-                        <input type="text" name="discount_value" class="form-control" value="{{ promo.discount_value if promo else '' }}" required>
+                        <input type="text" name="discount_value" class="form-control" value="{{ promo.discount_value if promo else (prefill.discount_value if prefill is defined else '') }}" required>
                         <span class="input-group-text bg-white">%</span>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                     <label class="form-check-label mb-0" for="minNights">
                         Số đêm tối thiểu:
                     </label>
-                    <input type="number" name="min_nights" class="form-control form-control-sm text-center" style="width: 50px;" value="{{ promo.min_nights if promo else 3 }}">
+                    <input type="number" name="min_nights" class="form-control form-control-sm text-center" style="width: 50px;" value="{{ promo.min_nights if promo else (prefill.min_nights if prefill is defined and prefill.min_nights else 3) }}">
                 </div>
                 
                 <div class="form-check d-flex align-items-center gap-2">

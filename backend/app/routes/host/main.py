@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
-from backend.app.models import Accommodation, Booking, User
+from backend.app.models import Accommodation, Booking, Room, User
 from backend.app.seed import get_dashboard_stats
+from backend.app.services.host_copilot import build_recommendations, scan_maintenance_issues
 
 main_bp = Blueprint("main", __name__)
 
@@ -11,25 +12,27 @@ main_bp = Blueprint("main", __name__)
 @login_required
 def index():
     stats = get_dashboard_stats()
-    recent_bookings = Booking.query.order_by(Booking.created_at.desc()).limit(4).all()
+    recent_bookings = (
+        Booking.query.join(Room)
+        .join(Accommodation)
+        .filter(Accommodation.host_id == current_user.id)
+        .order_by(Booking.created_at.desc())
+        .limit(4)
+        .all()
+    )
     host = current_user
-    
-    # Adding mock growth data for the UI
+
     stats["revenue_growth"] = "+12.5%"
     stats["new_bookings"] = 8
-    
-    from backend.app.models.room import Room
-    from backend.app.models.accommodation import Accommodation
-    
-    # Get all bookings for the current host
+
     host_bookings = Booking.query.join(Room).join(Accommodation).filter(
         Accommodation.host_id == current_user.id
     ).all()
-    
+
     total_revenue = 0
     disbursed_pool = 0
     disputed_amount = 0
-    
+
     for b in host_bookings:
         if b.status in [Booking.STATUS_CONFIRMED, "Hoàn thành", "Đang lưu trú"]:
             total_revenue += b.total_amount
@@ -42,13 +45,19 @@ def index():
     stats["disbursed_amount"] = max(0, disbursed_pool - disputed_amount)
     stats["disputed_amount"] = disputed_amount
     stats["total_revenue"] = total_revenue
-    
+
+    copilot_recs, copilot_ctx = build_recommendations(current_user.id)
+    copilot_alert = scan_maintenance_issues(current_user.id)[:1]
+
     return render_template(
         "host/index.html",
         active_nav="dashboard",
         stats=stats,
         recent_bookings=recent_bookings,
-        host=host
+        host=host,
+        copilot_recs=copilot_recs[:2],
+        copilot_ctx=copilot_ctx,
+        copilot_alert=copilot_alert[0] if copilot_alert else None,
     )
 
 @main_bp.route("/profile")

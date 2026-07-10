@@ -7,9 +7,17 @@ venv/
 env/
 .env
 
+# Database (tái tạo bằng flask seed)
+instance/*.db
+instance/*.sqlite
+
 # OS & IDEs
 .DS_Store
 .vscode/
 .idea/
 Thumbs.db
 *.log
+
+# Cursor / tooling artifacts
+assets/
+*.pyc

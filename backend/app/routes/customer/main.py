@@ -205,6 +205,7 @@ def search():
 def smart_search():
     from backend.app.models import Room
     from backend.app.services.smart_match import smart_match
+    from sqlalchemy.orm import joinedload
 
     query = request.args.get("q", "").strip()
     results = []
@@ -219,7 +220,11 @@ def smart_search():
 
         if matches:
             ids = [m["room_id"] for m in matches]
-            rooms = Room.query.filter(Room.id.in_(ids)).all()
+            rooms = (
+                Room.query.filter(Room.id.in_(ids))
+                .options(joinedload(Room.accommodation))
+                .all()
+            )
             room_by_id = {r.id: r for r in rooms}
             for m in matches:
                 room = room_by_id.get(m["room_id"])

@@ -507,6 +507,30 @@
                     báo</button>
             </div>
 
+            <!-- Host Copilot Widget -->
+            <div class="copilot-widget mb-4" style="background: linear-gradient(135deg, #1e66c7, #0d47a1); border-radius: 16px; padding: 20px; color: #fff;">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-stars fs-5 text-warning"></i>
+                    <span class="fw-bold">Host Copilot</span>
+                    <a href="{{ url_for('copilot.index') }}" class="ms-auto small text-white-50 text-decoration-none">Mở đầy đủ →</a>
+                </div>
+                <div class="small opacity-90 mb-3">
+                    Occ. tuần tới: <strong>{{ (copilot_ctx.next_week_occupancy * 100) | round(0) | int }}%</strong>
+                </div>
+                {% for rec in copilot_recs %}
+                <div class="bg-white bg-opacity-10 rounded-3 p-3 mb-2 small">
+                    <div class="fw-semibold mb-1"><i class="bi {{ rec.icon }}"></i> {{ rec.title }}</div>
+                    <div class="opacity-75" style="font-size: 12px;">{{ rec.description[:80] }}{% if rec.description|length > 80 %}…{% endif %}</div>
+                </div>
+                {% endfor %}
+                {% if copilot_alert %}
+                <div class="bg-warning bg-opacity-25 rounded-3 p-2 small mt-2">
+                    <i class="bi bi-tools"></i> {{ copilot_alert.issue_label }} — {{ copilot_alert.room_name }}
+                </div>
+                {% endif %}
+                <a href="{{ url_for('copilot.index') }}" class="btn btn-light btn-sm fw-bold w-100 mt-3 text-primary">Xem gợi ý Copilot</a>
+            </div>
+
             <!-- Tip Card -->
             <div class="tip-card">
                 <div class="tip-title">Mẹo tăng doanh thu!</div>
@@ -519,9 +543,8 @@
             <!-- Profile Card -->
             <div class="profile-card">
                 <div class="profile-header">
-                    <img src="{{ url_for('static', filename='shared/images/host-avatar.png') }}" class="profile-avatar"
-                        alt="Host Avatar"
-                        onerror="this.src='https://ui-avatars.com/api/?name=Van+Quan+Gia&background=0D8ABC&color=fff'">
+                    <img src="{{ current_user.avatar_url }}" class="profile-avatar"
+                        alt="{{ current_user.full_name }}">
                     <div>
                         <div class="profile-name">{{ host.full_name if host else 'Văn Quản Gia' }}</div>
                         <div class="profile-rating">

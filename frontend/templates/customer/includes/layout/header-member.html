@@ -93,16 +93,16 @@
                 data-bs-toggle="dropdown" aria-expanded="false" aria-label="Tài khoản">
                 <span class="rovva-account-toggle__pill">
                   <img class="rovva-account-toggle__avatar"
-                    src="{{ url_for('static', filename='customer/images/avatars/Hinh_avata.jpg') }}" alt=""
-                    data-rova-user-avatar-img onerror="this.style.visibility='hidden'">
+                    src="{{ current_user.avatar_url }}" alt="{{ current_user.full_name }}"
+                    data-rova-user-avatar-img>
                   <i class="bi bi-list rovva-account-toggle__menu-icon" aria-hidden="true"></i>
                 </span>
               </button>
               <div class="dropdown-menu dropdown-menu-end rovva-account-menu">
                 <div class="rovva-account-menu__header">
                   <img class="rovva-account-menu__avatar"
-                    src="{{ url_for('static', filename='customer/images/avatars/Hinh_avata.jpg') }}" alt=""
-                    data-rova-user-avatar-img onerror="this.style.visibility='hidden'">
+                    src="{{ current_user.avatar_url }}" alt="{{ current_user.full_name }}"
+                    data-rova-user-avatar-img>
                   <div>
                     <div class="rovva-account-menu__name" data-rova-user-name>Thành viên</div>
                     <span class="rovva-tier-badge"><i class="bi bi-award-fill"></i> <span data-rova-user-tier>Thành viên

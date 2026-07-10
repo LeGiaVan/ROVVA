@@ -6,8 +6,13 @@
 
   <section class="home-hero">
     <div class="container-xxl home-hero__inner px-3 px-lg-4">
-      <h1 class="home-hero__title">Tìm kiếm kỳ nghỉ mơ ước của bạn</h1>
-      {% include 'customer/includes/layout/search-bar.html' %}
+      <div class="home-hero__content">
+        <h1 class="home-hero__title">Tìm kiếm kỳ nghỉ mơ ước của bạn</h1>
+        <p class="home-hero__subtitle">Khám phá homestay, villa và khách sạn trên khắp Việt Nam</p>
+      </div>
+      <div class="home-hero__search">
+        {% include 'customer/includes/layout/search-bar.html' %}
+      </div>
     </div>
   </section>
 
@@ -15,42 +20,37 @@
     <div class="container-xxl px-3 px-lg-4">
       <div class="section-heading">
         <h2 class="section-heading__title">Dành riêng cho người dùng mới</h2>
+        <p class="section-heading__subtitle">Ưu đãi độc quyền khi bạn đăng ký tài khoản Rovva</p>
       </div>
-      <div class="promo-carousel">
-        <article class="promo-card">
-          <div class="promo-card__body">
-            <div>
-              <div class="promo-card__header">
-                <h3 class="promo-card__title">Nhiều ưu đãi giảm giá du lịch hơn dành cho người dùng mới!</h3>
-                <img class="promo-card__thumb"
-                  src="{{ url_for('static', filename='customer/images/banners/P1_Dac_quyen&Khuyen_mai.jpg') }}" alt="">
-              </div>
-            </div>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-rova-primary">Đăng nhập và nhận tất cả</a>
+      <div class="guest-offers">
+        <article class="guest-offer-card">
+          <div class="guest-offer-card__icon guest-offer-card__icon--blue">
+            <i class="bi bi-gift-fill"></i>
           </div>
-          <div class="promo-card__accent"><i class="bi bi-gift-fill"></i></div>
+          <span class="guest-offer-card__tag">Đặc quyền mới</span>
+          <h3 class="guest-offer-card__title">Ưu đãi giảm giá dành riêng cho người dùng mới</h3>
+          <p class="guest-offer-card__desc">Nhận mã giảm giá khách sạn, homestay và nhiều ưu đãi du lịch khác ngay khi đăng ký.</p>
+          <a href="{{ url_for('auth.login') }}" class="guest-offer-card__btn guest-offer-card__btn--primary">Đăng nhập và nhận tất cả</a>
         </article>
 
-        <article class="promo-card">
-          <div class="promo-card__body">
-            <div>
-              <h3 class="promo-card__title">Giảm giá đến 10%</h3>
-              <p class="promo-card__desc">Vé máy bay | Chỉ dành cho ứng dụng</p>
-            </div>
-            <a href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}" class="btn btn-rova-primary">Nhận tất cả</a>
+        <article class="guest-offer-card">
+          <div class="guest-offer-card__icon guest-offer-card__icon--sky">
+            <i class="bi bi-airplane-fill"></i>
           </div>
-          <div class="promo-card__accent"><i class="bi bi-airplane-fill"></i></div>
+          <span class="guest-offer-card__tag">Vé máy bay</span>
+          <h3 class="guest-offer-card__title">Giảm giá đến 10%</h3>
+          <p class="guest-offer-card__desc">Ưu đãi đặt vé trên ứng dụng Rovva — tiết kiệm cho mọi chuyến bay nội địa.</p>
+          <a href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}" class="guest-offer-card__btn">Nhận ưu đãi</a>
         </article>
 
-        <article class="promo-card">
-          <div class="promo-card__body">
-            <div>
-              <h3 class="promo-card__title">Giảm giá 10%</h3>
-              <p class="promo-card__desc">Khách sạn</p>
-            </div>
-            <a href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}" class="btn btn-rova-primary">Nhận tất cả</a>
+        <article class="guest-offer-card">
+          <div class="guest-offer-card__icon guest-offer-card__icon--navy">
+            <i class="bi bi-building-fill"></i>
           </div>
-          <div class="promo-card__accent"><i class="bi bi-building"></i></div>
+          <span class="guest-offer-card__tag">Khách sạn</span>
+          <h3 class="guest-offer-card__title">Giảm 10% đặt phòng khách sạn</h3>
+          <p class="guest-offer-card__desc">Áp dụng cho lần đặt đầu tiên tại các khách sạn đối tác trên hệ thống.</p>
+          <a href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}" class="guest-offer-card__btn">Nhận ưu đãi</a>
         </article>
       </div>
     </div>

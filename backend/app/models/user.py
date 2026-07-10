@@ -45,8 +45,8 @@ class User(UserMixin, db.Model):
 
     @property
     def avatar_url(self):
-        from backend.app.utils.media import resolve_media
-        return resolve_media(self.avatar, "avatar")
+        from backend.app.utils.media import user_avatar
+        return user_avatar(self.id) if self.id else user_avatar(0)
 
     def __repr__(self):
         return f"<User {self.full_name}>"

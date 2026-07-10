@@ -4,17 +4,15 @@
 {% block content %}
 <main>
   <!-- Welcome & Search -->
-  <section class="home-welcome mt-5">
-    <div class="container text-center">
-      <h1 class="fw-bold mb-3" style="color: #0F294D; font-size: 32px;">Chào mừng trở lại, <span
-          data-rova-welcome-name>Lại Gia Hân</span>!</h1>
-      <p class="text-muted mb-4">Hôm nay bạn muốn đi đâu để tận hưởng kỳ nghỉ tiếp theo?</p>
-    </div>
-  </section>
-
-  <section class="home-hero home-hero--compact mb-5">
+  <section class="home-hero home-hero--member mb-5">
     <div class="container home-hero__inner px-3 px-lg-4">
-      {% include 'customer/includes/layout/search-bar.html' %}
+      <div class="home-hero__content text-center">
+        <h1 class="home-hero__title home-hero__title--welcome">Chào mừng trở lại, <span data-rova-welcome-name>Lại Gia Hân</span>!</h1>
+        <p class="home-hero__subtitle">Hôm nay bạn muốn đi đâu để tận hưởng kỳ nghỉ tiếp theo?</p>
+      </div>
+      <div class="home-hero__search">
+        {% include 'customer/includes/layout/search-bar.html' %}
+      </div>
     </div>
   </section>
 
@@ -28,35 +26,29 @@
       <div class="row g-3">
         <!-- Card 1 -->
         <div class="col-md-4">
-          <div class="promo-card promo-card-blue h-100 p-4 rounded-4 position-relative overflow-hidden shadow-sm d-flex flex-column">
-            <span class="badge bg-white text-primary mb-3 align-self-start">Ưu đãi thành viên mới</span>
-            <h3 class="text-white fw-bold fs-5 mb-2">Giảm 10% cho lần đặt phòng đầu tiên</h3>
-            <p class="text-white-50 small mb-4">Áp dụng cho tất cả khách sạn trên hệ thống.</p>
+          <div class="member-promo-card member-promo-card--blue h-100 p-4 rounded-4 shadow-sm d-flex flex-column">
+            <span class="member-promo-card__badge">Ưu đãi thành viên mới</span>
+            <h3 class="member-promo-card__title">Giảm 10% cho lần đặt phòng đầu tiên</h3>
+            <p class="member-promo-card__desc">Áp dụng cho tất cả khách sạn trên hệ thống.</p>
             <a href="#" class="btn btn-light text-primary fw-medium px-4 mt-auto align-self-start">Nhận mã ngay</a>
           </div>
         </div>
         <!-- Card 2 -->
         <div class="col-md-4">
-          <div class="promo-card promo-card-green h-100 p-4 rounded-4 position-relative overflow-hidden shadow-sm d-flex flex-column">
-            <span class="badge bg-white text-success mb-3 align-self-start">Đặc quyền thành viên</span>
-            <h3 class="text-white fw-bold fs-5 mb-2">Miễn phí bữa sáng cho các kỳ nghỉ cuối tuần</h3>
-            <p class="text-white-50 small mb-4">Áp dụng cho các booking đặt trước 7 ngày.</p>
+          <div class="member-promo-card member-promo-card--green h-100 p-4 rounded-4 shadow-sm d-flex flex-column">
+            <span class="member-promo-card__badge">Đặc quyền thành viên</span>
+            <h3 class="member-promo-card__title">Miễn phí bữa sáng cho các kỳ nghỉ cuối tuần</h3>
+            <p class="member-promo-card__desc">Áp dụng cho các booking đặt trước 7 ngày.</p>
             <a href="#" class="btn btn-light text-success fw-medium px-4 mt-auto align-self-start">Xem chi tiết</a>
           </div>
         </div>
         <!-- Card 3 -->
         <div class="col-md-4">
-          <div class="promo-card promo-card-orange h-100 p-4 rounded-4 position-relative overflow-hidden shadow-sm d-flex flex-column">
-            <span class="badge bg-white text-warning mb-3 align-self-start">Tích lũy xu</span>
-            <h3 class="text-white fw-bold fs-5 mb-2">Nhận ngay xu thưởng khi hoàn thành đơn đặt phòng</h3>
-            <p class="text-white-50 small mb-4">Sử dụng Xu cho đơn đặt phòng.</p>
+          <div class="member-promo-card member-promo-card--gold h-100 p-4 rounded-4 shadow-sm d-flex flex-column">
+            <span class="member-promo-card__badge">Tích lũy xu</span>
+            <h3 class="member-promo-card__title">Nhận ngay xu thưởng khi hoàn thành đơn đặt phòng</h3>
+            <p class="member-promo-card__desc">Sử dụng Xu cho đơn đặt phòng tiếp theo và nhận thêm ưu đãi độc quyền.</p>
             <a href="#" class="btn btn-light text-warning fw-medium px-4 mt-auto align-self-start">Khám phá ngay</a>
-            <div class="position-absolute top-50 end-0 translate-middle-y me-4 d-none d-lg-block">
-              <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center shadow"
-                style="width: 60px; height: 60px;">
-                <i class="bi bi-robot fs-4 text-white"></i>
-              </div>
-            </div>
           </div>
         </div>
       </div>

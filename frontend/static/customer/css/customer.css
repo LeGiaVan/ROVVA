@@ -45,8 +45,8 @@
   --font-family: "Inter", sans-serif;
 
   /* Background images (paths relative to assets/css/) */
-  --img-hero: url("../images/hotels/KS_code_DaNang.jpg");
-  --img-auth-bg: url("../images/hotels/KS_code_DaNang.jpg");
+  --img-hero: url("../images/backgrounds/hero.jpg");
+  --img-auth-bg: url("../images/backgrounds/hero-auth.jpg");
   --img-footer-bg: url("../images/backgrounds/footer2.jpg");
 }
 
@@ -941,6 +941,80 @@ body.rova-page-shell>main {
   font-weight: 600;
 }
 
+/* Guest/member listing card aliases (templates dùng class khác cards.css) */
+.listing-grid > a {
+  display: flex;
+  height: 100%;
+}
+
+.listing-grid > a > .listing-card {
+  width: 100%;
+  height: 100%;
+}
+
+.listing-card__image-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--rovva-bg-soft);
+}
+
+.listing-card__image-wrapper img,
+.listing-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.listing-card__content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 140px;
+}
+
+.listing-card__price-wrap {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.listing-card__price {
+  color: var(--rovva-blue);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.listing-card__unit {
+  color: var(--rovva-muted);
+  font-size: 0.875rem;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--rovva-muted);
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.favorite-btn:hover {
+  color: #e91e63;
+  background: #fff;
+}
+
 /* ── Bootstrap button overrides ── */
 .btn-rova-primary {
   background: var(--rovva-blue);
@@ -1182,6 +1256,118 @@ body.rova-page-shell>main {
   gap: 1.25rem;
 }
 
+/* Guest home — new user offer cards */
+.guest-offers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.guest-offer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  padding: 1.75rem;
+  background: #fff;
+  border: 1px solid rgba(194, 198, 214, 0.55);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(15, 41, 77, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guest-offer-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(15, 41, 77, 0.1);
+}
+
+.guest-offer-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+}
+
+.guest-offer-card__icon--blue {
+  background: rgba(0, 88, 190, 0.1);
+  color: var(--rovva-blue);
+}
+
+.guest-offer-card__icon--sky {
+  background: rgba(39, 132, 240, 0.12);
+  color: #2784f0;
+}
+
+.guest-offer-card__icon--navy {
+  background: rgba(15, 41, 77, 0.08);
+  color: var(--rovva-navy);
+}
+
+.guest-offer-card__tag {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  margin-bottom: 0.75rem;
+  border-radius: 999px;
+  background: var(--rovva-bg-soft);
+  color: var(--rovva-blue);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.guest-offer-card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--rovva-navy);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.guest-offer-card__desc {
+  font-size: 0.875rem;
+  color: var(--rovva-muted);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+.guest-offer-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--rovva-border);
+  background: #fff;
+  color: var(--rovva-navy);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.guest-offer-card__btn:hover {
+  background: var(--rovva-bg-soft);
+  color: var(--rovva-blue);
+  border-color: rgba(0, 88, 190, 0.35);
+}
+
+.guest-offer-card__btn--primary {
+  background: var(--rovva-blue);
+  border-color: var(--rovva-blue);
+  color: #fff;
+}
+
+.guest-offer-card__btn--primary:hover {
+  background: var(--rovva-blue-hover);
+  border-color: var(--rovva-blue-hover);
+  color: #fff;
+}
+
 .promo-card {
   display: flex;
   background: #fff;
@@ -1243,6 +1429,63 @@ body.rova-page-shell>main {
 .promo-card__accent i {
   font-size: 1.75rem;
   color: var(--rovva-blue);
+}
+
+/* Member home — promo gift cards */
+.member-promo-card {
+  border: none;
+  color: #fff;
+}
+
+.member-promo-card__badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.35rem 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.member-promo-card__title {
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.member-promo-card__desc {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.member-promo-card--blue {
+  background: linear-gradient(145deg, #004a9f 0%, #2784f0 100%);
+}
+
+.member-promo-card--blue .member-promo-card__badge {
+  color: var(--rovva-blue);
+}
+
+.member-promo-card--green {
+  background: linear-gradient(145deg, #005c40 0%, #00a870 100%);
+}
+
+.member-promo-card--green .member-promo-card__badge {
+  color: var(--rovva-success);
+}
+
+.member-promo-card--gold {
+  background: linear-gradient(145deg, #c45c00 0%, #f5a623 100%);
+}
+
+.member-promo-card--gold .member-promo-card__badge {
+  color: #c45c00;
 }
 
 .destinations-grid {
@@ -1361,7 +1604,8 @@ a:hover .why-card,
 }
 
 @media (max-width: 1199.98px) {
-  .promo-carousel {
+  .promo-carousel,
+  .guest-offers {
     grid-template-columns: 1fr;
   }
 
@@ -1401,21 +1645,83 @@ a:hover .why-card,
 
 .home-hero {
   position: relative;
-  padding: 2.5rem 0 3rem;
-  background:
-    linear-gradient(rgba(15, 41, 77, 0.55), rgba(15, 41, 77, 0.25)),
-    var(--img-hero) center/cover no-repeat;
-  min-height: 340px;
+  padding: 3rem 0 3.5rem;
+  background-color: var(--rovva-navy);
+  background-image:
+    linear-gradient(rgba(15, 41, 77, 0.58), rgba(15, 41, 77, 0.42)),
+    var(--img-hero);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 420px;
   display: flex;
   align-items: center;
 }
 
 .home-hero--compact {
   min-height: auto;
-  padding: 1.5rem 0 2rem;
-  background:
-    linear-gradient(rgba(15, 41, 77, 0.45), rgba(15, 41, 77, 0.2)),
-    var(--img-hero) center/cover no-repeat;
+  padding: 1.75rem 0 2.5rem;
+  background-color: var(--rovva-navy);
+  background-image:
+    linear-gradient(rgba(15, 41, 77, 0.55), rgba(15, 41, 77, 0.35)),
+    var(--img-hero);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.smart-result-card__img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  background: var(--rovva-bg-soft);
+}
+
+.home-hero--member {
+  min-height: auto;
+  padding: 2.5rem 0 3rem;
+  margin-top: 1.5rem;
+}
+
+.home-hero__content {
+  max-width: 720px;
+  margin: 0 auto 1.75rem;
+}
+
+.home-hero__search {
+  max-width: 966px;
+  margin: 0 auto;
+}
+
+.smart-search {
+  max-width: 966px;
+  margin: 0 auto 1rem;
+}
+
+.smart-search .input-group {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(194, 198, 214, 0.45);
+  box-shadow: var(--shadow-search);
+}
+
+.smart-search .form-control {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.smart-search .form-control::placeholder {
+  color: rgba(66, 71, 84, 0.65);
+  font-weight: 500;
+}
+
+.home-hero__title--welcome {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  margin-bottom: 0.5rem;
+}
+
+.home-hero__title--welcome span {
+  color: #7ec8ff;
 }
 
 .home-welcome {
@@ -1451,12 +1757,13 @@ a:hover .why-card,
   font-weight: 700;
   color: #fff;
   line-height: 1.25;
-  margin-bottom: 1.75rem;
+  margin-bottom: 0.75rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
-.home-hero .search-widget {
-  max-width: 966px;
+.home-hero .search-widget,
+.home-hero__search .search-widget {
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -1489,10 +1796,12 @@ a:hover .why-card,
 .home-hero__subtitle {
   text-align: center;
   color: rgba(255, 255, 255, 0.92);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 500;
-  margin: 0 auto 1.5rem;
-  max-width: 672px;
+  margin: 0 auto 0;
+  max-width: 560px;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .home-hero--search .search-widget {
@@ -7958,6 +8267,10 @@ body[data-page="trip"] .page-content {
 }
 
 .page-accommodation__detail.container-xxl {
+  padding-top: 2.5rem;
+}
+
+.page-accommodation--no-hero .page-accommodation__detail.container-xxl {
   padding-top: 2rem;
 }
 
@@ -8031,8 +8344,9 @@ body[data-page="trip"] .page-content {
 .page-accommodation__mosaic {
   display: grid;
   grid-template-columns: 1.9fr 1fr 1.05fr;
-  grid-template-rows: repeat(2, minmax(180px, 205px));
+  grid-template-rows: 1fr 1fr;
   gap: 12px;
+  height: 400px;
   margin-bottom: 1rem;
 }
 
@@ -8042,6 +8356,8 @@ body[data-page="trip"] .page-content {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  min-height: 0;
 }
 
 .page-accommodation__mosaic-main img,
@@ -8057,7 +8373,8 @@ body[data-page="trip"] .page-content {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  min-height: 197px;
+  min-height: 0;
+  height: 100%;
 }
 
 .page-accommodation__mosaic-item--overlay {
@@ -8423,6 +8740,9 @@ body[data-page="trip"] .page-content {
   border-radius: 999px;
   border: 4px solid #d8e2ff;
   object-fit: cover;
+  background: #d8e2ff;
+  display: block;
+  margin: 0 auto;
 }
 
 .page-accommodation__host-profile strong {
@@ -8823,6 +9143,7 @@ body[data-page="trip"] .page-content {
   .page-accommodation__mosaic {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
+    height: auto;
   }
 
   .page-accommodation__mosaic-main {

@@ -191,7 +191,7 @@
         <div class="col-12 col-md-6 col-lg-4">
             <div class="acc-card bg-white h-100 d-flex flex-column">
                 <div class="acc-card-img-wrap">
-                    <img src="{{ url_for('static', filename=acc.image if acc.image else 'images/demo-acc.png') }}" alt="{{ acc.name }}" class="acc-card-img" onerror="this.onerror=null; this.src='{{ url_for('static', filename='shared/images/demo-acc.png') }}';">
+                    <img src="{{ acc.cover_url }}" alt="{{ acc.name }}" class="acc-card-img">
                     
                     {% if acc.status == 'active' %}
                         <span class="acc-badge active"><i class="bi bi-check-circle-fill me-1"></i> Đang hoạt động</span>

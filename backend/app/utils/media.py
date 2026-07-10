@@ -4,6 +4,7 @@ Quy ước thư mục (đặt trong frontend/static/):
     customer/images/accommodations/<acc_id>/cover.jpg
     customer/images/accommodations/<acc_id>/gallery/1..5.jpg
     customer/images/accommodations/<acc_id>/rooms/<room_id>.jpg
+    customer/images/avatars/<user_id>.jpg
 
 Nếu file chưa được "thả" vào thư mục, trả ảnh placeholder tương ứng để
 giao diện không bị vỡ. Nhờ vậy có thể bổ sung ảnh demo dần mà không cần sửa code.
@@ -52,6 +53,14 @@ def accommodation_gallery(acc_id, count=5):
 
 
 def room_image(acc_id, room_id):
-    return resolve_media(
-        f"customer/images/accommodations/{acc_id}/rooms/{room_id}.jpg", "room"
-    )
+    room_path = f"customer/images/accommodations/{acc_id}/rooms/{room_id}.jpg"
+    if _static_exists(room_path):
+        return url_for("static", filename=room_path)
+    cover_path = f"customer/images/accommodations/{acc_id}/cover.jpg"
+    if _static_exists(cover_path):
+        return url_for("static", filename=cover_path)
+    return url_for("static", filename=PLACEHOLDERS["room"])
+
+
+def user_avatar(user_id):
+    return resolve_media(f"customer/images/avatars/{user_id}.jpg", "avatar")

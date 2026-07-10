@@ -118,7 +118,7 @@
             <div class="section-card">
                 <h3 class="section-title"><i class="bi bi-house text-primary"></i> Thông tin lưu trú</h3>
                 <div class="d-flex flex-column flex-md-row gap-4">
-                    <img src="{{ url_for('static', filename=booking.room.image if booking.room.image else (booking.room.accommodation.image if booking.room.accommodation.image else 'images/demo-acc.png')) }}" alt="Room" class="rounded" style="width: 200px; height: 140px; object-fit: cover;">
+                    <img src="{{ booking.room.image_url }}" alt="Room" class="rounded" style="width: 200px; height: 140px; object-fit: cover;">
                     <div class="flex-grow-1">
                         <div class="row g-3">
                             <div class="col-sm-6">
@@ -211,6 +211,8 @@
         
         <!-- Right Column -->
         <div class="col-lg-4">
+            {% include 'host/copilot/_persona_card.html' %}
+
             <!-- Khách hàng -->
             <div class="section-card mb-4">
                 <h3 class="section-title"><i class="bi bi-person text-primary"></i> Khách hàng</h3>

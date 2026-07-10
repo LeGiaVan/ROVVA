@@ -163,21 +163,71 @@
         background: #fff;
     }
 
+    .host-pay-table {
+        table-layout: fixed;
+        width: 100%;
+        min-width: 1080px;
+        margin-bottom: 0;
+    }
+
+    .host-pay-table th,
+    .host-pay-table td {
+        padding: 10px 12px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .host-pay-table th:nth-child(1),
+    .host-pay-table td:nth-child(1) { width: 96px; white-space: nowrap; }
+
+    .host-pay-table th:nth-child(2),
+    .host-pay-table td:nth-child(2) { width: 108px; white-space: nowrap; }
+
+    .host-pay-table th:nth-child(3),
+    .host-pay-table td:nth-child(3) { width: 200px; }
+
+    .host-pay-table th:nth-child(4),
+    .host-pay-table td:nth-child(4) { width: 118px; font-size: 13px; line-height: 1.35; }
+
+    .host-pay-table th:nth-child(5),
+    .host-pay-table td:nth-child(5),
+    .host-pay-table th:nth-child(6),
+    .host-pay-table td:nth-child(6),
+    .host-pay-table th:nth-child(7),
+    .host-pay-table td:nth-child(7) {
+        width: 108px;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .host-pay-table th:nth-child(8),
+    .host-pay-table td:nth-child(8) { width: 130px; }
+
+    .host-pay-table th:nth-child(9),
+    .host-pay-table td:nth-child(9) { width: 100px; font-size: 13px; }
+
+    .host-pay-table .room-info {
+        display: block;
+        font-size: 12px;
+        color: #94a3b8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .table th {
         background: #f8fafc;
         color: #64748b;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        padding: 16px 24px;
         border-bottom: 1px solid #e2e8f0;
     }
 
     .table td {
-        padding: 16px 24px;
-        vertical-align: middle;
-        font-size: 14px;
+        font-size: 13px;
         color: #334155;
         border-bottom: 1px solid #f1f5f9;
         font-weight: 500;
@@ -398,7 +448,7 @@
                     <div class="stat-value">{{ "{:,.0f}".format(in_dispute_amount).replace(',', '.') }} đ</div>
                 </div>
                 <div class="stat-desc d-flex justify-content-between align-items-center">
-                    <span>{{ pagination.total if active_tab == 'Đang tranh chấp' else '3' }} Booking</span>
+                    <span>{{ in_dispute_count }} Booking</span>
                     <a href="{{ url_for('payment.index', status='Đang tranh chấp') }}" class="text-decoration-none"
                         style="color: #b45309;">Xem chi tiết <i class="bi bi-arrow-right"></i></a>
                 </div>
@@ -478,7 +528,7 @@
         <!-- Table -->
         <div class="table-container">
             <div class="table-responsive">
-                <table class="table mb-0">
+                <table class="table host-pay-table mb-0">
                     <thead>
                         <tr>
                             <th>Ngày cập nhật</th>
@@ -532,8 +582,7 @@
                                 {{ booking.disbursed_at.strftime('%d/%m/%Y') }}
                                 {% elif booking.payment_status == 'pending' %}
                                 Dự kiến<br>
-                                {{ (booking.check_out + datetime.timedelta(days=7)).strftime('%d/%m/%Y') if datetime
-                                else '---' }}
+                                {{ (booking.check_out + timedelta(days=7)).strftime('%d/%m/%Y') }}
                                 {% else %}
                                 Đang tạm giữ
                                 {% endif %}

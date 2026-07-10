@@ -462,8 +462,8 @@ def seed_database():
         db.session.add_all([d1, d2, d3])
         
     from backend.app.models import Withdrawal
-    w1 = Withdrawal(host_id=host.id, amount=12000000, bank_account="Vietcombank xxxx 1234", status=Withdrawal.STATUS_COMPLETED, created_at=today - timedelta(days=30), completed_at=today - timedelta(days=29))
-    w2 = Withdrawal(host_id=host.id, amount=44000000, bank_account="Vietcombank xxxx 1234", status=Withdrawal.STATUS_COMPLETED, created_at=today - timedelta(days=10), completed_at=today - timedelta(days=9))
+    w1 = Withdrawal(host_id=host.id, amount=4000000, bank_account="Vietcombank xxxx 1234", status=Withdrawal.STATUS_COMPLETED, created_at=today - timedelta(days=30), completed_at=today - timedelta(days=29))
+    w2 = Withdrawal(host_id=host.id, amount=3500000, bank_account="Vietcombank xxxx 1234", status=Withdrawal.STATUS_COMPLETED, created_at=today - timedelta(days=10), completed_at=today - timedelta(days=9))
     db.session.add_all([w1, w2])
 
     from backend.app.models import Conversation, Message
@@ -558,3 +558,36 @@ def get_dashboard_stats():
         tx1 = WalletTransaction(user_id=1, type='earn', amount=68, description='Earned from booking a hotel')
         db.session.add(tx1)
         db.session.commit()
+
+
+def patch_host_payment_demo():
+    """Điều chỉnh số tiền rút demo nếu DB còn giá trị cũ (56M)."""
+    from sqlalchemy import func
+
+    from backend.app.models import Withdrawal
+
+    host = User.query.filter_by(email="van.quangia@rova.vn").first()
+    if not host:
+        return
+
+    total_withdrawn = (
+        db.session.query(func.sum(Withdrawal.amount))
+        .filter_by(host_id=host.id, status=Withdrawal.STATUS_COMPLETED)
+        .scalar()
+        or 0
+    )
+    if total_withdrawn < 50000000:
+        return
+
+    rows = (
+        Withdrawal.query.filter_by(host_id=host.id)
+        .order_by(Withdrawal.id)
+        .limit(2)
+        .all()
+    )
+    if len(rows) < 2:
+        return
+
+    rows[0].amount = 4000000
+    rows[1].amount = 3500000
+    db.session.commit()

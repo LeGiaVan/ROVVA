@@ -1,30 +1,43 @@
 {% extends 'admin/layout/base.html' %}
-{% block title %}Quản lý khuyến mãi — Rovva Admin{% endblock %}
+{% block title %}Khuyến mãi — Rovva Admin{% endblock %}
+{% block breadcrumb %}Khuyến mãi{% endblock %}
 
 {% block content %}
 <div class="admin-page-head">
   <h1>Quản lý khuyến mãi</h1>
-  <p>Danh sách chương trình khuyến mãi của Host</p>
+  <p>Chương trình khuyến mãi do Host tạo</p>
 </div>
+
 <div class="admin-panel">
-  <div class="table-responsive">
-    <table class="table admin-table">
-      <thead><tr><th>Tên</th><th>Host</th><th>Loại</th><th>Giá trị</th><th>Thời gian</th><th>Trạng thái</th></tr></thead>
-      <tbody>
-        {% for p in promotions %}
-        <tr>
-          <td>{{ p.name }}</td>
-          <td>{{ p.host.full_name if p.host else '—' }}</td>
-          <td>{{ p.type }}</td>
-          <td>{{ p.discount_value }}</td>
-          <td>{{ p.start_date or '—' }} → {{ p.end_date or '—' }}</td>
-          <td>{% if p.status %}<span class="badge bg-success">Hoạt động</span>{% else %}<span class="badge bg-secondary">Tắt</span>{% endif %}</td>
-        </tr>
-        {% else %}
-        <tr><td colspan="6" class="text-secondary">Chưa có khuyến mãi.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="admin-panel__head">
+    <h2 class="admin-panel__title"><i class="bi bi-tag-fill"></i> Danh sách khuyến mãi</h2>
+  </div>
+  <div class="admin-panel__body">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Tên</th><th>Host</th><th>Loại</th><th>Giá trị</th><th>Thời gian</th><th>Trạng thái</th></tr></thead>
+        <tbody>
+          {% for p in promotions %}
+          <tr>
+            <td><strong>{{ p.name }}</strong></td>
+            <td>{{ p.host.full_name if p.host else '—' }}</td>
+            <td><span class="admin-badge admin-badge--purple">{{ p.type }}</span></td>
+            <td><strong>{{ p.discount_value }}</strong></td>
+            <td>{{ p.start_date or '—' }} → {{ p.end_date or '—' }}</td>
+            <td>
+              {% if p.status %}
+              <span class="admin-badge admin-badge--success">Hoạt động</span>
+              {% else %}
+              <span class="admin-badge admin-badge--neutral">Tắt</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6"><div class="admin-empty"><i class="bi bi-tag"></i><p>Chưa có khuyến mãi.</p></div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 {% endblock %}

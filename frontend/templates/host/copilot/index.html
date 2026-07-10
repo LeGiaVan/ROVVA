@@ -1,0 +1,187 @@
+{% extends 'host/layout/base.html' %}
+
+{% block title %}Host Copilot — Rovva{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    body { background-color: #f8f9fa; }
+    .copilot-hero {
+        background: linear-gradient(135deg, #1e66c7 0%, #0d47a1 100%);
+        border-radius: 16px;
+        color: #fff;
+        padding: 28px 32px;
+        margin-bottom: 28px;
+    }
+    .copilot-hero h1 { font-weight: 800; font-size: 28px; margin-bottom: 8px; }
+    .copilot-metric {
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px;
+        padding: 12px 16px;
+        text-align: center;
+    }
+    .copilot-metric-val { font-size: 22px; font-weight: 800; }
+    .copilot-metric-label { font-size: 11px; opacity: 0.85; text-transform: uppercase; }
+    .copilot-tabs .nav-link {
+        color: #64748b;
+        font-weight: 600;
+        border: none;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        padding: 12px 0;
+        margin-right: 24px;
+    }
+    .copilot-tabs .nav-link.active {
+        color: var(--rovva-primary-blue);
+        border-bottom-color: var(--rovva-primary-blue);
+        background: transparent;
+    }
+    .rec-card, .radar-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+    }
+    .rec-card:hover, .radar-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .impact-badge {
+        font-size: 11px;
+        font-weight: 700;
+        color: #059669;
+        background: #d1fae5;
+        padding: 4px 8px;
+        border-radius: 6px;
+    }
+    .severity-high { color: #dc2626; background: #fee2e2; }
+    .severity-medium { color: #b45309; background: #fef3c7; }
+    .severity-low { color: #047857; background: #d1fae5; }
+    .severity-pill {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4" style="max-width: 1200px;">
+
+    <div class="copilot-hero">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <h1><i class="bi bi-stars"></i> Rovva Host Copilot</h1>
+                <p class="mb-0 opacity-90">Trợ lý vận hành — gợi ý doanh thu, phát hiện bảo trì, hiểu khách trước khi đón.</p>
+            </div>
+            <div class="col-lg-4">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="copilot-metric">
+                            <div class="copilot-metric-val">{{ (ctx.next_week_occupancy * 100) | round(0) | int }}%</div>
+                            <div class="copilot-metric-label">Occ. 7 ngày tới</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="copilot-metric">
+                            <div class="copilot-metric-val">{{ ctx.active_room_count }}</div>
+                            <div class="copilot-metric-label">Phòng active</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav copilot-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link{% if active_tab == 'advisor' %} active{% endif %}"
+               href="{{ url_for('copilot.index', tab='advisor') }}">
+                <i class="bi bi-lightbulb"></i> Revenue Advisor
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link{% if active_tab == 'radar' %} active{% endif %}"
+               href="{{ url_for('copilot.index', tab='radar') }}">
+                <i class="bi bi-radar"></i> Maintenance Radar
+                {% if alerts %}<span class="badge bg-danger ms-1">{{ alerts | length }}</span>{% endif %}
+            </a>
+        </li>
+    </ul>
+
+    {% if active_tab == 'advisor' %}
+    <div class="row g-4">
+        {% for rec in recommendations %}
+        <div class="col-12">
+            <div class="rec-card d-flex flex-column flex-md-row gap-3 align-items-md-start">
+                <div class="rounded-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width: 48px; height: 48px;">
+                    <i class="bi {{ rec.icon }} fs-5"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                        <h2 class="h6 fw-bold mb-0">{{ rec.title }}</h2>
+                        <span class="impact-badge">{{ rec.impact }}</span>
+                    </div>
+                    <p class="text-secondary small mb-3">{{ rec.description }}</p>
+                    {% if rec.action_url == 'promotion.create' %}
+                    <a href="{{ url_for('promotion.create', name=rec.action_params.get('name',''), type=rec.action_params.get('type',''), discount_value=rec.action_params.get('discount_value',''), apply_days=rec.action_params.get('apply_days',''), min_nights=rec.action_params.get('min_nights','')) }}"
+                       class="btn btn-primary btn-sm fw-semibold">{{ rec.action_label }}</a>
+                    {% elif rec.action_url == 'accommodation.room_pricing' %}
+                    <a href="{{ url_for('accommodation.room_pricing', acc_id=rec.action_params.acc_id, room_id=rec.action_params.room_id) }}"
+                       class="btn btn-primary btn-sm fw-semibold">{{ rec.action_label }}</a>
+                    {% elif rec.action_url == 'copilot.index' %}
+                    <a href="{{ url_for('copilot.index', tab='radar') }}"
+                       class="btn btn-primary btn-sm fw-semibold">{{ rec.action_label }}</a>
+                    {% else %}
+                    <a href="{{ url_for(rec.action_url) }}"
+                       class="btn btn-primary btn-sm fw-semibold">{{ rec.action_label }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    {% if alerts %}
+    <div class="row g-4">
+        {% for alert in alerts %}
+        <div class="col-12 col-lg-6">
+            <div class="radar-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h2 class="h6 fw-bold mb-1">{{ alert.room_name }}</h2>
+                        <div class="text-muted small">{{ alert.acc_name }}</div>
+                    </div>
+                    <span class="severity-pill severity-{{ alert.level }}">{{ alert.issue_label }}</span>
+                </div>
+                <div class="small text-secondary mb-2">
+                    <i class="bi bi-chat-quote"></i>
+                    "{{ alert.sample_quote }}"
+                    {% if alert.sample_rating %}
+                    <span class="text-warning ms-1"><i class="bi bi-star-fill"></i> {{ alert.sample_rating }}</span>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">{{ alert.mention_count }} phản hồi · severity {{ alert.severity }}</span>
+                    <form method="POST" action="{{ url_for('copilot.resolve_maintenance') }}" class="d-inline">
+                        <input type="hidden" name="issue_key" value="{{ alert.key }}">
+                        <button type="submit" class="btn btn-outline-success btn-sm fw-semibold">
+                            <i class="bi bi-check-lg"></i> Đã xử lý
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 bg-white rounded-3 border">
+        <i class="bi bi-shield-check text-success" style="font-size: 2.5rem;"></i>
+        <p class="mt-3 fw-semibold mb-1">Không có cảnh báo bảo trì</p>
+        <p class="text-secondary small">Tất cả phòng đang ổn định theo dữ liệu review & tin nhắn.</p>
+    </div>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -52,9 +52,10 @@ def create_app(config_name="default"):
         from backend.app import models  # noqa: F401
 
         db.create_all()
-        from backend.app.seed import seed_database
+        from backend.app.seed import patch_host_payment_demo, seed_database
 
         seed_database()
+        patch_host_payment_demo()
 
     return app
 
@@ -71,3 +72,6 @@ def register_cli(app):
             print("Database seeded successfully.")
         else:
             print("Database already contains data. Use drop/create first.")
+        from backend.app.seed import patch_host_payment_demo
+
+        patch_host_payment_demo()
