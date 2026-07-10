@@ -1,14 +1,12 @@
 /**
  * Rovva customer — tương tác UI tối giản.
- *
- * Phần lớn dữ liệu đã được render server-side (Jinja + Flask). File này chỉ giữ
- * lại một số tương tác nhỏ phía client để giao diện mượt hơn.
  */
+
+import { initSupportPages } from "./support-pages.js";
 
 (function () {
   "use strict";
 
-  // Tự ẩn thông báo flash sau vài giây.
   function autoDismissAlerts() {
     document.querySelectorAll(".alert-dismissible, [data-rova-flash]").forEach(function (el) {
       window.setTimeout(function () {
@@ -20,7 +18,6 @@
     });
   }
 
-  // Nút yêu thích: chỉ đổi trạng thái hiển thị (demo). Dữ liệu thật quản lý ở server.
   function bindFavoriteButtons() {
     document.querySelectorAll(".favorite-btn").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
@@ -38,5 +35,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     autoDismissAlerts();
     bindFavoriteButtons();
+    initSupportPages();
   });
 })();

@@ -4,6 +4,15 @@
 {% block content %}
 <main class="page-content">
 
+    <section class="reward-promo-banner" style="--reward-promo-image: url('{{ url_for('static', filename='customer/images/accommodations/5/cover.jpg') }}')">
+      <div class="container-xxl reward-promo-banner__inner">
+        <p class="reward-promo-banner__eyebrow">Chương trình thành viên</p>
+        <h1 class="reward-promo-banner__title">XU THƯỞNG HẤP DẪN</h1>
+        <p class="reward-promo-banner__subtitle">Tích lũy Xu ngay — Giảm giá đặt phòng</p>
+        <a class="btn btn-reward-cta btn-lg" href="{{ url_for('auth.register') }}">Tham gia ngay</a>
+      </div>
+    </section>
+
     <section class="reward-hero">
       <div class="container-xxl">
         <span class="reward-hero__rate"><i class="bi bi-coin"></i> Tỷ lệ quy đổi: 1 xu = 1.000 VNĐ</span>
@@ -15,8 +24,7 @@
     <div class="container-xxl pb-5">
 
       <section class="reward-banner-box">
-        <img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="Chương trình Xu thưởng Rovva"
-             onerror="this.style.display='none'">
+        <img src="{{ url_for('static', filename='customer/images/accommodations/5/cover.jpg') }}" alt="Chương trình Xu thưởng Rovva">
       </section>
 
       <section class="mb-5">
@@ -122,6 +130,13 @@
           </div>
         </div>
       </section>
+
+      {% if not current_user.is_authenticated %}
+      <p class="text-center mt-4 mb-0">
+        Bạn vẫn chưa là thành viên của Rovva?
+        <a href="{{ url_for('auth.register') }}">Đăng ký ngay</a>
+      </p>
+      {% endif %}
 
     </div>
 

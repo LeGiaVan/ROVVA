@@ -35,7 +35,7 @@
                   </div>
                   <div class="col-12"><label class="form-label">Địa chỉ / Thành phố</label><input class="form-control" name="location" required></div>
                   <div class="col-12"><label class="form-label">Mô tả ngắn</label><textarea class="form-control" name="description" rows="3" placeholder="Số phòng, tiện nghi nổi bật..."></textarea></div>
-                  <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="host-terms" required><label class="form-check-label" for="host-terms">Tôi đồng ý với <a href="../../pages/support/terms.html">Điều khoản &amp; Chính sách Host</a></label></div></div>
+                  <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="host-terms" required><label class="form-check-label" for="host-terms">Tôi đồng ý với <a href="{{ url_for('customer.show_page', page_path='pages/support/terms.html') }}">Điều khoản &amp; Chính sách Host</a></label></div></div>
                   <div class="col-12"><button type="submit" class="btn btn-rova-primary btn-lg w-100"><i class="bi bi-send"></i> Gửi đăng ký</button></div>
                 </div>
               </form>

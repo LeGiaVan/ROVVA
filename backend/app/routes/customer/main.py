@@ -397,10 +397,20 @@ _SSR_REDIRECTS = {
 }
 
 
+@customer_bp.route("/chat")
+def ai_chat():
+    if current_user.is_authenticated and current_user.role in ("customer", "guest"):
+        return render_template("customer/pages/chat/member.html")
+    return render_template("customer/pages/chat/guest.html")
+
+
 @customer_bp.route("/<path:page_path>")
 def show_page(page_path):
     if ".." in page_path:
         abort(400)
+
+    if page_path in ("pages/chat/guest.html", "pages/chat/member.html"):
+        return redirect(url_for("customer.ai_chat"))
 
     if page_path in _SSR_REDIRECTS:
         return redirect(url_for(_SSR_REDIRECTS[page_path]))

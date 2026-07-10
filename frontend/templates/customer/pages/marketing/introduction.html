@@ -4,7 +4,7 @@
 {% block content %}
 <main class="page-content">
 
-    <section class="about-hero">
+    <section class="about-hero about-hero--visual" style="--about-hero-image: url('{{ url_for('static', filename='customer/images/accommodations/7/cover.jpg') }}')">
       <div class="container-xxl">
         <p class="about-hero__eyebrow">Smart Stay Platform</p>
         <h1 class="about-hero__title">Khởi nguồn của những<br>hành trình thông minh</h1>
@@ -112,8 +112,8 @@
         <h2>Bạn đã sẵn sàng bắt đầu hành trình của riêng mình?</h2>
         <p>Gia nhập hệ sinh thái Rovva ngay hôm nay để tận hưởng ưu đãi đặc quyền và những giải pháp vận hành đột phá.</p>
         <div class="d-flex flex-wrap gap-3 justify-content-center">
-          <a class="btn btn-light btn-lg" href="../home/guest.html"><i class="bi bi-search"></i> Đặt phòng ngay</a>
-          <a class="btn btn-rova-outline btn-lg text-white border-white" href="become-host.html"><i class="bi bi-building-add"></i> Trở thành Đối tác</a>
+          <a class="btn btn-light btn-lg" href="{{ url_for('customer.index') }}"><i class="bi bi-search"></i> Đặt phòng ngay</a>
+          <a class="btn btn-rova-outline btn-lg text-white border-white" href="{{ url_for('customer.show_page', page_path='pages/marketing/become-host.html') }}"><i class="bi bi-building-add"></i> Trở thành Đối tác</a>
         </div>
       </div>
     </section>

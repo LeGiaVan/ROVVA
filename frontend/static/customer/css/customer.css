@@ -9961,3 +9961,194 @@ ul {
     max-width: 1400px; 
 }
 
+/* ── Support pages polish (Figma) ─────────────────────────────────── */
+
+.faq-group__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.faq-group__badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--faq-color, var(--rovva-blue));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.tier-rules {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--rovva-text, #424754);
+  line-height: 1.7;
+}
+
+.tier-rules li {
+  margin-bottom: 0.5rem;
+}
+
+.promo-hero--visual {
+  position: relative;
+  background: linear-gradient(120deg, rgba(35, 11, 100, 0.92) 0%, rgba(48, 77, 204, 0.88) 100%);
+  padding: 3rem 0;
+  overflow: hidden;
+}
+
+.promo-hero--visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--promo-hero-image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.promo-hero--visual .container-xxl {
+  position: relative;
+  z-index: 1;
+}
+
+.about-hero--visual {
+  background: linear-gradient(120deg, rgba(35, 11, 100, 0.9) 0%, rgba(48, 77, 204, 0.85) 100%);
+}
+
+.about-hero--visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--about-hero-image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.28;
+}
+
+.about-hero--visual .container-xxl {
+  position: relative;
+  z-index: 1;
+}
+
+.reward-promo-banner {
+  position: relative;
+  color: #fff;
+  padding: 3rem 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  background: linear-gradient(120deg, #1d4ed8 0%, #7c3aed 55%, #db2777 100%);
+}
+
+.reward-promo-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--reward-promo-image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+}
+
+.reward-promo-banner__inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.reward-promo-banner__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8125rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.reward-promo-banner__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.reward-promo-banner__subtitle {
+  font-size: 1.125rem;
+  margin-bottom: 1.25rem;
+  opacity: 0.95;
+}
+
+.btn-reward-cta {
+  background: #f59e0b;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.75rem 2rem;
+}
+
+.btn-reward-cta:hover {
+  background: #d97706;
+  color: #fff;
+}
+
+.reward-hero {
+  margin-top: 0;
+}
+
+body[data-variant="chat"] > main {
+  padding: 0;
+}
+
+.ai-msg {
+  max-width: 85%;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  line-height: 1.55;
+}
+
+.ai-msg p {
+  margin: 0;
+}
+
+.ai-msg--user {
+  margin-left: auto;
+  background: #e8f1fd;
+  color: var(--rovva-navy);
+}
+
+.ai-msg--bot {
+  margin-right: auto;
+  background: #f3f4f6;
+  color: var(--rovva-text, #424754);
+}
+
+.rova-ai-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1040;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--rovva-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 88, 190, 0.35);
+  text-decoration: none;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.rova-ai-fab:hover {
+  color: #fff;
+  background: #004a9e;
+  transform: translateY(-2px);
+}
+
