@@ -55,7 +55,7 @@ Hệ thống được phát triển sử dụng các công nghệ hiện đại 
 
 **Bước 1: Clone repository**
 ```bash
-git clone https://github.com/<your-org>/ROVVA.git
+git clone https://github.com/LeGiaVan/ROVVA.git
 cd ROVVA
 ```
 
