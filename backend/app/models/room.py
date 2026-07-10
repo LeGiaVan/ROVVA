@@ -42,5 +42,10 @@ class Room(db.Model):
     def status_label(self):
         return self.STATUS_LABELS.get(self.status, self.status)
 
+    @property
+    def image_url(self):
+        from backend.app.utils.media import room_image
+        return room_image(self.accommodation_id, self.id)
+
     def __repr__(self):
         return f"<Room {self.name}>"

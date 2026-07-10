@@ -4,13 +4,41 @@
 {% block content %}
 <main class="page-content">
     <div class="account-layout">
-      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      {% include 'customer/includes/account/_sidebar.html' %}
       <div class="account-main">
         <div class="account-page-head">
           <h1 class="account-page-title">Danh sách yêu thích</h1>
-          <p class="account-page-subtitle">Bạn đang có <strong id="favorites-count">0</strong> nơi lưu trú đã lưu</p>
+          <p class="account-page-subtitle">Bạn đang có <strong id="favorites-count">{{ accommodations|length }}</strong> nơi lưu trú đã lưu</p>
         </div>
-        <div id="favorites-list"></div>
+        {% if accommodations %}
+        <div class="row g-3">
+          {% for acc in accommodations %}
+          <div class="col-12 col-sm-6 col-lg-4">
+            <a href="{{ url_for('customer.accommodation_detail', id=acc.id) }}"
+               class="card border-0 shadow-sm h-100 text-decoration-none text-dark">
+              <img src="{{ acc.cover_url }}" alt="{{ acc.name }}" class="card-img-top" style="height:160px;object-fit:cover;">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                  <h3 class="h6 fw-semibold mb-1">{{ acc.name }}</h3>
+                  {% if acc.average_rating %}
+                  <span class="badge bg-warning-subtle text-warning-emphasis"><i class="bi bi-star-fill"></i> {{ acc.average_rating }}</span>
+                  {% endif %}
+                </div>
+                <p class="text-secondary small mb-2"><i class="bi bi-geo-alt"></i> {{ acc.city }}</p>
+                <span class="fw-bold text-primary">{{ "{:,.0f}".format(acc.min_price) }}đ</span>
+                <span class="text-secondary small">/ đêm</span>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+          <i class="bi bi-heart text-secondary" style="font-size:2.5rem;"></i>
+          <p class="mt-3 mb-1 fw-semibold">Bạn chưa lưu nơi lưu trú nào</p>
+          <a href="{{ url_for('customer.index') }}" class="btn btn-primary mt-2">Khám phá ngay</a>
+        </div>
+        {% endif %}
       </div>
     </div>
   </main>

@@ -88,22 +88,94 @@ def checkout(booking_code):
         return redirect(url_for("customer.index"))
         
     if request.method == "POST":
+        # 1. Cập nhật thông tin khách (nếu người dùng chỉnh sửa)
+        booking.guest_name = request.form.get("guest_name") or booking.guest_name
+        booking.guest_email = request.form.get("guest_email") or booking.guest_email
+        booking.guest_phone = request.form.get("guest_phone") or booking.guest_phone
+        booking.guest_note = request.form.get("guest_note", booking.guest_note)
+
+        # 2. Tính lại giá: phòng + dịch vụ - mã giảm - xu (mô phỏng)
+        pricing = _compute_pricing(booking, request.form)
+        booking.total_amount = pricing["total"]
+        db.session.commit()
+
         payment_method = request.form.get("payment_method")
-        
+
         if payment_method == "cash":
             booking.status = Booking.STATUS_CONFIRMED
             booking.payment_method = "cash"
-            booking.commission_fee = int(booking.total_amount * 0.15) # 15% commission
+            booking.payment_status = "pending"
+            booking.commission_fee = int(booking.total_amount * 0.15)
             booking.host_payout_amount = booking.total_amount - booking.commission_fee
             db.session.commit()
             flash("Đặt phòng thành công! Bạn sẽ thanh toán bằng tiền mặt khi nhận phòng.", "success")
-            return redirect(url_for("customer.index"))
-            
-        elif payment_method == "online":
-            # Mock redirect to payment gateway
-            return redirect(url_for("customer_booking.mock_gateway", booking_code=booking_code))
-            
-    return render_template("customer/pages/checkout.html", booking=booking)
+            return redirect(url_for("customer_booking.success", booking_code=booking_code))
+
+        # Mặc định: chuyển sang cổng thanh toán mô phỏng
+        return redirect(url_for("customer_booking.mock_gateway", booking_code=booking_code))
+
+    pricing = _compute_pricing(booking, request.args)
+    return render_template("customer/pages/checkout.html", booking=booking, pricing=pricing)
+
+
+PROMO_CODES = {
+    "WELCOME10": ("percent", 0.10, "Giảm 10% cho thành viên mới"),
+    "ROVVA50": ("fixed", 50000, "Giảm trực tiếp 50.000đ"),
+}
+
+XU_DISCOUNT = 50000  # 50 xu = 50.000đ (mô phỏng)
+
+
+def _compute_pricing(booking, source):
+    """Tính chi tiết giá dựa trên dịch vụ/mã giảm/xu được chọn (mô phỏng)."""
+    room = booking.room
+    nights = booking.nights
+    room_subtotal = (room.base_price or 0) * nights
+
+    selected_services = source.getlist("service") if hasattr(source, "getlist") else []
+    services = []
+    services_total = 0
+    for s in (room.services or []):
+        if isinstance(s, dict) and s.get("name") in selected_services:
+            price = int(s.get("price") or 0)
+            services.append({"name": s.get("name"), "price": price})
+            services_total += price
+
+    promo_code = (source.get("promo_code") or "").strip().upper()
+    promo_discount = 0
+    promo_label = None
+    if promo_code in PROMO_CODES:
+        kind, value, label = PROMO_CODES[promo_code]
+        promo_discount = int(room_subtotal * value) if kind == "percent" else int(value)
+        promo_label = label
+
+    use_xu = bool(source.get("use_xu"))
+    xu_discount = XU_DISCOUNT if use_xu else 0
+
+    total = max(0, room_subtotal + services_total - promo_discount - xu_discount)
+
+    return {
+        "nights": nights,
+        "room_price": room.base_price or 0,
+        "room_subtotal": room_subtotal,
+        "services": services,
+        "services_total": services_total,
+        "promo_code": promo_code,
+        "promo_label": promo_label,
+        "promo_discount": promo_discount,
+        "use_xu": use_xu,
+        "xu_discount": xu_discount,
+        "total": total,
+    }
+
+
+@customer_booking_bp.route("/success/<booking_code>")
+@login_required
+def success(booking_code):
+    booking = Booking.query.filter_by(
+        booking_code=booking_code, guest_id=current_user.id
+    ).first_or_404()
+    return render_template("customer/pages/payment/success.html", booking=booking)
 
 @customer_booking_bp.route("/mock-gateway/<booking_code>")
 @login_required
@@ -126,7 +198,7 @@ def payment_callback(booking_code):
         booking.host_payout_amount = booking.total_amount - booking.commission_fee
         db.session.commit()
         flash("Thanh toán thành công! Chúc bạn có kỳ nghỉ vui vẻ.", "success")
-    else:
-        flash("Thanh toán thất bại hoặc bị hủy.", "error")
-        
-    return redirect(url_for("customer.index"))
+        return redirect(url_for("customer_booking.success", booking_code=booking_code))
+
+    flash("Thanh toán thất bại hoặc bị hủy. Vui lòng thử lại.", "error")
+    return redirect(url_for("customer_booking.checkout", booking_code=booking_code))

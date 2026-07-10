@@ -1,0 +1,58 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý CSLT — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý đơn vị lưu trú</h1>
+  <p>Duyệt cơ sở lưu trú mới trước khi hiển thị cho khách</p>
+</div>
+
+<div class="admin-panel">
+  <div class="admin-panel__title">Chờ duyệt ({{ pending|length }})</div>
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Tên</th><th>Loại</th><th>Địa điểm</th><th>Host</th><th></th></tr></thead>
+      <tbody>
+        {% for acc in pending %}
+        <tr>
+          <td>{{ acc.name }}</td>
+          <td>{{ acc.type }}</td>
+          <td>{{ acc.city or acc.location }}</td>
+          <td>{{ acc.host.full_name if acc.host else '—' }}</td>
+          <td class="text-end text-nowrap">
+            <form method="POST" action="{{ url_for('admin.approve_accommodation', acc_id=acc.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-success">Duyệt</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.reject_accommodation', acc_id=acc.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Từ chối</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-secondary">Không có CSLT chờ duyệt.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="admin-panel">
+  <div class="admin-panel__title">Đang hoạt động ({{ active|length }})</div>
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Tên</th><th>Loại</th><th>Địa điểm</th><th>Phòng</th><th>Giá từ</th></tr></thead>
+      <tbody>
+        {% for acc in active %}
+        <tr>
+          <td>{{ acc.name }}</td>
+          <td>{{ acc.type }}</td>
+          <td>{{ acc.city or acc.location }}</td>
+          <td>{{ acc.total_rooms }}</td>
+          <td>{{ "{:,.0f}".format(acc.min_price) }}đ</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

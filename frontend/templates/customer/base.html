@@ -25,6 +25,20 @@
     {% include 'customer/includes/layout/header-guest.html' ignore missing %}
     {% endif %}
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container-xxl px-3 px-lg-4 pt-3">
+      {% for category, message in messages %}
+      {% set cls = 'danger' if category == 'error' else category %}
+      <div class="alert alert-{{ cls }} alert-dismissible fade show" role="alert" data-rova-flash>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <main>
         {% block content %}{% endblock %}
     </main>

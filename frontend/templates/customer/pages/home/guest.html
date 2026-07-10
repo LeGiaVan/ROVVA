@@ -26,7 +26,7 @@
                   src="{{ url_for('static', filename='customer/images/banners/P1_Dac_quyen&Khuyen_mai.jpg') }}" alt="">
               </div>
             </div>
-            <a href="../../pages/auth/login.html" class="btn btn-rova-primary">Đăng nhập và nhận tất cả</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-rova-primary">Đăng nhập và nhận tất cả</a>
           </div>
           <div class="promo-card__accent"><i class="bi bi-gift-fill"></i></div>
         </article>
@@ -37,7 +37,7 @@
               <h3 class="promo-card__title">Giảm giá đến 10%</h3>
               <p class="promo-card__desc">Vé máy bay | Chỉ dành cho ứng dụng</p>
             </div>
-            <a href="../../pages/marketing/promotions.html" class="btn btn-rova-primary">Nhận tất cả</a>
+            <a href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}" class="btn btn-rova-primary">Nhận tất cả</a>
           </div>
           <div class="promo-card__accent"><i class="bi bi-airplane-fill"></i></div>
         </article>
@@ -48,7 +48,7 @@
               <h3 class="promo-card__title">Giảm giá 10%</h3>
               <p class="promo-card__desc">Khách sạn</p>
             </div>
-            <a href="../../pages/marketing/promotions.html" class="btn btn-rova-primary">Nhận tất cả</a>
+            <a href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}" class="btn btn-rova-primary">Nhận tất cả</a>
           </div>
           <div class="promo-card__accent"><i class="bi bi-building"></i></div>
         </article>
@@ -62,44 +62,17 @@
         <h2 class="section-heading__title mb-0">Điểm đến xu hướng</h2>
       </div>
       <div class="destinations-grid">
-        <a class="destination-card" href="../../pages/accommodation/hotel-guest.html">
-          <img src="{{ url_for('static', filename='customer/images/apartments/CanHo_VT_House.jpg') }}" alt="Vũng Tàu">
+        {% for d in trending %}
+        <a class="destination-card" href="{{ url_for('customer.search', location=d.city) }}">
+          <img src="{{ d.cover_url }}" alt="{{ d.city }}">
           <div class="destination-card__overlay">
             <div>
-              <div class="destination-card__name">Vũng Tàu</div>
-              <p class="destination-card__meta">Việt Nam &bull; 550+ Stays</p>
+              <div class="destination-card__name">{{ d.city }}</div>
+              <p class="destination-card__meta">Việt Nam &bull; {{ d.count }}+ nơi lưu trú</p>
             </div>
           </div>
         </a>
-        <a class="destination-card" href="../../pages/accommodation/hotel-guest.html">
-          <img src="{{ url_for('static', filename='customer/images/banners/P2_Dac_quyen&Khuyen_mai_background.jpg') }}"
-            alt="Sapa">
-          <div class="destination-card__overlay">
-            <div>
-              <div class="destination-card__name">Sapa</div>
-              <p class="destination-card__meta">Việt Nam &bull; 450+ Stays</p>
-            </div>
-          </div>
-        </a>
-        <a class="destination-card" href="../../pages/accommodation/hotel-guest.html">
-          <img src="{{ url_for('static', filename='customer/images/banners/P1_Dac_quyen&Khuyen_mai.jpg') }}"
-            alt="Đà Lạt">
-          <div class="destination-card__overlay">
-            <div>
-              <div class="destination-card__name">Đà Lạt</div>
-              <p class="destination-card__meta">Việt Nam &bull; 890+ Stays</p>
-            </div>
-          </div>
-        </a>
-        <a class="destination-card" href="../../pages/accommodation/hotel-guest.html">
-          <img src="{{ url_for('static', filename='customer/images/hotels/KS_code_DaNang.jpg') }}" alt="Đà Nẵng">
-          <div class="destination-card__overlay">
-            <div>
-              <div class="destination-card__name">Đà Nẵng</div>
-              <p class="destination-card__meta">Việt Nam &bull; 1000+ Stays</p>
-            </div>
-          </div>
-        </a>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -115,19 +88,19 @@
         <a href="{{ url_for('customer.accommodation_detail', id=acc.id) }}" class="text-decoration-none text-dark">
           <article class="listing-card">
             <div class="listing-card__image-wrapper">
-              <img src="{{ url_for('static', filename=acc.image) }}" alt="{{ acc.name }}" class="listing-card__image">
+              <img src="{{ acc.cover_url }}" alt="{{ acc.name }}" class="listing-card__image">
               <button class="favorite-btn" aria-label="Lưu vào yêu thích"><i class="bi bi-heart"></i></button>
             </div>
             <div class="listing-card__content">
               <div class="d-flex justify-content-between align-items-start mb-2">
                 <h3 class="listing-card__title text-truncate">{{ acc.name }}</h3>
                 <div class="listing-card__rating">
-                  <i class="bi bi-star-fill text-warning"></i> <span>4.9</span>
+                  <i class="bi bi-star-fill text-warning"></i> <span>{{ acc.average_rating or '—' }}</span>
                 </div>
               </div>
               <p class="listing-card__location text-muted small mb-2"><i class="bi bi-geo-alt"></i> {{ acc.city }}</p>
               <div class="listing-card__price-wrap mt-auto">
-                <span class="listing-card__price">800.000đ</span>
+                <span class="listing-card__price">{{ "{:,.0f}".format(acc.min_price) }}đ</span>
                 <span class="listing-card__unit">/đêm</span>
               </div>
             </div>
@@ -151,19 +124,19 @@
         <a href="{{ url_for('customer.accommodation_detail', id=acc.id) }}" class="text-decoration-none text-dark">
           <article class="listing-card">
             <div class="listing-card__image-wrapper">
-              <img src="{{ url_for('static', filename=acc.image) }}" alt="{{ acc.name }}" class="listing-card__image">
+              <img src="{{ acc.cover_url }}" alt="{{ acc.name }}" class="listing-card__image">
               <button class="favorite-btn" aria-label="Lưu vào yêu thích"><i class="bi bi-heart"></i></button>
             </div>
             <div class="listing-card__content">
               <div class="d-flex justify-content-between align-items-start mb-2">
                 <h3 class="listing-card__title text-truncate">{{ acc.name }}</h3>
                 <div class="listing-card__rating">
-                  <i class="bi bi-star-fill text-warning"></i> <span>4.8</span>
+                  <i class="bi bi-star-fill text-warning"></i> <span>{{ acc.average_rating or '—' }}</span>
                 </div>
               </div>
               <p class="listing-card__location text-muted small mb-2"><i class="bi bi-geo-alt"></i> {{ acc.city }}</p>
               <div class="listing-card__price-wrap mt-auto">
-                <span class="listing-card__price">500.000đ</span>
+                <span class="listing-card__price">{{ "{:,.0f}".format(acc.min_price) }}đ</span>
                 <span class="listing-card__unit">/đêm</span>
               </div>
             </div>

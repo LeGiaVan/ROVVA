@@ -3,7 +3,7 @@
   <nav class="navbar navbar-expand-lg rovva-navbar">
     <div class="container-fluid rovva-navbar__inner px-0">
       <div class="rovva-navbar__bar">
-        <a class="navbar-brand" href="{{ url_for('customer.show_page', page_path='pages/home/guest.html') }}">
+        <a class="navbar-brand" href="{{ url_for('customer.index') }}">
           <img src="{{ url_for('static', filename='customer/images/logos/Logo.jpg') }}" alt="Rovva" height="46">
         </a>
 
@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse rovva-navbar__collapse" id="rovvaNavGuest">
           <ul class="navbar-nav rovva-navbar__nav">
             <li class="nav-item">
-              <a class="nav-link" data-nav="home" href="{{ url_for('customer.show_page', page_path='pages/home/guest.html') }}">Trang chủ</a>
+              <a class="nav-link" data-nav="home" href="{{ url_for('customer.index') }}">Trang chủ</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" data-nav="promotion" role="button"
@@ -54,10 +54,10 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('customer.show_page', page_path='pages/auth/login.html') }}">Đăng nhập</a>
+              <a class="nav-link" href="{{ url_for('auth.login') }}">Đăng nhập</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('customer.show_page', page_path='pages/auth/register.html') }}">Đăng ký</a>
+              <a class="nav-link" href="{{ url_for('auth.register') }}">Đăng ký</a>
             </li>
           </ul>
         </div>

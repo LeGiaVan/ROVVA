@@ -1,0 +1,31 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý booking — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý booking</h1>
+  <p>Theo dõi toàn bộ đơn đặt phòng</p>
+</div>
+<div class="admin-panel">
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Mã</th><th>Khách</th><th>Phòng / CSLT</th><th>Check-in</th><th>Check-out</th><th>Trạng thái</th><th>Tổng tiền</th></tr></thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td>{{ b.booking_code }}</td>
+          <td>{{ b.guest_name }}<br><span class="text-secondary small">{{ b.guest_email or '' }}</span></td>
+          <td>{{ b.room.name if b.room else '—' }}<br><span class="text-secondary small">{{ b.room.accommodation.name if b.room and b.room.accommodation else '' }}</span></td>
+          <td>{{ b.check_in.strftime('%d/%m/%Y') }}</td>
+          <td>{{ b.check_out.strftime('%d/%m/%Y') }}</td>
+          <td><span class="badge bg-light text-dark">{{ b.status }}</span></td>
+          <td>{{ "{:,.0f}".format(b.total_amount) }}đ</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-secondary">Chưa có booking.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

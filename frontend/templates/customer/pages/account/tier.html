@@ -4,22 +4,22 @@
 {% block content %}
 <main class="page-content">
     <div class="account-layout">
-      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      {% include 'customer/includes/account/_sidebar.html' %}
       <div class="account-main">
         <div class="account-page-head account-page-head--row">
           <h1 class="account-page-title mb-0">Hạng thành viên</h1>
-          <a class="account-page-head__link" href="../marketing/promotions.html#promo-tiers">Tìm hiểu thêm về Cấp bậc thành viên</a>
+          <a class="account-page-head__link" href="{{ url_for('customer.show_page', page_path='pages/marketing/promotions.html') }}">Tìm hiểu thêm về Cấp bậc thành viên</a>
         </div>
 
         <div class="profile-gold-card">
           <div class="profile-gold-card__avatar-wrap">
-            <img id="tier-avatar" class="profile-gold-card__avatar" src="{{ url_for('static', filename='customer/images/avatars/Hinh_avata.jpg') }}" alt="" onerror="this.style.visibility='hidden'">
+            <img id="tier-avatar" class="profile-gold-card__avatar" src="{{ current_user.avatar_url }}" alt="">
           </div>
           <div>
             <span class="profile-gold-card__tier-label">Mức hạng:</span>
-            <h2 id="tier-user-name" class="profile-gold-card__name">Thành viên Rovva</h2>
+            <h2 id="tier-user-name" class="profile-gold-card__name">{{ current_user.full_name }}</h2>
             <span id="tier-name" class="profile-gold-card__tier">
-              <i class="bi bi-award-fill"></i> Hạng Vàng
+              <i class="bi bi-award-fill"></i> {{ member_tier.label }}
             </span>
           </div>
         </div>
@@ -48,8 +48,13 @@
         </div>
 
         <div class="member-benefits-box">
-          <h2 class="member-benefits-box__title" id="tier-benefits-title">Quyền lợi hạng Vàng</h2>
-          <div class="member-benefits-grid" id="tier-benefits"></div>
+          <h2 class="member-benefits-box__title" id="tier-benefits-title">Quyền lợi {{ member_tier.label }}</h2>
+          <div class="member-benefits-grid" id="tier-benefits">
+            <div class="d-flex align-items-start gap-2 mb-2"><i class="bi bi-check-circle text-primary"></i><span>Tích lũy xu cho mỗi lần đặt phòng thành công.</span></div>
+            <div class="d-flex align-items-start gap-2 mb-2"><i class="bi bi-check-circle text-primary"></i><span>Ưu tiên hỗ trợ khách hàng và xử lý yêu cầu nhanh hơn.</span></div>
+            <div class="d-flex align-items-start gap-2 mb-2"><i class="bi bi-check-circle text-primary"></i><span>Nhận ưu đãi và mã giảm giá độc quyền cho thành viên.</span></div>
+            <div class="d-flex align-items-start gap-2"><i class="bi bi-check-circle text-primary"></i><span>Số dư hiện tại: <strong>{{ balance }} xu</strong> (~{{ "{:,.0f}".format(balance * 1000) }}đ).</span></div>
+          </div>
         </div>
       </div>
     </div>

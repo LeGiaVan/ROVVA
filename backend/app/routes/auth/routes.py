@@ -8,13 +8,14 @@ from backend.app.extensions import db
 
 auth_bp = Blueprint("auth", __name__)
 
-@auth_bp.route("/", methods=["GET", "POST"])
+@auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
+        if current_user.role == "admin":
+            return redirect(url_for("admin.index"))
         if current_user.role == "host":
             return redirect(url_for("main.index"))
-        else:
-            return redirect(url_for("customer.index"))
+        return redirect(url_for("customer.index"))
             
     if request.method == "POST":
         email = request.form.get("email")
@@ -39,10 +40,11 @@ def login():
                 next_page = request.args.get("next")
                 if next_page:
                     return redirect(next_page)
-                if user.role == "host" or user.role == "admin":
+                if user.role == "admin":
+                    return redirect(url_for("admin.index"))
+                if user.role == "host":
                     return redirect(url_for("main.index"))
-                else:
-                    return redirect(url_for("customer.index"))
+                return redirect(url_for("customer.index"))
             else:
                 user.failed_login_attempts += 1
                 if user.failed_login_attempts >= 5:
@@ -56,10 +58,11 @@ def login():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
+        if current_user.role == "admin":
+            return redirect(url_for("admin.index"))
         if current_user.role == "host":
             return redirect(url_for("main.index"))
-        else:
-            return redirect(url_for("customer.index"))
+        return redirect(url_for("customer.index"))
             
     if request.method == "POST":
         name = request.form.get("name")
@@ -163,4 +166,4 @@ def reset_password(token):
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("customer.index"))

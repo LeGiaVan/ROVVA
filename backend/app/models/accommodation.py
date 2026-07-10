@@ -65,11 +65,37 @@ class Accommodation(db.Model):
         return round(self.active_rooms / self.total_rooms * 100)
 
     @property
+    def cover_url(self):
+        from backend.app.utils.media import accommodation_cover
+        return accommodation_cover(self.id)
+
+    @property
+    def min_price(self):
+        prices = [r.base_price for r in self.rooms.filter_by(status=Room.STATUS_ACTIVE) if r.base_price]
+        return min(prices) if prices else 0
+
+    @property
+    def top_features(self):
+        return (self.features or [])[:2]
+
+    @property
+    def gallery_urls(self):
+        from backend.app.utils.media import accommodation_gallery
+        return accommodation_gallery(self.id)
+
+    @property
     def average_rating(self):
         from backend.app.models.review import Review
         from sqlalchemy import func
         avg = db.session.query(func.avg(Review.rating)).join(Room).filter(Room.accommodation_id == self.id).scalar()
         return round(avg, 1) if avg else 0.0
+
+    @property
+    def review_count(self):
+        from backend.app.models.review import Review
+        from sqlalchemy import func
+        count = db.session.query(func.count(Review.id)).join(Room).filter(Room.accommodation_id == self.id).scalar()
+        return int(count or 0)
 
     def __repr__(self):
         return f"<Accommodation {self.name}>"

@@ -1,0 +1,41 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý tranh chấp — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý tranh chấp</h1>
+  <p>Xử lý khiếu nại giữa khách và chủ nhà</p>
+</div>
+<div class="admin-panel">
+  {% for d in disputes %}
+  <div class="border rounded-3 p-3 mb-3">
+    <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+      <div>
+        <strong>{{ d.dispute_code }}</strong>
+        <span class="badge bg-light text-dark ms-2">{{ d.status }}</span>
+      </div>
+      <span class="text-secondary small">{{ d.created_at.strftime('%d/%m/%Y %H:%M') if d.created_at else '' }}</span>
+    </div>
+    <p class="mb-1"><strong>Khiếu nại:</strong> {{ d.guest_complaint }}</p>
+    {% if d.host_response %}<p class="mb-1 text-secondary"><strong>Phản hồi Host:</strong> {{ d.host_response }}</p>{% endif %}
+    {% if d.admin_resolution %}
+    <p class="mb-0 text-success"><strong>Quyết định:</strong> {{ d.admin_resolution }} (Hoàn {{ "{:,.0f}".format(d.refund_amount or 0) }}đ)</p>
+    {% elif d.status != 'resolved' %}
+    <form method="POST" action="{{ url_for('admin.resolve_dispute', dispute_id=d.id) }}" class="row g-2 mt-2">
+      <div class="col-md-7">
+        <input type="text" class="form-control form-control-sm" name="admin_resolution" placeholder="Nội dung quyết định..." required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control form-control-sm" name="refund_amount" placeholder="Hoàn tiền (đ)" min="0">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-sm btn-primary w-100">Xử lý</button>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+  {% else %}
+  <p class="text-secondary mb-0">Không có tranh chấp.</p>
+  {% endfor %}
+</div>
+{% endblock %}

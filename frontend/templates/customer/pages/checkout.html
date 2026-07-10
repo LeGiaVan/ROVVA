@@ -2,68 +2,211 @@
 {% block title %}Thanh toán đặt phòng — Rovva{% endblock %}
 
 {% block content %}
+{% set room = booking.room %}
+{% set acc = room.accommodation %}
 <main class="page-content">
   <div class="container-xxl px-3 px-lg-4 py-4 py-lg-5">
-    <div class="row g-4 justify-content-center">
-      <div class="col-12 col-lg-7">
-        <h1 class="h4 fw-bold mb-1">Xác nhận &amp; thanh toán</h1>
-        <p class="text-secondary mb-4">Mã đặt phòng <strong>{{ booking.booking_code }}</strong> đang được giữ chỗ.</p>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% for category, message in messages %}
-          <div class="alert alert-{{ 'danger' if category in ['error','danger'] else category }} py-2">{{ message }}</div>
-          {% endfor %}
-        {% endwith %}
+    <!-- Step indicator -->
+    <div class="d-flex align-items-center justify-content-center gap-2 gap-md-4 mb-4 flex-wrap">
+      <span class="badge rounded-pill bg-primary px-3 py-2"><i class="bi bi-1-circle"></i> Thông tin đặt phòng</span>
+      <i class="bi bi-chevron-right text-secondary"></i>
+      <span class="badge rounded-pill bg-primary px-3 py-2"><i class="bi bi-2-circle"></i> Thanh toán</span>
+      <i class="bi bi-chevron-right text-secondary"></i>
+      <span class="badge rounded-pill bg-light text-secondary px-3 py-2"><i class="bi bi-3-circle"></i> Hoàn tất</span>
+    </div>
 
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body">
-            <h2 class="h6 fw-semibold mb-3">Thông tin lưu trú</h2>
-            <div class="d-flex justify-content-between py-1">
-              <span class="text-secondary">Phòng</span>
-              <span class="fw-medium text-end">{{ booking.room.name }}</span>
+    <div class="alert alert-warning d-flex align-items-center gap-2 py-2" role="alert">
+      <i class="bi bi-clock-history"></i>
+      <span class="small mb-0">Giữ chỗ trong 15 phút. Vui lòng hoàn tất thanh toán để xác nhận đặt phòng.</span>
+    </div>
+
+    <form method="POST" action="{{ url_for('customer_booking.checkout', booking_code=booking.booking_code) }}"
+          id="checkout-form">
+      <div class="row g-4">
+        <!-- LEFT: info + services + payment method -->
+        <div class="col-12 col-lg-7">
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-3">Thông tin khách hàng</h2>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">Họ và tên</label>
+                  <input type="text" class="form-control" name="guest_name" value="{{ booking.guest_name }}" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Email</label>
+                  <input type="email" class="form-control" name="guest_email" value="{{ booking.guest_email or '' }}">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Số điện thoại</label>
+                  <input type="tel" class="form-control" name="guest_phone" value="{{ booking.guest_phone or '' }}">
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">Ghi chú cho chủ nhà (tuỳ chọn)</label>
+                  <textarea class="form-control" name="guest_note" rows="2"
+                            placeholder="Ví dụ: dự kiến nhận phòng lúc 20h...">{{ booking.guest_note or '' }}</textarea>
+                </div>
+              </div>
             </div>
-            <div class="d-flex justify-content-between py-1">
-              <span class="text-secondary">Nhận phòng</span>
-              <span class="fw-medium">{{ booking.check_in.strftime('%d/%m/%Y') }}</span>
+          </div>
+
+          {% if room.services %}
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-3">Dịch vụ thêm</h2>
+              {% for s in room.services %}
+              {% if s is mapping %}
+              <div class="form-check d-flex align-items-center justify-content-between border rounded-3 p-3 mb-2">
+                <div>
+                  <input class="form-check-input me-2 js-service" type="checkbox" name="service"
+                         value="{{ s.name }}" id="svc-{{ loop.index }}" data-price="{{ s.price or 0 }}">
+                  <label class="form-check-label fw-medium" for="svc-{{ loop.index }}">{{ s.name }}</label>
+                </div>
+                <span class="text-primary fw-semibold">+{{ "{:,.0f}".format((s.price or 0)|int) }}{{ s.unit or 'đ' }}</span>
+              </div>
+              {% endif %}
+              {% endfor %}
             </div>
-            <div class="d-flex justify-content-between py-1">
-              <span class="text-secondary">Trả phòng</span>
-              <span class="fw-medium">{{ booking.check_out.strftime('%d/%m/%Y') }}</span>
-            </div>
-            <div class="d-flex justify-content-between py-1">
-              <span class="text-secondary">Số đêm</span>
-              <span class="fw-medium">{{ booking.nights }} đêm</span>
-            </div>
-            <div class="d-flex justify-content-between py-1">
-              <span class="text-secondary">Số khách</span>
-              <span class="fw-medium">{{ booking.guest_count }} người</span>
-            </div>
-            <hr>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="fw-semibold">Tổng cộng</span>
-              <span class="h5 fw-bold text-primary mb-0">{{ "{:,.0f}".format(booking.total_amount) }} đ</span>
+          </div>
+          {% endif %}
+
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <h2 class="h5 fw-bold mb-3">Phương thức thanh toán</h2>
+              <div class="form-check border rounded-3 p-3 mb-2 d-flex align-items-center gap-2">
+                <input class="form-check-input mt-0" type="radio" name="payment_method" id="pm-online" value="online" checked>
+                <label class="form-check-label w-100" for="pm-online">
+                  <i class="bi bi-credit-card-2-front me-1"></i> Thanh toán online (cổng thanh toán mô phỏng)
+                </label>
+              </div>
+              <div class="form-check border rounded-3 p-3 d-flex align-items-center gap-2">
+                <input class="form-check-input mt-0" type="radio" name="payment_method" id="pm-cash" value="cash">
+                <label class="form-check-label w-100" for="pm-cash">
+                  <i class="bi bi-cash-coin me-1"></i> Thanh toán tiền mặt khi nhận phòng
+                </label>
+              </div>
             </div>
           </div>
         </div>
 
-        <form method="POST" action="{{ url_for('customer_booking.checkout', booking_code=booking.booking_code) }}">
-          <h2 class="h6 fw-semibold mb-3">Chọn phương thức thanh toán</h2>
-          <div class="form-check border rounded-3 p-3 mb-2 d-flex align-items-center gap-2">
-            <input class="form-check-input mt-0" type="radio" name="payment_method" id="pm-online" value="online" checked>
-            <label class="form-check-label w-100" for="pm-online">
-              <i class="bi bi-credit-card-2-front me-1"></i> Thanh toán online (cổng thanh toán mô phỏng)
-            </label>
+        <!-- RIGHT: summary + promo + xu + price detail -->
+        <div class="col-12 col-lg-5">
+          <div class="card border-0 shadow-sm position-lg-sticky" style="top: 1rem;">
+            <img src="{{ acc.cover_url }}" alt="{{ acc.name }}" class="card-img-top" style="height:160px;object-fit:cover;">
+            <div class="card-body">
+              <h3 class="h6 fw-bold mb-1">{{ acc.name }}</h3>
+              <p class="text-secondary small mb-3"><i class="bi bi-geo-alt"></i> {{ acc.city }}</p>
+
+              <ul class="list-unstyled small mb-3">
+                <li class="d-flex justify-content-between py-1"><span class="text-secondary">Phòng</span><span class="fw-medium">{{ room.name }}</span></li>
+                <li class="d-flex justify-content-between py-1"><span class="text-secondary">Nhận phòng</span><span class="fw-medium">{{ booking.check_in.strftime('%d/%m/%Y') }}</span></li>
+                <li class="d-flex justify-content-between py-1"><span class="text-secondary">Trả phòng</span><span class="fw-medium">{{ booking.check_out.strftime('%d/%m/%Y') }}</span></li>
+                <li class="d-flex justify-content-between py-1"><span class="text-secondary">Số khách</span><span class="fw-medium">{{ booking.guest_count }} khách</span></li>
+              </ul>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Mã giảm giá</label>
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control" name="promo_code" id="promo-code"
+                         value="{{ pricing.promo_code or '' }}" placeholder="WELCOME10 / ROVVA50">
+                  <button class="btn btn-outline-primary" type="button" id="apply-promo">Áp dụng</button>
+                </div>
+                <div class="form-text" id="promo-msg">{{ pricing.promo_label or '' }}</div>
+              </div>
+
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="use_xu" id="use-xu" value="1"
+                       {{ 'checked' if pricing.use_xu else '' }}>
+                <label class="form-check-label small" for="use-xu">
+                  Đổi 50 xu để giảm <strong>50.000đ</strong>
+                </label>
+              </div>
+
+              <hr>
+              <h4 class="h6 fw-bold mb-2">Chi tiết giá</h4>
+              <ul class="list-unstyled small mb-2" id="price-detail"
+                  data-room-price="{{ pricing.room_price }}" data-nights="{{ pricing.nights }}">
+                <li class="d-flex justify-content-between py-1">
+                  <span class="text-secondary">{{ "{:,.0f}".format(pricing.room_price) }}đ x {{ pricing.nights }} đêm</span>
+                  <span id="row-room">{{ "{:,.0f}".format(pricing.room_subtotal) }}đ</span>
+                </li>
+                <li class="d-flex justify-content-between py-1" id="row-services-wrap" {{ '' if pricing.services_total else 'hidden' }}>
+                  <span class="text-secondary">Dịch vụ thêm</span>
+                  <span id="row-services">{{ "{:,.0f}".format(pricing.services_total) }}đ</span>
+                </li>
+                <li class="d-flex justify-content-between py-1 text-success" id="row-promo-wrap" {{ '' if pricing.promo_discount else 'hidden' }}>
+                  <span>Mã giảm giá</span>
+                  <span id="row-promo">-{{ "{:,.0f}".format(pricing.promo_discount) }}đ</span>
+                </li>
+                <li class="d-flex justify-content-between py-1 text-success" id="row-xu-wrap" {{ '' if pricing.xu_discount else 'hidden' }}>
+                  <span>Đổi xu</span>
+                  <span id="row-xu">-{{ "{:,.0f}".format(pricing.xu_discount) }}đ</span>
+                </li>
+              </ul>
+              <div class="d-flex justify-content-between align-items-center border-top pt-2 mb-3">
+                <span class="fw-bold">Tổng cộng</span>
+                <span class="fw-bold text-primary fs-5" id="grand-total">{{ "{:,.0f}".format(pricing.total) }}đ</span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-shield-lock"></i> Xác nhận &amp; thanh toán
+              </button>
+            </div>
           </div>
-          <div class="form-check border rounded-3 p-3 mb-4 d-flex align-items-center gap-2">
-            <input class="form-check-input mt-0" type="radio" name="payment_method" id="pm-cash" value="cash">
-            <label class="form-check-label w-100" for="pm-cash">
-              <i class="bi bi-cash-coin me-1"></i> Thanh toán tiền mặt khi nhận phòng
-            </label>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg w-100">Tiến hành thanh toán</button>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    var form = document.getElementById('checkout-form');
+    if (!form) return;
+    var roomPrice = Number(document.getElementById('price-detail').dataset.roomPrice) || 0;
+    var nights = Number(document.getElementById('price-detail').dataset.nights) || 1;
+    var roomSubtotal = roomPrice * nights;
+    var PROMOS = { 'WELCOME10': { kind: 'percent', value: 0.10 }, 'ROVVA50': { kind: 'fixed', value: 50000 } };
+    var XU = 50000;
+
+    function fmt(n) { return Number(n).toLocaleString('vi-VN') + 'đ'; }
+    function toggle(el, show) { if (el) el.hidden = !show; }
+
+    function recalc() {
+      var servicesTotal = 0;
+      document.querySelectorAll('.js-service:checked').forEach(function (c) {
+        servicesTotal += Number(c.dataset.price) || 0;
+      });
+
+      var code = (document.getElementById('promo-code').value || '').trim().toUpperCase();
+      var promoDiscount = 0, msg = '';
+      if (PROMOS[code]) {
+        var p = PROMOS[code];
+        promoDiscount = p.kind === 'percent' ? Math.round(roomSubtotal * p.value) : p.value;
+        msg = 'Đã áp dụng mã ' + code;
+      } else if (code) {
+        msg = 'Mã không hợp lệ';
+      }
+
+      var xuDiscount = document.getElementById('use-xu').checked ? XU : 0;
+      var total = Math.max(0, roomSubtotal + servicesTotal - promoDiscount - xuDiscount);
+
+      document.getElementById('row-services').textContent = fmt(servicesTotal);
+      toggle(document.getElementById('row-services-wrap'), servicesTotal > 0);
+      document.getElementById('row-promo').textContent = '-' + fmt(promoDiscount);
+      toggle(document.getElementById('row-promo-wrap'), promoDiscount > 0);
+      document.getElementById('row-xu').textContent = '-' + fmt(xuDiscount);
+      toggle(document.getElementById('row-xu-wrap'), xuDiscount > 0);
+      document.getElementById('grand-total').textContent = fmt(total);
+      document.getElementById('promo-msg').textContent = msg;
+    }
+
+    form.addEventListener('change', recalc);
+    document.getElementById('apply-promo').addEventListener('click', recalc);
+    recalc();
+  })();
+</script>
 {% endblock %}

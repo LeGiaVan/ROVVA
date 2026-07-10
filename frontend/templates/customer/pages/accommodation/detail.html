@@ -25,20 +25,23 @@
           </p>
         </header>
     
+        {% set gallery = acc.gallery_urls %}
         <div class="page-accommodation__mosaic">
           <figure class="page-accommodation__mosaic-main">
-            <img src="{{ url_for('static', filename=acc.image) if acc.image else 'https://placehold.co/800x600' }}" alt="{{ acc.name }}">
+            <img src="{{ acc.cover_url }}" alt="{{ acc.name }}">
           </figure>
-          <figure class="page-accommodation__mosaic-item"><img src="{{ url_for('static', filename='customer/images/backgrounds/footer.jpg') }}" alt=""></figure>
-          <figure class="page-accommodation__mosaic-item"><img src="{{ url_for('static', filename='customer/images/backgrounds/footer2.jpg') }}" alt=""></figure>
-          <figure class="page-accommodation__mosaic-item"><img src="{{ url_for('static', filename=acc.image) if acc.image else 'https://placehold.co/800x600' }}" alt=""></figure>
+          <figure class="page-accommodation__mosaic-item"><img src="{{ gallery[0] }}" alt=""></figure>
+          <figure class="page-accommodation__mosaic-item"><img src="{{ gallery[1] }}" alt=""></figure>
+          <figure class="page-accommodation__mosaic-item"><img src="{{ gallery[2] }}" alt=""></figure>
           <figure class="page-accommodation__mosaic-item page-accommodation__mosaic-item--overlay">
-            <img src="{{ url_for('static', filename='customer/images/backgrounds/footer.jpg') }}" alt="">
+            <img src="{{ gallery[3] }}" alt="">
             <button type="button" class="page-accommodation__gallery-all"><i class="bi bi-images"></i> Xem tất cả hình ảnh</button>
           </figure>
         </div>
     
-        <p class="page-accommodation__specs">1 phòng khách • 3 phòng ngủ • 3 giường • 2 phòng tắm</p>
+        <p class="page-accommodation__specs">
+          {{ acc.total_rooms }} phòng • Sức chứa tối đa {{ acc.rooms.all() | map(attribute='capacity') | max if acc.total_rooms else 0 }} khách • {{ acc.type }}
+        </p>
         <hr class="page-accommodation__divider">
     
         <section class="page-accommodation__rooms">
@@ -55,9 +58,11 @@
           </div>
           <div class="page-accommodation__room-track" id="room-gallery-track">
             {% for room in acc.rooms %}
-              <article class="page-accommodation__room-card">
-                <img src="https://placehold.co/400x300" alt="{{ room.name }}">
+              <article class="page-accommodation__room-card" role="button" tabindex="0"
+                       data-bs-toggle="modal" data-bs-target="#roomModal{{ room.id }}">
+                <img src="{{ room.image_url }}" alt="{{ room.name }}">
                 <h3>{{ room.name }}</h3>
+                <p class="text-secondary small mb-0">{{ room.bed_info }} • {{ room.capacity }} khách</p>
               </article>
             {% endfor %}
           </div>
@@ -81,14 +86,43 @@
     
         <div class="page-accommodation__split">
           <div class="page-accommodation__amenities">
+            {% set first_room = rooms[0] if rooms else None %}
             <section class="page-accommodation__section">
               <h2>Tiện ích chung</h2>
               <div class="accommodation-amenity-list">
+                {% for f in acc.features or [] %}
+                <div class="accommodation-amenity"><i class="bi bi-check-circle text-primary"></i><span>{{ f }}</span></div>
+                {% else %}
                 <div class="accommodation-amenity"><i class="bi bi-wifi"></i><span>Wifi tốc độ cao</span></div>
-                <div class="accommodation-amenity"><i class="bi bi-water"></i><span>Hồ bơi</span></div>
-                <div class="accommodation-amenity"><i class="bi bi-snow"></i><span>Máy lạnh</span></div>
+                {% endfor %}
               </div>
             </section>
+
+            {% if first_room and first_room.features %}
+            <section class="page-accommodation__section mt-4">
+              <h2>Tiện nghi phòng</h2>
+              <div class="accommodation-amenity-list">
+                {% for f in first_room.features %}
+                <div class="accommodation-amenity"><i class="bi bi-check-circle text-primary"></i><span>{{ f }}</span></div>
+                {% endfor %}
+              </div>
+            </section>
+            {% endif %}
+
+            {% if first_room and first_room.services %}
+            <section class="page-accommodation__section mt-4">
+              <h2>Dịch vụ</h2>
+              <p class="text-secondary small">Có thu phí khi bạn lựa chọn sử dụng các dịch vụ này</p>
+              <div class="accommodation-amenity-list">
+                {% for s in first_room.services %}
+                <div class="accommodation-amenity">
+                  <i class="bi bi-stars text-primary"></i>
+                  <span>{{ s.name if s is mapping else s }}{% if s is mapping and s.price %} — {{ "{:,.0f}".format(s.price|int) }}{{ s.unit }}{% endif %}</span>
+                </div>
+                {% endfor %}
+              </div>
+            </section>
+            {% endif %}
           </div>
     
           <aside class="booking-panel booking-panel--figma">
@@ -141,7 +175,7 @@
           <div class="page-accommodation__host-card">
             <h2 class="page-accommodation__host-title">Thông tin chủ lưu trú</h2>
             <div class="page-accommodation__host-profile">
-              <img src="{{ url_for('static', filename=acc.host.avatar) if acc.host.avatar else 'https://placehold.co/96x96' }}" alt="{{ acc.host.full_name }}">
+              <img src="{{ acc.host.avatar_url }}" alt="{{ acc.host.full_name }}">
               <div>
                 <strong>{{ acc.host.full_name }}</strong>
                 <span class="page-accommodation__host-badge">ĐÃ XÁC MINH</span>
@@ -151,7 +185,7 @@
               <div class="page-accommodation__host-quote-row">
                 <div class="page-accommodation__host-rating">
                   <span>ĐÁNH GIÁ</span>
-                  <strong>4.9<span>★</span></strong>
+                  <strong>{{ acc.average_rating or '—' }}<span>★</span></strong>
                 </div>
                 <blockquote>"{{ acc.host.introduction or 'Chào bạn! Rất mong được đón tiếp.' }}"</blockquote>
               </div>
@@ -162,7 +196,100 @@
             </div>
           </div>
         </section>
+
+        <hr class="page-accommodation__divider">
+
+        <section class="mb-4">
+          <h2 class="h4 fw-bold mb-3">Vị trí thực tế</h2>
+          <div class="ratio ratio-21x9 rounded-4 overflow-hidden border">
+            <iframe title="Bản đồ vị trí"
+              src="https://www.google.com/maps?q={{ (acc.address or acc.city) | urlencode }}&output=embed"
+              style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </section>
+
+        <hr class="page-accommodation__divider">
+
+        <section class="mb-5">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <h2 class="h4 fw-bold mb-0">Đánh giá từ khách hàng</h2>
+            {% if acc.review_count %}
+            <span class="badge bg-primary fs-6"><i class="bi bi-star-fill"></i> {{ acc.average_rating }}</span>
+            <span class="text-secondary">{{ acc.review_count }} đánh giá</span>
+            {% endif %}
+          </div>
+          {% if reviews %}
+          <div class="row g-3">
+            {% for rv in reviews %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="rounded-circle bg-primary-subtle text-primary-emphasis d-inline-flex align-items-center justify-content-center fw-semibold"
+                            style="width:36px;height:36px;">{{ rv.guest_name[:2]|upper }}</span>
+                      <strong class="small">{{ rv.guest_name }}</strong>
+                    </div>
+                    <span class="text-warning">
+                      {% for i in range(rv.rating) %}<i class="bi bi-star-fill"></i>{% endfor %}
+                    </span>
+                  </div>
+                  <p class="small text-secondary mb-2">{{ rv.content }}</p>
+                  {% if rv.reply %}
+                  <div class="bg-light rounded-3 p-2 small">
+                    <i class="bi bi-reply-fill text-primary"></i> <strong>Chủ nhà:</strong> {{ rv.reply }}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-secondary">Chưa có đánh giá nào cho nơi lưu trú này.</p>
+          {% endif %}
+        </section>
     </div>
+
+    <!-- Room detail modals -->
+    {% for room in acc.rooms %}
+    <div class="modal fade" id="roomModal{{ room.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">{{ room.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+          <div class="modal-body">
+            <img src="{{ room.image_url }}" alt="{{ room.name }}"
+                 class="w-100 rounded-3 mb-3" style="max-height:320px;object-fit:cover;">
+            <div class="row g-2 mb-3">
+              <div class="col-6 col-md-3"><span class="text-secondary small d-block">Giường</span><strong>{{ room.bed_info }}</strong></div>
+              <div class="col-6 col-md-3"><span class="text-secondary small d-block">Sức chứa</span><strong>{{ room.capacity }} khách</strong></div>
+              <div class="col-6 col-md-3"><span class="text-secondary small d-block">Diện tích</span><strong>{{ room.area }}</strong></div>
+              <div class="col-6 col-md-3"><span class="text-secondary small d-block">Giá/đêm</span><strong class="text-primary">{{ "{:,.0f}".format(room.base_price) }}đ</strong></div>
+            </div>
+            {% if room.description %}<p class="text-secondary">{{ room.description }}</p>{% endif %}
+            {% if room.features %}
+            <h6 class="fw-semibold mt-3">Tiện nghi phòng</h6>
+            <div class="d-flex flex-wrap gap-2">
+              {% for f in room.features %}
+              <span class="badge bg-light text-dark border"><i class="bi bi-check-lg text-primary"></i> {{ f }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    onclick="rovvaSelectRoom('{{ room.id }}', '{{ room.base_price }}')">
+              Chọn phòng này
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </main>
 {% endblock %}
 
@@ -197,6 +324,18 @@
         if (checkOut.value && checkOut.value <= checkIn.value) checkOut.value = '';
       });
     }
+
+    // Chọn phòng từ modal chi tiết -> cập nhật form đặt phòng.
+    window.rovvaSelectRoom = function (roomId, price) {
+      if (sel) {
+        sel.value = String(roomId);
+        sel.dispatchEvent(new Event('change'));
+      } else if (form) {
+        form.action = form.action.replace(/\/create\/\d+$/, '/create/' + roomId);
+      }
+      if (priceEl && price) priceEl.textContent = fmt(price);
+      if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
   })();
 </script>
 {% endblock %}

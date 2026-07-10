@@ -1,0 +1,79 @@
+{% extends 'customer/base.html' %}
+{% block title %}Đặt phòng thành công — Rovva{% endblock %}
+
+{% block content %}
+{% set room = booking.room %}
+{% set acc = room.accommodation %}
+<main class="page-content">
+  <div class="container-xxl px-3 px-lg-4 py-4 py-lg-5">
+    <div class="d-flex align-items-center justify-content-center gap-2 gap-md-4 mb-4 flex-wrap">
+      <span class="badge rounded-pill bg-success px-3 py-2"><i class="bi bi-check-circle"></i> Thông tin đặt phòng</span>
+      <i class="bi bi-chevron-right text-secondary"></i>
+      <span class="badge rounded-pill bg-success px-3 py-2"><i class="bi bi-check-circle"></i> Thanh toán</span>
+      <i class="bi bi-chevron-right text-secondary"></i>
+      <span class="badge rounded-pill bg-success px-3 py-2"><i class="bi bi-check-circle"></i> Hoàn tất</span>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm text-center mb-4">
+          <div class="card-body p-4 p-lg-5">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success-subtle text-success mb-3"
+                 style="width:72px;height:72px;">
+              <i class="bi bi-check-lg" style="font-size:2rem;"></i>
+            </div>
+            <h1 class="h4 fw-bold mb-2">Đặt phòng thành công!</h1>
+            <p class="text-secondary mb-3">Cảm ơn bạn đã tin tưởng Rovva. Thông tin xác nhận đã được ghi nhận.</p>
+            <div class="d-inline-block bg-light rounded-3 px-4 py-2">
+              <span class="text-secondary small d-block">Mã đặt phòng</span>
+              <strong class="fs-5 text-primary">{{ booking.booking_code }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h2 class="h6 fw-bold mb-3">Chi tiết đơn</h2>
+            <div class="row g-3 align-items-center mb-3">
+              <div class="col-4 col-md-3">
+                <img src="{{ acc.cover_url }}" alt="{{ acc.name }}" class="w-100 rounded-3" style="height:80px;object-fit:cover;">
+              </div>
+              <div class="col-8 col-md-9">
+                <strong>{{ acc.name }}</strong>
+                <div class="text-secondary small">{{ room.name }} • {{ acc.city }}</div>
+              </div>
+            </div>
+            <ul class="list-unstyled small mb-0">
+              <li class="d-flex justify-content-between py-1"><span class="text-secondary">Nhận phòng</span><span class="fw-medium">{{ booking.check_in.strftime('%d/%m/%Y') }}</span></li>
+              <li class="d-flex justify-content-between py-1"><span class="text-secondary">Trả phòng</span><span class="fw-medium">{{ booking.check_out.strftime('%d/%m/%Y') }}</span></li>
+              <li class="d-flex justify-content-between py-1"><span class="text-secondary">Số khách</span><span class="fw-medium">{{ booking.guest_count }} khách</span></li>
+              <li class="d-flex justify-content-between py-1"><span class="text-secondary">Phương thức</span><span class="fw-medium">{{ 'Thanh toán online' if booking.payment_method == 'online' else 'Tiền mặt khi nhận phòng' }}</span></li>
+              <li class="d-flex justify-content-between py-2 border-top mt-1"><span class="fw-bold">Tổng thanh toán</span><span class="fw-bold text-primary">{{ "{:,.0f}".format(booking.total_amount) }}đ</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h2 class="h6 fw-bold mb-3">Các bước tiếp theo</h2>
+            <ul class="mb-0 small text-secondary">
+              <li class="mb-1">Kiểm tra email xác nhận và thông tin liên hệ chủ nhà.</li>
+              <li class="mb-1">Xuất trình mã đặt phòng khi nhận phòng.</li>
+              <li>Theo dõi trạng thái trong mục "Chuyến đi của tôi".</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+          <a href="{{ url_for('customer.trips') }}" class="btn btn-primary">
+            <i class="bi bi-suitcase-lg"></i> Xem chuyến đi của tôi
+          </a>
+          <a href="{{ url_for('customer.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-house"></i> Về trang chủ
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

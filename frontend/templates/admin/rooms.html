@@ -1,0 +1,30 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý phòng — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý phòng</h1>
+  <p>Toàn bộ phòng trên hệ thống</p>
+</div>
+<div class="admin-panel">
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>ID</th><th>Tên phòng</th><th>CSLT</th><th>Sức chứa</th><th>Giá/đêm</th><th>Trạng thái</th></tr></thead>
+      <tbody>
+        {% for r in rooms %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.accommodation.name if r.accommodation else '—' }}</td>
+          <td>{{ r.capacity }} khách</td>
+          <td>{{ "{:,.0f}".format(r.base_price) }}đ</td>
+          <td><span class="badge bg-light text-dark">{{ r.status_label }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-secondary">Chưa có phòng.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

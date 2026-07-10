@@ -14,6 +14,9 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(20))
     id_card = db.Column(db.String(20), nullable=True)
     introduction = db.Column(db.Text, nullable=True)
+    gender = db.Column(db.String(10), nullable=True)
+    birthday = db.Column(db.Date, nullable=True)
+    city = db.Column(db.String(120), nullable=True)
     avatar = db.Column(db.String(255), default="images/host-avatar.png")
     role = db.Column(db.String(20), default="guest") # guest, host, admin
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -39,6 +42,11 @@ class User(UserMixin, db.Model):
         if not self.password_hash:
             return False
         return check_password_hash(self.password_hash, password)
+
+    @property
+    def avatar_url(self):
+        from backend.app.utils.media import resolve_media
+        return resolve_media(self.avatar, "avatar")
 
     def __repr__(self):
         return f"<User {self.full_name}>"

@@ -1,0 +1,28 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý quản trị viên — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý quản trị viên</h1>
+  <p>Tài khoản có quyền truy cập khu vực Admin</p>
+</div>
+<div class="admin-panel">
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Ngày tạo</th></tr></thead>
+      <tbody>
+        {% for u in admins %}
+        <tr>
+          <td>{{ u.full_name }}{% if u.id == current_user.id %} <span class="badge bg-primary">Bạn</span>{% endif %}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.phone or '—' }}</td>
+          <td>{{ u.created_at.strftime('%d/%m/%Y') if u.created_at else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-secondary">Chưa có quản trị viên.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

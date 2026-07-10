@@ -30,6 +30,30 @@ def seed_database():
     )
     guest.set_password("1")
     db.session.add(guest)
+
+    admin = User(
+        full_name="Quản Trị Viên",
+        email="admin@rova.vn",
+        phone="0901111111",
+        avatar="shared/images/avatars/Hinh_avata.jpg",
+        role="admin",
+        is_email_verified=True,
+    )
+    admin.set_password("admin123")
+    db.session.add(admin)
+
+    pending_host = User(
+        full_name="Nguyễn Văn Host Mới",
+        email="host.pending@rova.vn",
+        phone="0902222222",
+        role="guest",
+        host_status="pending",
+        is_email_verified=True,
+        introduction="Tôi muốn đăng ký làm Host trên Rovva.",
+    )
+    pending_host.set_password("123456")
+    db.session.add(pending_host)
+
     db.session.flush()
 
     accommodations_data = [
@@ -279,28 +303,23 @@ def seed_database():
     for idx, amount in enumerate(booking_amounts):
         room = active_rooms[idx % len(active_rooms)]
         
-        # Manipulate dates to have some bookings for today (check-in / check-out / staying)
+        # Dùng đúng hằng số status của model để luồng "Chuyến đi của tôi" + filter hoạt động.
         if idx % 4 == 0:
-            check_in = today
+            check_in = today + timedelta(days=3)
             check_out = check_in + timedelta(days=2)
-            status = Booking.STATUS_CONFIRMED  # Upcoming / Check-in today
+            status = Booking.STATUS_CONFIRMED  # Sắp tới
         elif idx % 4 == 1:
             check_in = today - timedelta(days=2)
-            check_out = today
-            status = Booking.STATUS_PENDING  # Let's say pending or staying, wait PENDING? The prompt says "Đang lưu trú". I'll add STATUS_STAYING? No, existing statuses are confirmed, pending, cancelled, completed. Let's use "staying" string instead of STATUS_PENDING if we need it, but let's stick to existing: confirmed, pending, cancelled, completed. Let's update status strings? 
-            # I will just use custom status: "Đã đặt phòng", "Đang lưu trú", "Hoàn thành", "Đã hủy"
-            status = "Đang lưu trú"
+            check_out = today + timedelta(days=1)
+            status = Booking.STATUS_CONFIRMED  # Đang lưu trú (đã xác nhận, đang ở)
         elif idx % 4 == 2:
             check_in = today - timedelta(days=10)
             check_out = check_in + timedelta(days=3)
-            status = "Hoàn thành"
+            status = Booking.STATUS_COMPLETED  # Hoàn thành
         else:
             check_in = today + timedelta(days=5)
             check_out = check_in + timedelta(days=1)
-            status = "Đã hủy"
-            
-        if idx == 0:
-            status = "Đã đặt phòng"
+            status = Booking.STATUS_CANCELLED  # Đã hủy
 
         payment_status = "pending"
         disbursed_at = None
@@ -318,6 +337,7 @@ def seed_database():
         booking = Booking(
             booking_code=f"#RV123{40 + idx}",
             room_id=room.id,
+            guest_id=guest.id,
             guest_name=guest_names[idx],
             guest_phone=f"0901 234 {500 + idx}",
             guest_email=f"guest{idx}@email.com",
@@ -468,6 +488,24 @@ def seed_database():
     c1.updated_at = m2.created_at
     c2.updated_at = m4.created_at
     c3.updated_at = m5.created_at
+
+    # --- Ví xu (Wallet) + Yêu thích (Favorites) cho khách mẫu ---
+    from backend.app.models import WalletTransaction, Favorite
+
+    wallet_data = [
+        ("earn", 120, "Thưởng chào mừng thành viên mới"),
+        ("earn", 68, "Tích xu từ đơn đặt phòng #RV12340"),
+        ("earn", 54, "Tích xu từ đơn đặt phòng #RV12344"),
+        ("spend", 50, "Đổi xu giảm giá đơn #RV12348"),
+    ]
+    for w_type, amount, desc in wallet_data:
+        db.session.add(
+            WalletTransaction(user_id=guest.id, type=w_type, amount=amount, description=desc)
+        )
+
+    active_accs = Accommodation.query.filter_by(status=Accommodation.STATUS_ACTIVE).limit(3).all()
+    for acc in active_accs:
+        db.session.add(Favorite(user_id=guest.id, accommodation_id=acc.id))
 
     db.session.commit()
     return True

@@ -31,7 +31,7 @@
         <span class="ai-user__avatar"><i class="bi bi-person"></i></span>
         <div class="ai-user__info">
           <span class="ai-user__name">Khách</span>
-          <a class="ai-user__login" href="../auth/login.html">Đăng nhập</a>
+          <a class="ai-user__login" href="{{ url_for('auth.login') }}">Đăng nhập</a>
         </div>
       </div>
     </aside>
@@ -85,8 +85,8 @@
           <h3 class="ai-trip-card__name">Đăng nhập để cá nhân hóa</h3>
           <p class="ai-trip-card__date">Lưu lịch sử trò chuyện, nhận gợi ý riêng và ưu đãi thành viên.</p>
           <div class="ai-trip-card__actions">
-            <a class="btn btn-sm btn-rova-primary" href="../auth/login.html"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
-            <a class="btn btn-sm btn-rova-outline" href="../auth/register.html"><i class="bi bi-person-plus"></i> Đăng ký</a>
+            <a class="btn btn-sm btn-rova-primary" href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+            <a class="btn btn-sm btn-rova-outline" href="{{ url_for('auth.register') }}"><i class="bi bi-person-plus"></i> Đăng ký</a>
           </div>
         </div>
       </article>

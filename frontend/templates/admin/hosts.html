@@ -1,0 +1,57 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý Host — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý Host</h1>
+  <p>Duyệt hoặc từ chối yêu cầu đăng ký Host</p>
+</div>
+
+<div class="admin-panel">
+  <div class="admin-panel__title">Chờ duyệt ({{ pending|length }})</div>
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Giới thiệu</th><th></th></tr></thead>
+      <tbody>
+        {% for u in pending %}
+        <tr>
+          <td>{{ u.full_name }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.phone or '—' }}</td>
+          <td class="text-secondary small">{{ u.introduction or '—' }}</td>
+          <td class="text-end text-nowrap">
+            <form method="POST" action="{{ url_for('admin.approve_host', user_id=u.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-success">Duyệt</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.reject_host', user_id=u.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Từ chối</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-secondary">Không có Host chờ duyệt.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="admin-panel">
+  <div class="admin-panel__title">Host đã duyệt ({{ approved|length }})</div>
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Tham gia</th></tr></thead>
+      <tbody>
+        {% for u in approved %}
+        <tr>
+          <td>{{ u.full_name }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.phone or '—' }}</td>
+          <td>{{ u.created_at.strftime('%d/%m/%Y') if u.created_at else '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

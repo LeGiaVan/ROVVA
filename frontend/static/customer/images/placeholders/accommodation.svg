@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="¢nh ch× ß">
+  <rect width="800" height="600" fill="#e9eef5"/>
+  <rect x="0" y="0" width="800" height="600" fill="url(#g)"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dfe7f1"/>
+      <stop offset="1" stop-color="#cdd8e8"/>
+    </linearGradient>
+  </defs>
+  <g fill="#9aa9c0">
+    <path d="M250 380h300v20H250z"/>
+    <path d="M300 300l100-80 100 80v90H300z"/>
+    <circle cx="330" cy="240" r="18"/>
+  </g>
+  <text x="400" y="470" font-family="Inter, Arial, sans-serif" font-size="30" fill="#7c8aa5" text-anchor="middle">Rovva</text>
+</svg>

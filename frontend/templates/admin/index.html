@@ -1,0 +1,99 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Tổng quan — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head d-flex flex-wrap justify-content-between align-items-start gap-3">
+  <div>
+    <h1>Tổng quan</h1>
+    <p>Thống kê và phân tích hoạt động hệ thống</p>
+  </div>
+  <div class="text-end">
+    <div class="fw-semibold">{{ current_user.full_name }}</div>
+    <div class="text-secondary small">{{ current_user.email }}</div>
+  </div>
+</div>
+
+<div class="admin-stat-grid">
+  <div class="admin-stat-card">
+    <div class="admin-stat-card__label">Tổng doanh thu</div>
+    <div class="admin-stat-card__value">{{ "{:,.0f}".format(stats.revenue) }}đ</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-card__label">Tổng booking</div>
+    <div class="admin-stat-card__value">{{ stats.booking_count }}</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-card__label">Khách hàng</div>
+    <div class="admin-stat-card__value">{{ stats.customer_count }}</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-card__label">Chủ cơ sở lưu trú</div>
+    <div class="admin-stat-card__value">{{ stats.host_count }}</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-card__label">Tranh chấp mở</div>
+    <div class="admin-stat-card__value text-danger">{{ stats.dispute_count }}</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-card__label">Tỷ lệ hoàn thành</div>
+    <div class="admin-stat-card__value">{{ stats.completion_rate }}%</div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="admin-panel h-100">
+      <div class="admin-panel__title">Chờ duyệt</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between px-0">
+          <span>Host đăng ký mới</span>
+          <a href="{{ url_for('admin.hosts') }}" class="badge bg-warning text-dark text-decoration-none">{{ stats.pending_hosts }}</a>
+        </li>
+        <li class="list-group-item d-flex justify-content-between px-0">
+          <span>Cơ sở lưu trú chờ duyệt</span>
+          <a href="{{ url_for('admin.accommodations') }}" class="badge bg-warning text-dark text-decoration-none">{{ stats.pending_accs }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="admin-panel h-100">
+      <div class="admin-panel__title">Top đơn vị lưu trú (doanh thu)</div>
+      {% if top_accs %}
+      <ul class="list-group list-group-flush">
+        {% for name, total in top_accs %}
+        <li class="list-group-item d-flex justify-content-between px-0">
+          <span>{{ name }}</span>
+          <strong>{{ "{:,.0f}".format(total or 0) }}đ</strong>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-secondary mb-0">Chưa có dữ liệu doanh thu.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="admin-panel mt-3">
+  <div class="admin-panel__title">Hoạt động gần đây</div>
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>Mã</th><th>Khách</th><th>Phòng</th><th>Trạng thái</th><th>Tổng tiền</th></tr></thead>
+      <tbody>
+        {% for b in stats.recent_bookings %}
+        <tr>
+          <td>{{ b.booking_code }}</td>
+          <td>{{ b.guest_name }}</td>
+          <td>{{ b.room.name if b.room else '—' }}</td>
+          <td><span class="badge bg-light text-dark">{{ b.status }}</span></td>
+          <td>{{ "{:,.0f}".format(b.total_amount) }}đ</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-secondary">Chưa có booking.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

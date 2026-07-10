@@ -4,7 +4,7 @@
 {% block content %}
 <main class="page-content">
     <div class="account-layout">
-      <nav id="account-sidebar" class="account-sidebar" aria-label="Menu tài khoản"></nav>
+      {% include 'customer/includes/account/_sidebar.html' %}
       <div class="account-main">
         <div class="wallet-banners">
           <div class="wallet-banner wallet-banner--balance">
@@ -12,13 +12,13 @@
               <i class="bi bi-wallet2"></i> Số dư Xu
             </div>
             <div class="wallet-banner__balance">
-              <span class="wallet-banner__balance-num" id="wallet-balance">0</span>
+              <span class="wallet-banner__balance-num" id="wallet-balance">{{ balance }}</span>
               <span class="wallet-banner__balance-unit">xu</span>
             </div>
-            <p class="wallet-banner__rate">Giá trị quy đổi: 1 xu = 1000đ</p>
+            <p class="wallet-banner__rate">Giá trị quy đổi: 1 xu = 1.000đ</p>
             <p class="wallet-banner__note" id="wallet-update-note">
               <i class="bi bi-calendar3"></i>
-              <span>Cập nhật: Bạn hiện có xu trong tài khoản.</span>
+              <span>Tương đương {{ "{:,.0f}".format(balance * 1000) }}đ khi thanh toán.</span>
             </p>
           </div>
           <div class="wallet-banner wallet-banner--learn">
@@ -27,19 +27,38 @@
               <i class="bi bi-coin text-warning"></i>
               Tích lũy xu từ mỗi lần đặt phòng và đánh giá để nhận ưu đãi giảm giá trực tiếp cho những chuyến đi tiếp theo.
             </p>
-            <a class="wallet-banner__cta" href="../marketing/reward-points.html">Tìm hiểu ngay</a>
+            <a class="wallet-banner__cta" href="{{ url_for('customer.show_page', page_path='pages/marketing/reward-points.html') }}">Tìm hiểu ngay</a>
           </div>
         </div>
 
         <div class="account-content-box account-content-box--wallet">
           <h2 class="account-content-box__title">Lịch sử Ví xu</h2>
-          <div class="account-tabs" id="wallet-filter">
-            <button type="button" class="account-tabs__chip is-active" data-filter="all">Tất cả</button>
-            <button type="button" class="account-tabs__chip" data-filter="pending">Chờ duyệt</button>
-            <button type="button" class="account-tabs__chip" data-filter="earn">Tăng xu</button>
-            <button type="button" class="account-tabs__chip" data-filter="spend">Giảm xu</button>
+          <div class="account-content-box__body">
+            {% if transactions %}
+            <ul class="list-group list-group-flush">
+              {% for t in transactions %}
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="rounded-circle d-inline-flex align-items-center justify-content-center
+                               {{ 'bg-success-subtle text-success' if t.type == 'earn' else 'bg-danger-subtle text-danger' }}"
+                        style="width:40px;height:40px;">
+                    <i class="bi {{ 'bi-arrow-down-left' if t.type == 'earn' else 'bi-arrow-up-right' }}"></i>
+                  </span>
+                  <div>
+                    <div class="fw-medium">{{ t.description }}</div>
+                    <div class="text-secondary small">{{ t.created_at.strftime('%d/%m/%Y %H:%M') if t.created_at else '' }}</div>
+                  </div>
+                </div>
+                <span class="fw-bold {{ 'text-success' if t.type == 'earn' else 'text-danger' }}">
+                  {{ '+' if t.type == 'earn' else '-' }}{{ t.amount }} xu
+                </span>
+              </li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-secondary text-center py-4">Chưa có giao dịch xu nào.</p>
+            {% endif %}
           </div>
-          <div id="wallet-transactions" class="account-content-box__body"></div>
         </div>
       </div>
     </div>

@@ -1,0 +1,47 @@
+{# Sidebar tài khoản (SSR). Active state dựa trên request.endpoint. #}
+{% set ep = request.endpoint %}
+<nav class="account-sidebar" aria-label="Menu tài khoản">
+  <div class="account-sidebar__user">
+    <img class="account-sidebar__avatar" src="{{ current_user.avatar_url }}" alt="{{ current_user.full_name }}">
+    <div class="account-sidebar__user-meta">
+      <div class="account-sidebar__name">{{ current_user.full_name }}</div>
+      <span class="account-sidebar__tier {{ member_tier.cls }}">
+        <i class="bi bi-award-fill"></i> {{ member_tier.label }}
+      </span>
+    </div>
+  </div>
+
+  <div class="account-sidebar__nav">
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.account_profile' else '' }}"
+       href="{{ url_for('customer.account_profile') }}">
+      <i class="bi bi-person"></i> <span>Thông tin tài khoản</span>
+    </a>
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.trips' else '' }}"
+       href="{{ url_for('customer.trips') }}">
+      <i class="bi bi-suitcase-lg"></i> <span>Chuyến đi của tôi</span>
+    </a>
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.account_wallet' else '' }}"
+       href="{{ url_for('customer.account_wallet') }}">
+      <i class="bi bi-wallet2"></i> <span>Ví Xu</span>
+    </a>
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.account_favorites' else '' }}"
+       href="{{ url_for('customer.account_favorites') }}">
+      <i class="bi bi-heart"></i> <span>Danh sách yêu thích</span>
+    </a>
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.account_reviews' else '' }}"
+       href="{{ url_for('customer.account_reviews') }}">
+      <i class="bi bi-chat-square-text"></i> <span>Đánh giá của tôi</span>
+    </a>
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.account_tier' else '' }}"
+       href="{{ url_for('customer.account_tier') }}">
+      <i class="bi bi-award"></i> <span>Hạng thành viên</span>
+    </a>
+    <a class="account-sidebar__link {{ 'is-active' if ep == 'customer.account_security' else '' }}"
+       href="{{ url_for('customer.account_security') }}">
+      <i class="bi bi-shield-lock"></i> <span>Bảo mật</span>
+    </a>
+    <a class="account-sidebar__link account-sidebar__link--logout text-danger" href="{{ url_for('auth.logout') }}">
+      <i class="bi bi-box-arrow-right"></i> <span>Đăng xuất</span>
+    </a>
+  </div>
+</nav>

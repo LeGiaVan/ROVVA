@@ -1,0 +1,30 @@
+{% extends 'admin/layout/base.html' %}
+{% block title %}Quản lý khách hàng — Rovva Admin{% endblock %}
+
+{% block content %}
+<div class="admin-page-head">
+  <h1>Quản lý khách hàng</h1>
+  <p>Danh sách tài khoản khách hàng trên hệ thống</p>
+</div>
+<div class="admin-panel">
+  <div class="table-responsive">
+    <table class="table admin-table">
+      <thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Thành phố</th><th>Ngày tạo</th></tr></thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.full_name }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.phone or '—' }}</td>
+          <td>{{ u.city or '—' }}</td>
+          <td>{{ u.created_at.strftime('%d/%m/%Y') if u.created_at else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-secondary">Chưa có khách hàng.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

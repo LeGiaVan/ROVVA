@@ -10,12 +10,14 @@
   </div>
 </form>
 
-<form class="search-widget" id="rovva-search-form" aria-label="Tìm kiếm chỗ ở">
+<form class="search-widget" id="rovva-search-form" aria-label="Tìm kiếm chỗ ở"
+      action="{{ url_for('customer.search') }}" method="GET">
   <div class="search-widget__field">
     <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
     <div class="w-100">
       <div class="search-widget__label">Địa điểm</div>
-      <input type="text" name="location" placeholder="Bạn muốn đi đâu?" list="rovva-locations" required>
+      <input type="text" name="location" placeholder="Bạn muốn đi đâu?" list="rovva-locations"
+             value="{{ request.args.get('location', '') }}">
     </div>
   </div>
   <datalist id="rovva-locations">

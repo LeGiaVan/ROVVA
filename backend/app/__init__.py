@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask
+from flask import Flask, redirect, url_for
+from flask_login import current_user
 
 from backend.app.config import config_by_name
 from backend.app.extensions import db, login_manager
@@ -31,6 +32,21 @@ def create_app(config_name="default"):
 
     register_blueprints(app)
     register_cli(app)
+
+    @app.route("/")
+    def root():
+        """Trang chủ mặc định: guest (chưa đăng nhập) hoặc member."""
+        if current_user.is_authenticated and current_user.role == "admin":
+            return redirect(url_for("admin.index"))
+        if current_user.is_authenticated and current_user.role in ("host",):
+            return redirect(url_for("main.index"))
+        return redirect(url_for("customer.index"))
+
+    @app.context_processor
+    def inject_media_helpers():
+        from backend.app.utils.media import resolve_media
+
+        return {"resolve_media": resolve_media}
 
     with app.app_context():
         from backend.app import models  # noqa: F401

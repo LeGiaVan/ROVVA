@@ -1,0 +1,36 @@
+<aside class="admin-sidebar">
+  <a class="admin-sidebar__brand" href="{{ url_for('admin.index') }}">QUẢN TRỊ</a>
+  <nav class="admin-sidebar__nav" aria-label="Menu quản trị">
+    {% set ep = request.endpoint %}
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.index' else '' }}" href="{{ url_for('admin.index') }}">
+      <i class="bi bi-grid-1x2-fill"></i> Tổng quan
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.customers' else '' }}" href="{{ url_for('admin.customers') }}">
+      <i class="bi bi-people-fill"></i> Quản lý khách hàng
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.accommodations' else '' }}" href="{{ url_for('admin.accommodations') }}">
+      <i class="bi bi-building"></i> Quản lý đơn vị lưu trú
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.rooms' else '' }}" href="{{ url_for('admin.rooms') }}">
+      <i class="bi bi-door-open-fill"></i> Quản lý phòng
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.bookings' else '' }}" href="{{ url_for('admin.bookings') }}">
+      <i class="bi bi-calendar-check-fill"></i> Quản lý booking
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.disputes' else '' }}" href="{{ url_for('admin.disputes') }}">
+      <i class="bi bi-exclamation-triangle-fill"></i> Quản lý tranh chấp
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.payments' else '' }}" href="{{ url_for('admin.payments') }}">
+      <i class="bi bi-credit-card-fill"></i> Quản lý thanh toán
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.promotions' else '' }}" href="{{ url_for('admin.promotions') }}">
+      <i class="bi bi-tag-fill"></i> Quản lý khuyến mãi
+    </a>
+    <a class="admin-sidebar__link {{ 'is-active' if ep == 'admin.admins' else '' }}" href="{{ url_for('admin.admins') }}">
+      <i class="bi bi-shield-lock-fill"></i> Quản lý quản trị viên
+    </a>
+    <a class="admin-sidebar__link admin-sidebar__link--logout" href="{{ url_for('auth.logout') }}">
+      <i class="bi bi-box-arrow-right"></i> Đăng xuất
+    </a>
+  </nav>
+</aside>
